@@ -89,4 +89,27 @@ export class RestJiraService {
       }
     }
   }
+
+  ReplaceAll(jql:string, oldvalue: string , newValue: string){
+
+    let continua: boolean = true
+    let achou: number = 0
+    let busca: string
+                
+    jql = jql.toString().toUpperCase()
+    oldvalue = oldvalue.toString().toUpperCase()
+    newValue = newValue.toString().toUpperCase()
+                
+    while (continua) {
+        achou = jql.toString().search(oldvalue)
+        if (achou > 0) {
+            jql = jql.toString().replace(oldvalue, newValue )
+                        
+        }else{continua = false}                
+        
+    }
+                
+    return jql
+    }
+
 }

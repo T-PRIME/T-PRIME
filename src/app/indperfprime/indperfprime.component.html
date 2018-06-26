@@ -1,0 +1,48 @@
+<thf-page-default >
+  <blockquote id="blockquote">Indicadores de Performance Manutenção PRIME</blockquote>
+
+  <form #f="ngForm" id="f">
+    <div class="thf-row">
+      <thf-widget class="thf-md-12"  >
+        <thf-datepicker class="thf-md-3" name="startDate" [(ngModel)]="startDate" t-clean t-format="dd/mm/yyyy" t-label="Início do Período" t-required></thf-datepicker>
+        <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required></thf-datepicker>
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
+      </thf-widget>
+    </div>
+  </form>
+      
+  <hr id="hr">
+
+  <thf-widget class="thf-md-12" id="wid">
+    <div class="thf-row" id="titlebacklog">
+      <h1>Backlog</h1>    
+    </div>
+
+    <thf-table [t-columns]="columns" [t-items]="items"></thf-table>
+  </thf-widget>
+
+  <hr id="hr">
+
+  <thf-widget class="thf-md-12" id="wid">
+      <div class="thf-row" id="titlebacklog">
+        <h1>Performance Analistas</h1>    
+      </div>
+      <thf-table [t-columns]="colperf" [t-items]="itemsperf"></thf-table>
+  
+      <div class="thf-row">  
+        <thf-chart class="thf-md-12" 
+          [t-categories]="categchart1"
+          t-height="450px;"
+          t-label-visible="true"
+          [t-series]="serieschart1"
+          t-title="Produtividade - Entrega"
+          t-type="column"
+          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-hover)="changeEvent('t-series-hover')">
+        </thf-chart>
+      </div>
+
+  </thf-widget>
+
+</thf-page-default>    
+

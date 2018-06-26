@@ -1,0 +1,24 @@
+<thf-page-default >
+  <blockquote id="blockquote">Backlog Manutenção PRIME</blockquote>
+  <form #f="ngForm" id="f">
+    <div class="thf-row">
+      <thf-widget class="thf-md-12"  >
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
+      </thf-widget>
+    </div>
+  </form>
+      
+  <hr id="hr">
+
+  <thf-widget class="thf-md-12" id="wid">
+    <div class="thf-row" id="titlebacklog">
+      <h1>Backlog</h1>    
+    </div>
+
+    <thf-table [t-columns]="columns" [t-items]="items" t-sort="true" t-striped="true"></thf-table>
+  </thf-widget>
+
+  
+
+</thf-page-default>    
+

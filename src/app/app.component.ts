@@ -15,7 +15,8 @@ export class AppComponent {
     { label: 'Indicadores Prime', icon: 'company', subItems: [  
       { label: 'Indicadores Por Cliente', link: './hello-world' }
     ]},
-    { label: 'Manutenção', icon: 'share', subItems: [
+    { label: 'Manutenção Prime', icon: 'share', subItems: [
+      { label: 'Backlog Manutenção Prime', link: './backlogmanutprime' },
       { label: 'Indicadores Manutenção Prime', link: './indmanutprime' },
       { label: 'Indicadores Performance Manutenção Prime', link: './indperfprime' }
     ]}

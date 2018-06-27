@@ -22,13 +22,17 @@ export class IndperfprimeComponent implements OnInit {
   categchart1: Array<string>;
   serieschart1: Array<ThfColumnChartSeries>;  
   usuarios: Array<any>;
-  jqlFiltro: Filtro[];
+  jqlFiltro: Array<any>
   public teste: any;
+  startDate: string;
+  endDate: string;
 
   constructor(public restJiraService: RestJiraService ) { }
  
   ngOnInit() {
-    this.limpaTabela();
+
+    this.limpaTabela();      
+
     this.usuarios = [
       { user: 'diogo.vieira', total: 0 },
       { user: 'eduardo.martinez', total: 0 },
@@ -38,37 +42,51 @@ export class IndperfprimeComponent implements OnInit {
       { user: 'tiago.bertolo', total: 0 },
       { user: 'vitor.pires', total: 0 },      
       { user: 'wesley.lossani', total: 0 },
-      { user: 'yuri.porto', total: 0 },       
-    ];
+      { user: 'yuri.porto', total: 0 }, 
+      
+    ];      
   }
-    
+
   gerarIndicadores() {
-    this.limpaTabela();
-    this.restJiraService.getFilter("59121").end(response => this.getTest(response.body.jql, "avencer"));
-    this.restJiraService.getFilter("59123").end(response => this.getTest(response.body.jql, "pacemergenciais"));
-    this.restJiraService.getFilter("59124").end(response => this.getTest(response.body.jql, "vencidos"));
+
+    this.limpaTabela();    
+    var data = new Date(this.startDate.substring(0,10));
+    console.log(data);
+    console.log(this.endDate);
+
+    this.restJiraService.getFilter("59150").end(response => this.getPerf(response.body.jql, "codificadas"));
+    this.restJiraService.getFilter("59154").end(response => this.getPerf(response.body.jql, "rejeitadas"));
+    this.restJiraService.getFilter("59155").end(response => this.getPerf(response.body.jql, "canceladas"));
+    this.restJiraService.getFilter("59157").end(response => this.getPerf(response.body.jql, "retrabalho"));
 
     //Chart1
     this.categchart1 = this.getCategchart1();
-    this.serieschart1 = this.getSeriesChart1();    
+    this.serieschart1 = this.getSeriesChart1();  
+    
   }
 
-    getTest(filtro, campo) {
-      this.restJiraService.getIssues(filtro).end( response => this.restJiraService.
-      atualizaComponente(response, this.itemsperf, this.usuarios, campo);
-  }
-  
+   getPerf(filtro, campo) {
+
+      var filtroEdit = filtro
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
+      
+      this.restJiraService.getIssues(filtroEdit).end( response => this.restJiraService.
+      atualizaComponente(response, this.itemsperf, this.usuarios, campo));
+  }  
+
   limpaTabela(){
     this.itemsperf = [
-      { analista: 'Vitor Pires', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Yuri Milan Porto', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Leonardo Magalhães Barbosa ', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'João Paulo de Souza Balbino', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Julio Fernando da Silva Santos', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Diogo Francisco Vieir  a Saravando', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},
       { analista: 'Eduardo Karpischek Martinez', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'João Paulo de Souza Balbino', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Julio Fernando da Silva Santos', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
+      { analista: 'Leonardo Magalhães Barbosa ', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
       { analista: 'Tiago Bertolo', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Vitor Pires', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},                  
       { analista: 'Wesley Lossani', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Diogo Francisco Vieira Saravando', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0}
+      { analista: 'Yuri Milan Porto', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      
       ];
     
   this.colperf = [
@@ -80,7 +98,8 @@ export class IndperfprimeComponent implements OnInit {
     { column: 'percretrabalho', label: '% Retrabalho', type: 'number' },
     { column: 'produtividade', label: 'Produtividade' , type: 'number'}
     ];  
-  }
+
+   }
 
   private getSeriesChart1(): Array<ThfColumnChartSeries> {
     return [
@@ -88,10 +107,9 @@ export class IndperfprimeComponent implements OnInit {
       { name: 'Issues Trabalhadas', data: [4,6,4,5,12,15,12,20,9] },
       { name: 'Produtividade', data: [2,7,4,5,12,20,12,20,9] }  
       ];
-    }
+  }
   private getCategchart1(): Array<string> {
     return [ 'Vitor Pires', 'Yuri Milan Porto','Leonardo Magalhães Barbosa' ,'João Paulo de Souza Balbino' ,'Julio Fernando da Silva Santos',
              'Eduardo Karpischek Martinez', 'Tiago Bertolo' ,'Wesley Lossani' ,'Diogo Francisco Vieira Saravando' ];
-    }  
-
-  }
+  }  
+}

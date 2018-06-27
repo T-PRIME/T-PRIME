@@ -44,13 +44,14 @@ export class RestJiraService {
     for (var _i = 0; response.body.total > _i) {
       if (_x < usuarios.length) {
         
-        console.log(_i);
-        if (campo === "pacemergenciais") {
+        if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
+          var user = response.body.issues[_i].fields.customfield_10046.name;
+        }else if (campo == "pacemergenciais" || campo == "codificadas" || campo == "rejeitadas") {
           var user = response.body.issues[_i].fields.customfield_10048.name;
         }else{
           var user = response.body.issues[_i].fields.assignee.name;
         }
-
+        
         if (usuarios[_x].user != user) {
           if (usuarios.find(x => x.user == user) != undefined) {
             for (_x = 0; usuarios.length > _x; _x++){
@@ -65,7 +66,7 @@ export class RestJiraService {
         }
 
         if (user === usuarios[_x].user) {
-          _i++
+          _i++;
           switch (campo) {
           case "avencer": {
             componente[_x].avencer++;
@@ -82,8 +83,20 @@ export class RestJiraService {
             componente[_x].totalbacklog++;                  
             break;
           }
+          case "codificadas": {
+            componente[_x].codificadas++;        
+            break;
+          }
+          case "rejeitadas": {
+            componente[_x].rejeitadas++;        
+            break;
+          }
           case "abertasmais30dias": {
             componente[_x].abertasmais30dias++;         
+            break;
+          }
+          case "retrabalho": {
+            componente[_x].retrabalho++;         
             break;
           }
           default:
@@ -93,21 +106,26 @@ export class RestJiraService {
       }
     }
   }
+
   ReplaceAll(jql:string, oldvalue: string , newValue: string){
+
     let continua: boolean = true
     let achou: number = 0
     let busca: string
-                  
+                
     jql = jql.toString().toUpperCase()
     oldvalue = oldvalue.toString().toUpperCase()
     newValue = newValue.toString().toUpperCase()
-                  
+                
     while (continua) {
-      achou = jql.toString().search(oldvalue)
-      if (achou > 0) {
-        jql = jql.toString().replace(oldvalue, newValue )
-      }else{continua = false}                         
-      }                  
-      return jql
-      }
+        achou = jql.toString().search(oldvalue)
+        if (achou > 0) {
+            jql = jql.toString().replace(oldvalue, newValue )
+                        
+        }else{continua = false}                
+        
+    }
+                
+    return jql
+    }
 }

@@ -67,7 +67,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     getTest(filtro, campo) {
 
       this.restJiraService.getIssues(filtro).end( response => this.restJiraService.
-      atualizaComponente(response, this.items, this.usuarios, campo);
+      atualizaComponente(response, this.items, this.usuarios, campo));
   }
 
   limpaTabela(){
@@ -78,8 +78,8 @@ export class BacklogmanutprimeComponent implements OnInit {
       { analista: 'João Paulo de Souza Balbino', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Julio Fernando da Silva Santos', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Leonardo Magalhães Barbosa ', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Vitor Pires', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Tiago Bertolo', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Vitor Pires', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Wesley Lossani', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Yuri Milan Porto', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
     ];

@@ -14,6 +14,7 @@ var unirest = require('unirest');
 export class RestJiraService {
 
   public request: any;
+  public execReq = [];
   private request2: any;
   private teste: any;
   private opts = new RequestOptions();
@@ -39,19 +40,22 @@ export class RestJiraService {
 
   }
 
-  atualizaComponente(response, componente: Array<any>, usuarios: Array<any>, campo) {
+  atualizaBacklog(response, componente: Array<any>, usuarios: Array<any>, campo) {
     var _x = 0;
-    for (var _i = 0; response.body.total > _i) {
+    var user;
+    for (var _i = 0; response.body.total > _i;) {
       if (_x < usuarios.length) {
         
         if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
-          var user = response.body.issues[_i].fields.customfield_10046.name;
-        }else if (campo == "pacemergenciais" || campo == "codificadas" || campo == "rejeitadas") {
-          var user = response.body.issues[_i].fields.customfield_10048.name;
-        }else{
-          var user = response.body.issues[_i].fields.assignee.name;
+          user = response.body.issues[_i].fields.customfield_10046.name;
+        }else if (campo == "pacemergenciais") {
+          user = response.body.issues[_i].fields.customfield_10048.name;
+        }else if (response.body.issues[_i].fields.assignee == undefined) {
+          user = "unassigned";
+        }else {
+          user = response.body.issues[_i].fields.assignee.name;
         }
-        
+
         if (usuarios[_x].user != user) {
           if (usuarios.find(x => x.user == user) != undefined) {
             for (_x = 0; usuarios.length > _x; _x++){
@@ -83,6 +87,48 @@ export class RestJiraService {
             componente[_x].totalbacklog++;                  
             break;
           }
+          case "abertasmais30dias": {
+            componente[_x].abertasmais30dias++;         
+            break;
+          }
+          default:
+            break;
+          }
+        }
+      }
+    }
+  }
+  atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
+    var _x = 0;
+    var user;
+    this.execReq.push(campo);
+    for (var _i = 0; response.body.total > _i;) {
+      if (_x < usuarios.length) {
+        
+        if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
+          user = response.body.issues[_i].fields.customfield_10046.name;
+        }else if (campo == "codificadas" || campo == "rejeitadas") {
+          user = response.body.issues[_i].fields.customfield_10048.name;
+        }else if (response.body.issues[_i].fields.assignee != undefined) {
+          user = response.body.issues[_i].fields.assignee.name;
+        }
+
+        if (usuarios[_x].user != user) {
+          if (usuarios.find(x => x.user == user) != undefined) {
+            for (_x = 0; usuarios.length > _x; _x++){
+              if (usuarios[_x].user === user) {
+              break;
+              }
+            }
+          }else{
+            _x = 0;
+            _i++;
+          } 
+        }
+
+        if (user === usuarios[_x].user) {
+          _i++;
+          switch (campo) {
           case "codificadas": {
             componente[_x].codificadas++;        
             break;
@@ -91,8 +137,8 @@ export class RestJiraService {
             componente[_x].rejeitadas++;        
             break;
           }
-          case "abertasmais30dias": {
-            componente[_x].abertasmais30dias++;         
+          case "canceladas": {
+            componente[_x].canceladas++;         
             break;
           }
           case "retrabalho": {
@@ -105,6 +151,13 @@ export class RestJiraService {
         }
       }
     }
+    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("canceladas") >= 0) {
+      for (var _y = 0; usuarios.length > _y; _y++) {
+        componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas)
+        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas + componente[_y].retrabalho) / diasUteis * 100)
+      }
+    }
+    
   }
 
   ReplaceAll(jql:string, oldvalue: string , newValue: string){
@@ -127,5 +180,18 @@ export class RestJiraService {
     }
                 
     return jql
+  }
+
+  calcDias(dataDe, dataAte) {
+    
+    var diasUteis = 0;
+    while (dataDe.toString() != dataAte.toString()) {
+      if (dataDe.getDay() != 0 && dataDe.getDay() != 6) {
+        diasUteis++
+      }
+      dataDe.setDate(dataDe.getDate() + 1);
     }
+
+    return diasUteis
+  }
 }

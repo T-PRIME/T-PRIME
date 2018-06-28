@@ -26,6 +26,7 @@ export class IndperfprimeComponent implements OnInit {
   public teste: any;
   startDate: string;
   endDate: string;
+  diasUteis: number;
 
   constructor(public restJiraService: RestJiraService ) { }
  
@@ -50,14 +51,14 @@ export class IndperfprimeComponent implements OnInit {
   gerarIndicadores() {
 
     this.limpaTabela();    
-    var data = new Date(this.startDate.substring(0,10));
-    console.log(data);
-    console.log(this.endDate);
+    var dataDe = new Date(this.startDate.substring(0,10));
+    var dataAte = new Date(this.endDate.substring(0,10));
+    this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
+    this.restJiraService.getFilter("59157").end(response => this.getPerf(response.body.jql, "retrabalho"));
     this.restJiraService.getFilter("59150").end(response => this.getPerf(response.body.jql, "codificadas"));
     this.restJiraService.getFilter("59154").end(response => this.getPerf(response.body.jql, "rejeitadas"));
     this.restJiraService.getFilter("59155").end(response => this.getPerf(response.body.jql, "canceladas"));
-    this.restJiraService.getFilter("59157").end(response => this.getPerf(response.body.jql, "retrabalho"));
 
     //Chart1
     this.categchart1 = this.getCategchart1();
@@ -70,9 +71,9 @@ export class IndperfprimeComponent implements OnInit {
       var filtroEdit = filtro
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
-      
+
       this.restJiraService.getIssues(filtroEdit).end( response => this.restJiraService.
-      atualizaComponente(response, this.itemsperf, this.usuarios, campo));
+      atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis));
   }  
 
   limpaTabela(){
@@ -103,13 +104,13 @@ export class IndperfprimeComponent implements OnInit {
 
   private getSeriesChart1(): Array<ThfColumnChartSeries> {
     return [
-      { name: 'Retrabalho', data: [3,5,4,5,12,20,1,9,20]},
+      { name: 'Retrabalho', data: [0,0,0,0,0,0,0,0,0]},
       { name: 'Issues Trabalhadas', data: [4,6,4,5,12,15,12,20,9] },
       { name: 'Produtividade', data: [2,7,4,5,12,20,12,20,9] }  
       ];
   }
   private getCategchart1(): Array<string> {
-    return [ 'Vitor Pires', 'Yuri Milan Porto','Leonardo Magalhães Barbosa' ,'João Paulo de Souza Balbino' ,'Julio Fernando da Silva Santos',
-             'Eduardo Karpischek Martinez', 'Tiago Bertolo' ,'Wesley Lossani' ,'Diogo Francisco Vieira Saravando' ];
+    return [ 'Diogo Francisco Vieira Saravando', 'Eduardo Karpischek Martinez', 'João Paulo de Souza Balbino', 'Julio Fernando da Silva Santos',
+    'Leonardo Magalhães Barbosa', 'Tiago Bertolo', 'Vitor Pires', 'Wesley Lossani', 'Yuri Milan Porto' ];
   }  
 }

@@ -50,6 +50,7 @@ export class BacklogmanutprimeComponent implements OnInit {
       { user: 'vitor.pires', total: 0 },      
       { user: 'wesley.lossani', total: 0 },
       { user: 'yuri.porto', total: 0 }, 
+      { user: 'unassigned', total: 0 }, 
       
     ];   
   }
@@ -67,7 +68,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     getTest(filtro, campo) {
 
       this.restJiraService.getIssues(filtro).end( response => this.restJiraService.
-      atualizaComponente(response, this.items, this.usuarios, campo));
+      atualizaBacklog(response, this.items, this.usuarios, campo));
   }
 
   limpaTabela(){
@@ -82,6 +83,7 @@ export class BacklogmanutprimeComponent implements OnInit {
       { analista: 'Vitor Pires', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Wesley Lossani', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Yuri Milan Porto', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Unassigned', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
     ];
   }
 }

@@ -4,6 +4,7 @@ import { ThfTableColumn } from '@totvs/thf-ui/components/thf-table';
 import { text } from '@angular/core/src/render3/instructions';
 import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
+import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
 
 
 
@@ -23,12 +24,11 @@ export class IndperfprimeComponent implements OnInit {
   serieschart1: Array<ThfColumnChartSeries>;  
   usuarios: Array<any>;
   jqlFiltro: Array<any>
-  public teste: any;
   startDate: string;
   endDate: string;
   diasUteis: number;
 
-  constructor(public restJiraService: RestJiraService ) { }
+  constructor(public restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { }
  
   ngOnInit() {
 
@@ -37,18 +37,24 @@ export class IndperfprimeComponent implements OnInit {
     this.usuarios = [
       { user: 'diogo.vieira', total: 0 },
       { user: 'eduardo.martinez', total: 0 },
+      { user: 'evandro.pattaro', total: 0 },
       { user: 'joao.balbino', total: 0 },
       { user: 'julio.silva', total: 0 },
       { user: 'leonardo.magalhaes', total: 0 },
       { user: 'tiago.bertolo', total: 0 },
       { user: 'vitor.pires', total: 0 },      
       { user: 'wesley.lossani', total: 0 },
-      { user: 'yuri.porto', total: 0 }, 
+      { user: 'yuri.porto', total: 0 } 
       
     ];      
   }
 
   gerarIndicadores() {
+
+    if (this.startDate == undefined || this.endDate == undefined) {
+      this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
+      return;
+    }
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));
@@ -62,7 +68,7 @@ export class IndperfprimeComponent implements OnInit {
 
     //Chart1
     this.categchart1 = this.getCategchart1();
-    this.serieschart1 = this.getSeriesChart1();  
+    
     
   }
 
@@ -72,45 +78,68 @@ export class IndperfprimeComponent implements OnInit {
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
 
-      this.restJiraService.getIssues(filtroEdit).end( response => this.restJiraService.
-      atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis));
+      this.restJiraService.getIssues(filtroEdit).end( response => { 
+        this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis), 
+        this.atualizaGrafico() } );
   }  
 
   limpaTabela(){
+    var zeraGrafico = [0,0,0,0,0,0,0,0,0,0];
     this.itemsperf = [
-      { analista: 'Diogo Francisco Vieir  a Saravando', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},
-      { analista: 'Eduardo Karpischek Martinez', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'João Paulo de Souza Balbino', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Julio Fernando da Silva Santos', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
-      { analista: 'Leonardo Magalhães Barbosa ', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
+      { analista: 'Diogo Saravando', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},
+      { analista: 'Eduardo Martinez', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Evandro Pattaro', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'João Balbino', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Julio Silva', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
+      { analista: 'Leonardo Barbosa ', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},   
       { analista: 'Tiago Bertolo', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
       { analista: 'Vitor Pires', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},                  
       { analista: 'Wesley Lossani', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
-      { analista: 'Yuri Milan Porto', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0},      
+      { analista: 'Yuri Porto', codificadas: 0, rejeitadas: 0, canceladas: 0, retrabalho: 0, percretrabalho:0, produtividade: 0}    
       
       ];
     
   this.colperf = [
     { column: 'analista', label: 'Analista'},
-    { column: 'codificadas', label: 'Issues Codificadas', type: 'number'},
-    { column: 'rejeitadas', label: 'Issues Rejeitadas', type: 'number'},
-    { column: 'canceladas', label: 'Issues Canceladas', type: 'number'},
+    { column: 'codificadas', label: 'Codificadas', type: 'number'},
+    { column: 'rejeitadas', label: 'Rejeitadas', type: 'number'},
+    { column: 'canceladas', label: 'Canceladas', type: 'number'},
     { column: 'retrabalho', label: 'Retrabalho', type: 'number' },
-    { column: 'percretrabalho', label: '% Retrabalho', type: 'number' },
-    { column: 'produtividade', label: 'Produtividade' , type: 'number'}
+    { column: 'percretrabalho', label: '% Retrabalho'},
+    { column: 'produtividade', label: '% Produtividade'}
     ];  
+
+  this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
 
    }
 
-  private getSeriesChart1(): Array<ThfColumnChartSeries> {
+   atualizaGrafico() {
+     
+     var dadosRet = [0,0,0,0,0,0,0,0,0,0];
+     var dadosTrab = [0,0,0,0,0,0,0,0,0,0];
+     var dadosProd = [0,0,0,0,0,0,0,0,0,0];
+
+     if (this.itemsperf.find(x => x.retrabalho > 0) != undefined && this.itemsperf.find(x => x.codificadas > 0) != undefined && this.itemsperf.find(x => x.rejeitadas > 0) != undefined) {
+       for (var _a = 0; this.itemsperf.length > _a; _a++) {
+         dadosRet[_a] = this.itemsperf[_a].percretrabalho;
+         dadosTrab[_a] = this.itemsperf[_a].codificadas + this.itemsperf[_a].rejeitadas;
+         dadosProd[_a] = this.itemsperf[_a].produtividade;
+         this.itemsperf[_a].percretrabalho = this.itemsperf[_a].percretrabalho.toString() + "%";
+         this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + "%";
+       }
+        this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
+     }
+   }
+
+  private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {
     return [
-      { name: 'Retrabalho', data: [0,0,0,0,0,0,0,0,0]},
-      { name: 'Issues Trabalhadas', data: [4,6,4,5,12,15,12,20,9] },
-      { name: 'Produtividade', data: [2,7,4,5,12,20,12,20,9] }  
+      { name: '% Retrabalho', data: dadosRet},
+      { name: 'Issues Trabalhadas', data: dadosTrab },
+      { name: '% Produtividade', data: dadosProd }  
       ];
   }
   private getCategchart1(): Array<string> {
-    return [ 'Diogo Francisco Vieira Saravando', 'Eduardo Karpischek Martinez', 'João Paulo de Souza Balbino', 'Julio Fernando da Silva Santos',
-    'Leonardo Magalhães Barbosa', 'Tiago Bertolo', 'Vitor Pires', 'Wesley Lossani', 'Yuri Milan Porto' ];
+    return [ 'Diogo Saravando', 'Eduardo Martinez', 'Evandro Pattaro', 'João Balbino', 
+    'Julio Silva', 'Leonardo Barbosa', 'Tiago Bertolo', 'Vitor Pires', 'Wesley Lossani', 'Yuri Porto' ];
   }  
 }

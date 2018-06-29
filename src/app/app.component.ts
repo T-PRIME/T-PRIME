@@ -13,7 +13,7 @@ export class AppComponent {
   menus: Array<ThfMenuItem> = [
     
     { label: 'Indicadores Prime', icon: 'company', subItems: [  
-      { label: 'Indicadores Por Cliente', link: './hello-world' }
+      { label: 'Indicadores Por Cliente', link: './indcliente' }
     ]},
     { label: 'Manutenção Prime', icon: 'share', subItems: [
       { label: 'Backlog Manutenção Prime', link: './backlogmanutprime' },

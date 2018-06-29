@@ -14,7 +14,7 @@ var unirest = require('unirest');
 export class RestJiraService {
 
   public request: any;
-  public execReq = [];
+  private execReq = [];
   private request2: any;
   private teste: any;
   private opts = new RequestOptions();
@@ -153,8 +153,11 @@ export class RestJiraService {
     }
     if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("canceladas") >= 0) {
       for (var _y = 0; usuarios.length > _y; _y++) {
-        componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas)
-        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas + componente[_y].retrabalho) / diasUteis * 100)
+        if (componente[_y].codificadas > 0) {
+          componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas);
+        }
+        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas - componente[_y].retrabalho) / diasUteis * 100);
+        this.execReq = [];
       }
     }
     

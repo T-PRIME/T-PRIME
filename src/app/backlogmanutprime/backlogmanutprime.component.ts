@@ -43,6 +43,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     this.usuarios = [
       { user: 'diogo.vieira', total: 0 },
       { user: 'eduardo.martinez', total: 0 },
+      { user: 'evandro.pattaro', total: 0 },
       { user: 'joao.balbino', total: 0 },
       { user: 'julio.silva', total: 0 },
       { user: 'leonardo.magalhaes', total: 0 },
@@ -50,7 +51,7 @@ export class BacklogmanutprimeComponent implements OnInit {
       { user: 'vitor.pires', total: 0 },      
       { user: 'wesley.lossani', total: 0 },
       { user: 'yuri.porto', total: 0 }, 
-      { user: 'unassigned', total: 0 }, 
+      { user: 'unassigned', total: 0 }
       
     ];   
   }
@@ -61,7 +62,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     this.restJiraService.getFilter("59121").end(response => this.getTest(response.body.jql, "avencer"));
     this.restJiraService.getFilter("59123").end(response => this.getTest(response.body.jql, "pacemergenciais"));
     this.restJiraService.getFilter("59124").end(response => this.getTest(response.body.jql, "vencidos"));
-    this.restJiraService.getFilter("59124").end(response => this.getTest(response.body.jql, "abertasmais30dias"));
+    this.restJiraService.getFilter("59129").end(response => this.getTest(response.body.jql, "abertasmais30dias"));
     
   }
 
@@ -74,15 +75,16 @@ export class BacklogmanutprimeComponent implements OnInit {
   limpaTabela(){
 
     this.items = [
-      { analista: 'Diogo Francisco Vieira Saravando', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Eduardo Karpischek Martinez', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'João Paulo de Souza Balbino', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Julio Fernando da Silva Santos', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'Leonardo Magalhães Barbosa ', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Diogo Saravando', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Eduardo Martinez', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
+      { analista: 'João Balbino', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Evandro Pattaro', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Julio Silva', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
+      { analista: 'Leonardo Barbosa ', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Tiago Bertolo', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Vitor Pires', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Wesley Lossani', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Yuri Milan Porto', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Yuri Porto', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Unassigned', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
     ];
   }

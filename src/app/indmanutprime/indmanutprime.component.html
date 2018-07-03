@@ -21,31 +21,6 @@
       <div class="thf-row" id="titlebacklog">
           <h1>Backlog</h1>    
       </div>
-    <thf-widget class="thf-md-6" id="wid">
-      <thf-chart class="thf-md-12" 
-        [t-categories]="categchart1"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart1"
-        t-title="Issues Pendentes"
-        t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
-      </thf-chart>
-    </thf-widget>   
-  
-    <thf-widget class="thf-md-6"  >
-      <thf-chart class="thf-md-12" 
-        [t-categories]="categchart3"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart3"
-        t-title="Issues em Aprovação"
-        t-type="pie"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
-      </thf-chart>
-    </thf-widget>   
     
     <div class="thf-row">
       <thf-widget class="thf-md-6"  >

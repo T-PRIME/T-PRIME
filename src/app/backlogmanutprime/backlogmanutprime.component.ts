@@ -17,48 +17,42 @@ import { RestJiraService } from '../rest-jira.service';
 export class BacklogmanutprimeComponent implements OnInit {
 
   columns: Array<ThfTableColumn>;
-  items: Array<any>;
+  itens: Array<any>;
+  analist: Array<any> = ["","","","","","","","","",];
 
   //Chart 1 Column
+  categchart0: Array<string>;
+  serieschart0: Array<ThfColumnChartSeries> ;
+
+  categchart00: Array<string>;
+  serieschart00: Array<ThfPieChartSeries> ;
+
+
   categchart1: Array<string>;
-  serieschart1: Array<ThfColumnChartSeries>;  
+  serieschart: Array<any> = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   usuarios: Array<any>;
   //jqlFiltro: Filtro[];
   public teste: any;
 
-  constructor(public restJiraService: RestJiraService ) { }
+  constructor(public restJiraService: RestJiraService ) {
+
+    this.usuarios = this.getUsers()
+
+   }
  
   ngOnInit() {
-    this.columns = [
-      { column: 'analista', label: 'Analista'},
-      { column: 'avencer', label: 'A Vencer', type: 'number'},
-      { column: 'pacemergenciais', label: 'Pacotes Emergenciais', type: 'number' },
-      { column: 'vencidos', label: 'Vencidos' , type: 'number'},
-      { column: 'totalbacklog', label: 'Total Backlog' , type: 'number'},
-      { column: 'abertasmais30dias', label: 'Abertas > 30 dias' , type: 'number'} 
-      ];
 
-    
+    this.limpaTabela()
 
-    this.usuarios = [
-      { user: 'diogo.vieira', total: 0 },
-      { user: 'eduardo.martinez', total: 0 },
-      { user: 'evandro.pattaro', total: 0 },
-      { user: 'joao.balbino', total: 0 },
-      { user: 'julio.silva', total: 0 },
-      { user: 'leonardo.magalhaes', total: 0 },
-      { user: 'tiago.bertolo', total: 0 },
-      { user: 'vitor.pires', total: 0 },      
-      { user: 'wesley.lossani', total: 0 },
-      { user: 'yuri.porto', total: 0 }, 
-      { user: 'unassigned', total: 0 }
-      
-    ];   
   }
   
   gerarIndicadores() {
     
     this.limpaTabela();
+
+    this.restJiraService.getFilter("59375").end(response => this.getTest(response.body.jql, "testedeintegrado"));
+    this.restJiraService.getFilter("59376").end(response => this.getTest(response.body.jql, "testedeunidade"));
+
     this.restJiraService.getFilter("59121").end(response => this.getTest(response.body.jql, "avencer"));
     this.restJiraService.getFilter("59123").end(response => this.getTest(response.body.jql, "pacemergenciais"));
     this.restJiraService.getFilter("59124").end(response => this.getTest(response.body.jql, "vencidos"));
@@ -68,24 +62,94 @@ export class BacklogmanutprimeComponent implements OnInit {
 
     getTest(filtro, campo) {
 
-      this.restJiraService.getIssues(filtro).end( response => this.restJiraService.
-      atualizaBacklog(response, this.items, this.usuarios, campo));
+      this.restJiraService.getIssues(filtro).end( response => {
+        var fim = this.restJiraService.atualizaBacklog(response, this.itens, this.usuarios, campo) 
+          if (fim) {
+            this.refresChart()
+          }
+        }
+     );
   }
 
   limpaTabela(){
 
-    this.items = [
-      { analista: 'Diogo Saravando', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Eduardo Martinez', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'João Balbino', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Evandro Pattaro', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Julio Silva', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'Leonardo Barbosa ', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Tiago Bertolo', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Vitor Pires', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'Wesley Lossani', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Yuri Porto', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Unassigned', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+    this.itens = this.getUsers()
+
+    for (var cont = 0; cont < this.itens.length; ++cont) {
+      this.analist[cont] = this.itens[cont].analista;
+      this.serieschart[cont] = this.getSeriesChart(null)
+    }
+
+    this.categchart0 = [ 'Privado e A.M.S', 'Público']
+    this.serieschart0 = [
+      { name: 'A Vencer', data: [0,0]},
+      { name: 'Pacotes Emergenciais', data: [0,0] },
+      { name: 'Vencidos', data: [0,0] } 
+    ]
+
+    this.categchart00 = [ 'Teste de Unidade', 'Teste Integrado']
+    this.serieschart00 = [{
+                            data: [{category: 'Teste de Unidade', value: 0},
+                            {category: 'Teste integrado', value: 0}]
+                         }];
+       
+
+  }
+  getUsers(){
+     return [
+      { analista: 'Diogo Francisco Vieira Saravando', user: 'diogo.vieira',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Eduardo Karpischek Martinez',      user: 'eduardo.martinez',   avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Evandro Luis Barbosa Pattaro',     user: 'evandro.pattaro',    avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'João Paulo de Souza Balbino',      user: 'joao.balbino',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Julio Fernando da Silva Santos',   user: 'julio.silva',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Leonardo Magalhães Barbosa',       user: 'leonardo.magalhaes', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
+      { analista: 'Tiago Bertolo',                    user: 'tiago.bertolo',      avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Vitor Pires',                      user: 'vitor.pires',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
+      { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Yuri Milan Porto',                 user: 'yuri.porto',         avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
+      
     ];
   }
+
+  refresChart(){
+    //console.log(this.itens.length)
+    for (var cont = 0; cont < this.itens.length; ++cont) {
+      this.serieschart[cont] = this.getSeriesChart(this.itens[cont])
+    }
+
+    this.serieschart00 = [{
+                            data: [{category: 'Teste de Unidade', value: 150},
+                            {category: 'Teste integrado', value: 200}]
+                         }];
+    this.serieschart0 = [
+      { name: 'A Vencer', data: [1,2]},
+      { name: 'Pacotes Emergenciais', data: [3,4] },
+      { name: 'Vencidos', data: [5,6] } 
+    ]
+
+  }
+
+  getSeriesChart(item: object){
+
+    var retorno = [
+      { name: 'Á vencer', data: [0]},
+      { name: 'Pacotes Emergenciais', data: [0] },
+      { name: 'Vencidos', data: [0] },  
+      { name: 'Total ', data: [0] },  
+      { name: 'Abertas > 30 Dias ', data: [0] }  
+      ];
+    if (item != null) {
+      
+      retorno = [
+      { name: 'Á vencer', data: [item.avencer]},
+      { name: 'Pacotes Emergenciais', data: [item.pacemergenciais] },
+      { name: 'Vencidos', data: [item.vencidos] },  
+      { name: 'Total ', data: [item.totalbacklog] },  
+      { name: 'Abertas > 30 Dias ', data: [item.abertasmais30dias] }  
+      ]; 
+    }
+
+    return retorno
+  }
+
 }

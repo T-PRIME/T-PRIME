@@ -97,6 +97,7 @@ export class RestJiraService {
         }
       }
     }
+    return true
   }
   
   atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
@@ -146,6 +147,14 @@ export class RestJiraService {
             componente[_x].retrabalho++;         
             break;
           }
+          case "testedeintegrado": {
+            componente[_x].integrado++;         
+            break;
+          }
+          case "testedeunidade": {
+            componente[_x].unidade++;         
+            break;
+          }  
           default:
             break;
           }

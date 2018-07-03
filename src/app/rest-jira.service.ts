@@ -98,6 +98,7 @@ export class RestJiraService {
       }
     }
   }
+  
   atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
     var _x = 0;
     var user;
@@ -151,16 +152,18 @@ export class RestJiraService {
         }
       }
     }
-    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("canceladas") >= 0) {
+    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("canceladas") >= 0 && this.execReq.indexOf("rejeitadas") >= 0) {
       for (var _y = 0; usuarios.length > _y; _y++) {
         if (componente[_y].codificadas > 0) {
           componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas);
         }
         componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas - componente[_y].retrabalho) / diasUteis * 100);
-        this.execReq = [];
       }
+      this.execReq = [];
+      return true;
+    }else{
+      return false;
     }
-    
   }
 
   ReplaceAll(jql:string, oldvalue: string , newValue: string){

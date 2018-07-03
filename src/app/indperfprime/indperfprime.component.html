@@ -17,9 +17,118 @@
       <div class="thf-row" id="titlebacklog">
         <h1>Performance Analistas</h1>    
       </div>
-      <thf-table [t-columns]="colperf" [t-items]="itemsperf" t-sort="true"></thf-table>
-  
+      <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          t-categories=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[0]"
+          [t-title]="usuarios[0].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>   
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[1]"
+          [t-title]="usuarios[1].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget> 
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[2]"
+          [t-title]="usuarios[2].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>         
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[3]"
+          [t-title]="usuarios[3].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>   
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[4]"
+          [t-title]="usuarios[4].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>     
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[5]"
+          [t-title]="usuarios[5].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>            
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[6]"
+          [t-title]="usuarios[6].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>     
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[7]"
+          [t-title]="usuarios[7].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>     
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[8]"
+          [t-title]="usuarios[8].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>     
+
+     <thf-widget class="thf-md-3"  >
+        <thf-chart class="thf-md-12" 
+          [t-categories]=""
+          t-height="390px;"
+          t-label-visible="true"
+          [t-series]="serieschartPerf[9]"
+          [t-title]="usuarios[9].user"
+          t-type="column">
+        </thf-chart>
+    </thf-widget>                  
+        
       <div class="thf-row">  
+      <thf-widget class="thf-md-12">
         <thf-chart class="thf-md-12" 
           [t-categories]="categchart1"
           t-height="450px;"
@@ -28,6 +137,7 @@
           t-title="Produtividade - Entrega"
           t-type="column">
         </thf-chart>
+      </thf-widget>
       </div>
 
   </thf-widget>

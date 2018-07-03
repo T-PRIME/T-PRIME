@@ -22,6 +22,8 @@ export class IndperfprimeComponent implements OnInit {
   //Chart 1 Column
   categchart1: Array<string>;
   serieschart1: Array<ThfColumnChartSeries>;  
+  categchartPerf = [[], [], [], [], [], [], [], [], [], []];
+  serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   usuarios: Array<any>;
   jqlFiltro: Array<any>
   startDate: string;
@@ -47,6 +49,9 @@ export class IndperfprimeComponent implements OnInit {
       { user: 'yuri.porto', total: 0 } 
       
     ];      
+    
+    //Chart1
+    this.categchart1 = this.getCategchart1();
   }
 
   gerarIndicadores() {
@@ -64,11 +69,7 @@ export class IndperfprimeComponent implements OnInit {
     this.restJiraService.getFilter("59157").end(response => this.getPerf(response.body.jql, "retrabalho"));
     this.restJiraService.getFilter("59150").end(response => this.getPerf(response.body.jql, "codificadas"));
     this.restJiraService.getFilter("59154").end(response => this.getPerf(response.body.jql, "rejeitadas"));
-    this.restJiraService.getFilter("59155").end(response => this.getPerf(response.body.jql, "canceladas"));
-
-    //Chart1
-    this.categchart1 = this.getCategchart1();
-    
+    this.restJiraService.getFilter("59155").end(response => this.getPerf(response.body.jql, "canceladas"));   
     
   }
 
@@ -79,8 +80,10 @@ export class IndperfprimeComponent implements OnInit {
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
 
       this.restJiraService.getIssues(filtroEdit).end( response => { 
-        this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis), 
-        this.atualizaGrafico() } );
+        var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
+        if (fimExecucao) {
+          this.atualizaGrafico();
+       } } );
   }  
 
   limpaTabela(){
@@ -105,31 +108,33 @@ export class IndperfprimeComponent implements OnInit {
     { column: 'rejeitadas', label: 'Rejeitadas', type: 'number'},
     { column: 'canceladas', label: 'Canceladas', type: 'number'},
     { column: 'retrabalho', label: 'Retrabalho', type: 'number' },
-    { column: 'percretrabalho', label: '% Retrabalho'},
-    { column: 'produtividade', label: '% Produtividade'}
+    { column: 'percretrabalho', label: '% Retrabalho'}
     ];  
 
   this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
 
-   }
+  }
 
-   atualizaGrafico() {
-     
-     var dadosRet = [0,0,0,0,0,0,0,0,0,0];
-     var dadosTrab = [0,0,0,0,0,0,0,0,0,0];
-     var dadosProd = [0,0,0,0,0,0,0,0,0,0];
+  atualizaGrafico() {
 
-     if (this.itemsperf.find(x => x.retrabalho > 0) != undefined && this.itemsperf.find(x => x.codificadas > 0) != undefined && this.itemsperf.find(x => x.rejeitadas > 0) != undefined) {
-       for (var _a = 0; this.itemsperf.length > _a; _a++) {
-         dadosRet[_a] = this.itemsperf[_a].percretrabalho;
-         dadosTrab[_a] = this.itemsperf[_a].codificadas + this.itemsperf[_a].rejeitadas;
-         dadosProd[_a] = this.itemsperf[_a].produtividade;
-         this.itemsperf[_a].percretrabalho = this.itemsperf[_a].percretrabalho.toString() + "%";
-         this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + "%";
-       }
-        this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
-     }
-   }
+    var dadosRet = [0,0,0,0,0,0,0,0,0,0];
+    var dadosTrab = [0,0,0,0,0,0,0,0,0,0];
+    var dadosProd = [0,0,0,0,0,0,0,0,0,0];
+   
+    for (var _i = 0; this.serieschartPerf.length > _i; _i++) {
+        this.serieschartPerf[_i] = this.getSeriesChart2(this.itemsperf[_i].codificadas, this.itemsperf[_i].rejeitadas, this.itemsperf[_i].canceladas, 
+        this.itemsperf[_i].retrabalho, this.itemsperf[_i].percretrabalho, this.itemsperf[_i].produtividade);
+    }
+
+    for (var _a = 0; this.itemsperf.length > _a; _a++) {
+       dadosRet[_a] = this.itemsperf[_a].percretrabalho;
+       dadosTrab[_a] = this.itemsperf[_a].codificadas + this.itemsperf[_a].rejeitadas;
+       dadosProd[_a] = this.itemsperf[_a].produtividade;
+       this.itemsperf[_a].percretrabalho = this.itemsperf[_a].percretrabalho.toString() + "%";
+       this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + "%";
+    }
+    this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
+  }
 
   private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {
     return [
@@ -138,8 +143,18 @@ export class IndperfprimeComponent implements OnInit {
       { name: '% Produtividade', data: dadosProd }  
       ];
   }
+  private getSeriesChart2(dadosCod, dadosRej, dadosCanc, dadosRet, dadosPercRet, dadosProd): Array<ThfColumnChartSeries> {
+    return [
+      { name: 'codificadas', data: [dadosCod]},
+      { name: 'rejeitadas', data: [dadosRej] },
+      { name: 'canceladas', data: [dadosCanc] },
+      { name: 'retrabalho', data: [dadosRet] },
+      { name: 'perc. ret', data: [dadosPercRet] },
+      
+    ];
+  }  
   private getCategchart1(): Array<string> {
     return [ 'Diogo Saravando', 'Eduardo Martinez', 'Evandro Pattaro', 'João Balbino', 
     'Julio Silva', 'Leonardo Barbosa', 'Tiago Bertolo', 'Vitor Pires', 'Wesley Lossani', 'Yuri Porto' ];
-  }  
+  }     
 }

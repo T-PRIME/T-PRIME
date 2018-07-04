@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -15,19 +14,10 @@ export class RestJiraService {
 
   public request: any;
   private execReq = [];
-  private request2: any;
-  private teste: any;
-  private opts = new RequestOptions();
-  private headers = new Headers();
   
-  constructor(private http: Http) { } 
+  constructor() { } 
 
   getFilter(codFiltro) {
-
-    this.opts.headers = this.headers;
-    this.opts.headers.set('Authorization', 'anVsaW8uc2lsdmE6SnVsITE5OTczOTgz')
-
-    //return this.http.get("http://jiraproducao.totvs.com.br/rest/api/latest/filter/" + codFiltro, this.opts ).map(res => res.json());
 
     return unirest("GET","http://jiraproducao.totvs.com.br/rest/api/latest/filter/" + codFiltro).
     auth({user: 'julio.silva',pass: 'Jul!19973983',sendImmediately: true});
@@ -154,7 +144,7 @@ export class RestJiraService {
           case "testedeunidade": {
             componente[_x].unidade++;         
             break;
-          }  
+          }            
           default:
             break;
           }
@@ -168,6 +158,100 @@ export class RestJiraService {
         }
         componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas - componente[_y].retrabalho) / diasUteis * 100);
       }
+      this.execReq = [];
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  AtualizaManut(response, dadosChart, chart, diasUteis) {
+
+    this.execReq.push(chart);
+    switch (chart) {
+      case "CriadasPrivAms": {
+          dadosChart[0].criaXResolv.criadasPrivAms = response.body.total;
+        break;
+      }
+      case "CriadasPublic": {
+        dadosChart[0].criaXResolv.criadasPublic = response.body.total;
+        break;
+      }
+      case "ResolvPrivAms": {
+        dadosChart[0].criaXResolv.resolvPrivAms = response.body.total;
+        break;
+      }
+      case "ResolvPublic": {
+        dadosChart[0].criaXResolv.resolvPublic = response.body.total;
+        break;
+      }
+      case "CriadasDataPrev": {
+        dadosChart[2].criaXResolvDataPrev.criadasDataPrev = response.body.total;
+        break;
+      }
+      case "ResolvDataPrev": {
+        dadosChart[2].criaXResolvDataPrev.resolvDataPrev = response.body.total;
+        break;
+      }      
+      case "CodPrivAms": {
+        dadosChart[3].entDetalhada.codPrivAms = response.body.total;
+        break;
+      }
+      case "RetPrivAms": {
+        dadosChart[3].entDetalhada.retPrivAms = response.body.total;
+        break;
+      }
+      case "RejPrivAms": {
+        dadosChart[3].entDetalhada.rejPrivAms = response.body.total;
+        break;
+      }
+      case "CancPrivAms": {
+        dadosChart[3].entDetalhada.cancPrivAms = response.body.total;
+        break;
+      }   
+      case "CodPublic": {
+        dadosChart[3].entDetalhada.codPublic = response.body.total;
+        break;
+      }
+      case "RetPublic": {
+        dadosChart[3].entDetalhada.retPublic = response.body.total;
+        break;
+      }
+      case "RejPublic": {
+        dadosChart[3].entDetalhada.rejPublic = response.body.total;
+        break;
+      }
+      case "CancPublic": {
+        dadosChart[3].entDetalhada.cancPublic = response.body.total;
+        break;
+      }               
+      case "abertasVersao": {
+        var posVersao = 0;
+        for (var _i = 0; response.body.total > _i; _i++) {
+          
+          if (response.body.issues[_i].fields.versions.length > 0) {
+            if (dadosChart[1].abertasVersao[posVersao].versao != response.body.issues[_i].fields.versions[0].name) {
+              if (dadosChart[1].abertasVersao.find(x => x.versao == response.body.issues[_i].fields.versions[0].name) != undefined) {
+                for (var _x = 0; dadosChart[1].abertasVersao.length > _x; _x++){
+                  if (dadosChart[1].abertasVersao[_x].versao == response.body.issues[_i].fields.versions[0].name) {
+                    posVersao = _x;
+                    dadosChart[1].abertasVersao[posVersao].quant++;
+                    break;
+                  }
+                }
+              }
+            }else{
+              dadosChart[1].abertasVersao[posVersao].quant++;
+            }
+          }
+        }
+      }
+
+      default:
+        break;
+    }
+
+    if (this.execReq.length == 15) {
       this.execReq = [];
       return true;
     }else{

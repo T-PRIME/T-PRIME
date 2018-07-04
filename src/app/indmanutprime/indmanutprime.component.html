@@ -8,7 +8,7 @@
       </thf-datepicker>
       <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required>
       </thf-datepicker>
-      <thf-button id="btngerar" class="thf-md-6" (t-click)= "onbotao1()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true">
+      <thf-button id="btngerar" class="thf-md-6" (t-click)= "geraIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true">
       </thf-button>
   </thf-widget>
   </div>
@@ -50,17 +50,6 @@
     </div>
 
     <div class="thf-row">
-      <thf-widget class="thf-md-6">
-        <thf-chart class="thf-md-12"       
-         t-height="390px;"
-         t-label-visible="true"
-         [t-series]="serieschart5"
-         t-title="DataPrev - Backlog"
-         t-type="column"
-         (t-series-click)="changeEvent('t-series-click')"
-         (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </thf-widget>
       
       <thf-widget class="thf-md-6"  >
         <thf-chart class="thf-md-12" 
@@ -74,9 +63,8 @@
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </thf-widget>
-    </div>       
-    <div class="thf-row">
-        <thf-widget class="thf-md-12">
+
+        <thf-widget class="thf-md-6">
           <thf-chart class="thf-md-12" 
             [t-categories]="categchart7"
             t-height="390px;"

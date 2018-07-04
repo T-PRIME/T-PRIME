@@ -27,7 +27,6 @@ export class BacklogmanutprimeComponent implements OnInit {
   categchart00: Array<string>;
   serieschart00: Array<ThfPieChartSeries> ;
 
-
   categchart1: Array<string>;
   serieschart: Array<any> = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   usuarios: Array<any>;
@@ -60,7 +59,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     
   }
 
-    getTest(filtro, campo) {
+  getTest(filtro, campo) {
 
       this.restJiraService.getIssues(filtro).end( response => {
         var fim = this.restJiraService.atualizaBacklog(response, this.itens, this.usuarios, campo) 
@@ -129,7 +128,7 @@ export class BacklogmanutprimeComponent implements OnInit {
 
   }
 
-  getSeriesChart(item: object){
+  getSeriesChart(item){
 
     var retorno = [
       { name: 'Á vencer', data: [0]},
@@ -151,5 +150,5 @@ export class BacklogmanutprimeComponent implements OnInit {
 
     return retorno
   }
-
-}
+}  
+    

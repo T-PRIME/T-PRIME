@@ -6,7 +6,7 @@
       <thf-widget class="thf-md-12"  >
         <thf-datepicker class="thf-md-3" name="startDate" [(ngModel)]="startDate" t-clean t-format="dd/mm/yyyy" t-label="Início do Período" t-required></thf-datepicker>
         <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required></thf-datepicker>
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-bar-code" [t-label]="labelButton" t-primary="true"></thf-button>
       </thf-widget>
     </div>
   </form>

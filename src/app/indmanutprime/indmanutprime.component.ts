@@ -15,6 +15,7 @@ import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.s
 export class IndmanutprimeComponent implements OnInit {
   
   //Chart 2 Column
+  loadButton = false;
   categchart2: Array<string>;
   serieschart2: Array<ThfColumnChartSeries>;
   //Chart 4 Column
@@ -93,6 +94,11 @@ export class IndmanutprimeComponent implements OnInit {
       { criaXResolvDataPrev: {criadasDataPrev: 0, resolvDataPrev: 0 } },
       {entDetalhada: {codPrivAms: 0, retPrivAms: 0, rejPrivAms: 0, cancPrivAms: 0, codPublic: 0, retPublic: 0, rejPublic: 0, cancPublic: 0 } }
       ];
+    
+    this.serieschart2 = this.getSeriesChart2(this.dadosChart);
+    this.serieschart4 = this.getSeriesChart4(this.dadosChart);
+    this.serieschart6 = this.getSeriesChart6(this.dadosChart);
+    this.serieschart7 = this.getSeriesChart7(this.dadosChart);
 
   }
 
@@ -102,6 +108,7 @@ export class IndmanutprimeComponent implements OnInit {
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
+    this.loadButton = true;
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));
@@ -143,5 +150,8 @@ export class IndmanutprimeComponent implements OnInit {
     this.serieschart4 = this.getSeriesChart4(this.dadosChart);
     this.serieschart6 = this.getSeriesChart6(this.dadosChart);
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
+    console.log("terminou");
+    this.loadButton = false;
+    this.restJiraService.Refresh(document.getElementById("chart1"));
   }
 }

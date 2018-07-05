@@ -5,6 +5,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Rx';
 
+declare var require: any;
 
 var unirest = require('unirest');
 
@@ -292,5 +293,11 @@ export class RestJiraService {
     }
 
     return diasUteis
+  }
+
+  Refresh(idElement) {
+
+    idElement.click();
+
   }
 }

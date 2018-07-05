@@ -17,6 +17,8 @@ import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.s
 })
 export class IndperfprimeComponent implements OnInit {
 
+  loadButton = false;
+  labelButton = "Gerar Indicadores";
   colperf: Array<ThfTableColumn>;
   itemsperf: Array<any>;
   //Chart 1 Column
@@ -60,6 +62,8 @@ export class IndperfprimeComponent implements OnInit {
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
+    this.loadButton = true;
+    this.labelButton = "Carregando resultados..."
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));
@@ -112,6 +116,9 @@ export class IndperfprimeComponent implements OnInit {
     ];  
 
   this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
+  for (var _i = 0; this.serieschartPerf.length > _i; _i++) {
+    this.serieschartPerf[_i] = this.getSeriesChart2(0, 0, 0, 0, 0);
+  }
 
   }
 
@@ -123,7 +130,7 @@ export class IndperfprimeComponent implements OnInit {
    
     for (var _i = 0; this.serieschartPerf.length > _i; _i++) {
         this.serieschartPerf[_i] = this.getSeriesChart2(this.itemsperf[_i].codificadas, this.itemsperf[_i].rejeitadas, this.itemsperf[_i].canceladas, 
-        this.itemsperf[_i].retrabalho, this.itemsperf[_i].percretrabalho, this.itemsperf[_i].produtividade);
+        this.itemsperf[_i].retrabalho, this.itemsperf[_i].percretrabalho);
     }
 
     for (var _a = 0; this.itemsperf.length > _a; _a++) {
@@ -134,6 +141,9 @@ export class IndperfprimeComponent implements OnInit {
        this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + "%";
     }
     this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
+    this.loadButton = false;
+    this.labelButton = "Gerar Indicadores";
+    this.restJiraService.Refresh(document.getElementById("wid"));
   }
 
   private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {
@@ -143,7 +153,7 @@ export class IndperfprimeComponent implements OnInit {
       { name: '% Produtividade', data: dadosProd }  
       ];
   }
-  private getSeriesChart2(dadosCod, dadosRej, dadosCanc, dadosRet, dadosPercRet, dadosProd): Array<ThfColumnChartSeries> {
+  private getSeriesChart2(dadosCod, dadosRej, dadosCanc, dadosRet, dadosPercRet): Array<ThfColumnChartSeries> {
     return [
       { name: 'codificadas', data: [dadosCod]},
       { name: 'rejeitadas', data: [dadosRej] },

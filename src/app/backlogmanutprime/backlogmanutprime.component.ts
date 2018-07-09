@@ -4,7 +4,6 @@ import { ThfTableColumn } from '@totvs/thf-ui/components/thf-table';
 import { text } from '@angular/core/src/render3/instructions';
 import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
-import { enable, destroy } from 'splash-screen';
 
 @Component({
   selector: 'app-backlogmanutprime',
@@ -57,7 +56,7 @@ export class BacklogmanutprimeComponent implements OnInit {
    
     this.limpaTabela();
     this.loading = true;
-    this.textButton = "Gerando indicadadores..." 
+    this.textButton = "Gerando indicadores..." 
     // Request dos totais de Indicadores Backlog público
     this.restJiraService.getFilter("59680").end(response => this.getTest(response.body.jql, "backlogAvencer",0));
     this.restJiraService.getFilter("59665").end(response => this.getTest(response.body.jql, "backlogPacemergenciais",0));

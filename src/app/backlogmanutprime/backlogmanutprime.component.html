@@ -2,8 +2,8 @@
   <blockquote id="blockquote">Backlog Manutenção PRIME</blockquote>
   <form #f="ngForm" id="f">
     <div class="thf-row">
-      <thf-widget class="thf-md-12"  >
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
+      <thf-widget class="thf-md-12">
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" [t-loading]="loading" [t-label]="textButton" t-primary="true"></thf-button>
       </thf-widget>
     </div>
   </form>
@@ -11,12 +11,15 @@
   <hr id="hr">
 
   <div class="thf-row" id="titlebacklog">
-    <h1>Indicadores Backlog</h1>    
+    <h1>Backlog</h1>    
   </div>
-  
+  <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
   <div class="thf-row" id="chart1">
+    <div class="chart-loading"></div>
     <thf-widget class="thf-md-6" id="wid">
-      <thf-chart class="thf-md-12" 
+      <thf-chart class="thf-md-12" id="chartTest"
         [t-categories]="categchart0"
         t-height="390px;"
         t-label-visible="true"
@@ -24,8 +27,9 @@
         t-title="Issues Pendentes"
         t-type="column"
         (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
+        (t-series-hover)="changeEvent('t-series-hover')">     
       </thf-chart>
+      
     </thf-widget>   
 
     <thf-widget class="thf-md-6" id="wid" >
@@ -43,7 +47,7 @@
   </div>
 
   <div class="thf-row" id="titlebacklog">
-    <h1>Performance Analistas</h1>    
+    <h1>Backlog Analistas</h1>    
   </div>
 
 

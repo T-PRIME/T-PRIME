@@ -15,6 +15,7 @@ export class RestJiraService {
 
   public request: any;
   private execReq = [];
+  private processos: number = 0;
   
   constructor() { } 
 
@@ -31,66 +32,160 @@ export class RestJiraService {
 
   }
 
-  atualizaBacklog(response, componente: Array<any>, usuarios: Array<any>, campo) {
+  atualizaBacklog(response, componente, usuarios: Array<any>, campo,tipo) {
     var _x = 0;
     var user;
-    for (var _i = 0; response.body.total > _i;) {
-      if (_x < usuarios.length) {
-        
-        if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
-          user = response.body.issues[_i].fields.customfield_10046.name;
-        }else if (campo == "pacemergenciais") {
-          user = response.body.issues[_i].fields.customfield_10048.name;
-        }else if (response.body.issues[_i].fields.assignee == undefined) {
-          user = "unassigned";
-        }else {
-          user = response.body.issues[_i].fields.assignee.name;
-        }
+    var libera;
+    this.processos ++
+    if (tipo > 2) {
+      for (var _i = 0; response.body.total > _i;) {
+        if (_x < usuarios.length) {
+          
+          if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
+            user = response.body.issues[_i].fields.customfield_10046.name;
+          }else if (campo == "pacemergenciais") {
+            user = response.body.issues[_i].fields.customfield_10048.name;
+          }else if (response.body.issues[_i].fields.assignee == undefined) {
+            user = "unassigned";
+          }else {
+            user = response.body.issues[_i].fields.assignee.name;
+          }
 
-        if (usuarios[_x].user != user) {
-          if (usuarios.find(x => x.user == user) != undefined) {
-            for (_x = 0; usuarios.length > _x; _x++){
-              if (usuarios[_x].user === user) {
-              break;
+          if (usuarios[_x].user != user) {
+            if (usuarios.find(x => x.user == user) != undefined) {
+              for (_x = 0; usuarios.length > _x; _x++){
+                if (usuarios[_x].user === user) {
+                break;
+                }
               }
-            }
-          }else{
-            _x = 0;
-            _i++;
-          } 
-        }
+            }else{
+              _x = 0;
+              _i++;
+            } 
+          }
 
-        if (user === usuarios[_x].user) {
-          _i++;
-          switch (campo) {
-          case "avencer": {
-            componente[_x].avencer++;
-            componente[_x].totalbacklog++;
-            break;
-          }
-          case "pacemergenciais": {
-            componente[_x].pacemergenciais++; 
-            componente[_x].totalbacklog++;
-            break;
-          }
-          case "vencidos": {
-            componente[_x].vencidos++;
-            componente[_x].totalbacklog++;                  
-            break;
-          }
-          case "abertasmais30dias": {
-            componente[_x].abertasmais30dias++;         
-            break;
-          }
-          default:
-            break;
+          if (user === usuarios[_x].user) {
+            _i++;
+            switch (campo) {
+            case "avencer": {
+              componente[_x].avencer++;
+              componente[_x].totalbacklog++;
+              break;
+            }
+            case "pacemergenciais": {
+              componente[_x].pacemergenciais++; 
+              componente[_x].totalbacklog++;
+              break;
+            }
+            case "vencidos": {
+              componente[_x].vencidos++;
+              componente[_x].totalbacklog++;                  
+              break;
+            }
+            case "abertasmais30dias": {
+              componente[_x].abertasmais30dias++;         
+              break;
+            }
+           default:
+              break;
+            }
           }
         }
       }
+    } else{
+      switch (campo) {
+      case "testedeintegrado": {
+        componente.testeIntegrado = response.body.total
+        break;
+      }
+      case "testedeunidade":{
+        componente.testeUnidade = response.body.total
+        break;
+      }
+      case "backlogAvencer":{
+        if (tipo == 0) { 
+              componente.publico.avencer = response.body.total
+            } else {
+              componente.privado.avencer = response.body.total
+            }    
+        break;
+      }
+      case "backlogPacemergenciais":{
+       if (tipo == 0) { 
+              componente.publico.emergencialEnviado = response.body.total
+            } else {
+              componente.privado.emergencialEnviado = response.body.total
+            }
+        break;
+      }
+      case "backlogVencidos":{
+       if (tipo == 0) { 
+              componente.publico.vencido = response.body.total
+            } else {
+              componente.privado.vencido = response.body.total
+            }
+        break;
+      }
+      default:
+        break;
+      }
     }
-    return true
+   
+   if(this.processos > 15){
+   		this.processos = 1
+   }
+   console.log(this.processos)  
+   
+
+		return this.processos
   }
-  
+  //
+  // Atualiza os dados dos gráficos totalizados na pagina de backlog . 
+  //
+  atualizaTotalBackolog(response, component,campo: string, tipo){
+    
+    var libera: boolean = true;  
+
+    switch (campo) {
+    case "testedeintegrado": {
+      component.testeIntegrado = response.body.total;
+      break;
+    }
+    case "testedeunidade":{
+      component.testeUnidade = response.body.total;
+      break;
+    }
+    case "backlogAvencer":{
+      if (tipo == 0) { 
+            component.publico.avencer = response.body.total;
+          } else {
+            component.privado.avencer = response.body.total;
+          }    
+      break;
+    }
+    case "backlogPacemergenciais":{
+     if (tipo == 0) { 
+            component.publico.emergencialEnviado = response.body.total;
+          } else {
+            component.privado.emergencialEnviado = response.body.total;
+          }
+      break;
+    }
+    case "backlogVencidos":{
+     if (tipo == 0) { 
+            component.publico.vencido = response.body.total;
+          } else {
+            component.privado.vencido = response.body.total;
+          }
+      break;
+    }
+    default:
+      break;
+    }
+    
+    return false
+  }
+    
   atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
     var _x = 0;
     var user;

@@ -30,6 +30,7 @@ export class IndclienteComponent implements OnInit {
   columnsgrid: Array<ThfGridColumn> = this.getColumnsGrid();
 
   ngOnInit() {
+    alert("Página em construção")
     this.columns = [
       { column: 'ticket', label: 'Ticket', type: 'number'},
       { column: 'status', label: 'Status'},

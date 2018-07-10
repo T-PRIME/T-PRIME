@@ -24,9 +24,7 @@
         [t-categories]="categchart5"
         [t-series]="serieschart5"
         t-title="Pendências do Cliente"
-        t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
+        t-type="column">
      </thf-chart>
      <div class="thf-row">
       <thf-chart class="thf-md-6" 
@@ -35,9 +33,7 @@
         t-label-visible="true"
         [t-series]="serieschart3"
         t-title="Tickets em Atraso"
-        t-type="pie"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
+        t-type="pie">
       </thf-chart>
 
       <thf-chart class="thf-md-6" 
@@ -46,9 +42,7 @@
         t-label-visible="true"
         [t-series]="serieschart4"
         t-title="SLA"
-        t-type="pie"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
+        t-type="pie">
       </thf-chart>
     </div>
      <div class="div" id="divid">

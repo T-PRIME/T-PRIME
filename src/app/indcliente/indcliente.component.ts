@@ -136,4 +136,8 @@ export class IndclienteComponent implements OnInit {
   }
 
 
+  onbotao1() {
+    
+  }
+
 }

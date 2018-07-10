@@ -14,8 +14,9 @@ import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.s
 })
 export class IndmanutprimeComponent implements OnInit {
   
-  //Chart 2 Column
   loadButton = false;
+  labelButton = "Gerar Indicadores";
+  //Chart 2 Column
   categchart2: Array<string>;
   serieschart2: Array<ThfColumnChartSeries>;
   //Chart 4 Column
@@ -109,27 +110,28 @@ export class IndmanutprimeComponent implements OnInit {
       return;
     }
     this.loadButton = true;
+    this.labelButton = "Carregando resultados..."
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));
     var dataAte = new Date(this.endDate.substring(0,10));
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
-    this.restJiraService.getFilter("59608").end(response => this.getManut(response.body.jql, "CriadasPrivAms"));    
-    this.restJiraService.getFilter("59609").end(response => this.getManut(response.body.jql, "CriadasPublic"));    
-    this.restJiraService.getFilter("59607").end(response => this.getManut(response.body.jql, "ResolvPrivAms"));  
-    this.restJiraService.getFilter("59606").end(response => this.getManut(response.body.jql, "ResolvPublic"));  
-    this.restJiraService.getFilter("59377").end(response => this.getManut(response.body.jql, "abertasVersao"));  
-    this.restJiraService.getFilter("59624").end(response => this.getManut(response.body.jql, "CriadasDataPrev"));  
-    this.restJiraService.getFilter("59625").end(response => this.getManut(response.body.jql, "ResolvDataPrev"));  
-    this.restJiraService.getFilter("59626").end(response => this.getManut(response.body.jql, "CodPrivAms"));  
-    this.restJiraService.getFilter("59629").end(response => this.getManut(response.body.jql, "RetPrivAms"));  
-    this.restJiraService.getFilter("59630").end(response => this.getManut(response.body.jql, "RejPrivAms"));  
-    this.restJiraService.getFilter("59631").end(response => this.getManut(response.body.jql, "CancPrivAms"));  
-    this.restJiraService.getFilter("59632").end(response => this.getManut(response.body.jql, "CodPublic"));  
-    this.restJiraService.getFilter("59634").end(response => this.getManut(response.body.jql, "RetPublic"));  
-    this.restJiraService.getFilter("59635").end(response => this.getManut(response.body.jql, "RejPublic"));  
-    this.restJiraService.getFilter("59633").end(response => this.getManut(response.body.jql, "CancPublic"));
+    this.restJiraService.getFilter("59608").subscribe(response => this.getManut(response.jql, "CriadasPrivAms"));    
+    this.restJiraService.getFilter("59609").subscribe(response => this.getManut(response.jql, "CriadasPublic"));    
+    this.restJiraService.getFilter("59607").subscribe(response => this.getManut(response.jql, "ResolvPrivAms"));  
+    this.restJiraService.getFilter("59606").subscribe(response => this.getManut(response.jql, "ResolvPublic"));  
+    this.restJiraService.getFilter("59377").subscribe(response => this.getManut(response.jql, "abertasVersao"));  
+    this.restJiraService.getFilter("59624").subscribe(response => this.getManut(response.jql, "CriadasDataPrev"));  
+    this.restJiraService.getFilter("59625").subscribe(response => this.getManut(response.jql, "ResolvDataPrev"));  
+    this.restJiraService.getFilter("59626").subscribe(response => this.getManut(response.jql, "CodPrivAms"));  
+    this.restJiraService.getFilter("59629").subscribe(response => this.getManut(response.jql, "RetPrivAms"));  
+    this.restJiraService.getFilter("59630").subscribe(response => this.getManut(response.jql, "RejPrivAms"));  
+    this.restJiraService.getFilter("59631").subscribe(response => this.getManut(response.jql, "CancPrivAms"));  
+    this.restJiraService.getFilter("59632").subscribe(response => this.getManut(response.jql, "CodPublic"));  
+    this.restJiraService.getFilter("59634").subscribe(response => this.getManut(response.jql, "RetPublic"));  
+    this.restJiraService.getFilter("59635").subscribe(response => this.getManut(response.jql, "RejPublic"));  
+    this.restJiraService.getFilter("59633").subscribe(response => this.getManut(response.jql, "CancPublic"));
         
   }
   getManut(filtro, chart) {
@@ -138,7 +140,7 @@ export class IndmanutprimeComponent implements OnInit {
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
 
-      this.restJiraService.getIssues(filtroEdit).end( response => { 
+      this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);
         if (fimExecucao) {
           this.atualizaGrafico();
@@ -150,8 +152,11 @@ export class IndmanutprimeComponent implements OnInit {
     this.serieschart4 = this.getSeriesChart4(this.dadosChart);
     this.serieschart6 = this.getSeriesChart6(this.dadosChart);
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
-    console.log("terminou");
     this.loadButton = false;
-    this.restJiraService.Refresh(document.getElementById("chart1"));
+    this.labelButton = "Gerar Indicadores";
+  }
+
+  onbotao1() {
+    
   }
 }

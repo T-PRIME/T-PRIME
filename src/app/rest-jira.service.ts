@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Rx';
-
-declare var require: any;
-
-var unirest = require('unirest');
-
 
 @Injectable()
 export class RestJiraService {
@@ -16,39 +12,49 @@ export class RestJiraService {
   public request: any;
   private execReq = [];
   private processos: number = 0;
+  private headers = new Headers();
+  private params = new URLSearchParams();
+  private opts = new RequestOptions();  
   
-  constructor() { } 
+  constructor(private http: Http) { } 
 
   getFilter(codFiltro) {
 
-    return unirest("GET","http://jiraproducao.totvs.com.br/rest/api/latest/filter/" + codFiltro).
-    auth({user: 'julio.silva',pass: 'Jul!19973983',sendImmediately: true});
+    this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
+    this.opts.headers = this.headers;
+
+    return this.http.get("http://localhost:4200/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
   }
 
   getIssues(filtro) {
 
-    return unirest("GET","http://jiraproducao.totvs.com.br/rest/api/latest/search?jql=" + filtro).query({maxResults: '500'}).
-      auth({user: 'julio.silva',pass: 'Jul!19973983',sendImmediately: true});
+    this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
+    this.opts.headers = this.headers;
+    this.params.set("maxResults", "500");
+    this.params.set("jql", filtro);
+    this.opts.params = this.params;
+
+    return this.http.get("http://localhost:4200/rest/api/latest/search", this.opts).map(res => res.json());
 
   }
 
-  atualizaBacklog(response, componente, usuarios: Array<any>, campo,tipo) {
+   atualizaBacklog(response, componente, usuarios: Array<any>, campo,tipo) {
     var _x = 0;
     var user;
     var libera;
     this.processos ++
     if (tipo > 2) {
-      for (var _i = 0; response.body.total > _i;) {
+      for (var _i = 0; response.total > _i;) {
         if (_x < usuarios.length) {
           
-          if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
-            user = response.body.issues[_i].fields.customfield_10046.name;
+          if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
+            user = response.issues[_i].fields.customfield_10046.name;
           }else if (campo == "pacemergenciais") {
-            user = response.body.issues[_i].fields.customfield_10048.name;
-          }else if (response.body.issues[_i].fields.assignee == undefined) {
+            user = response.issues[_i].fields.customfield_10048.name;
+          }else if (response.issues[_i].fields.assignee == undefined) {
             user = "unassigned";
           }else {
-            user = response.body.issues[_i].fields.assignee.name;
+            user = response.issues[_i].fields.assignee.name;
           }
 
           if (usuarios[_x].user != user) {
@@ -95,34 +101,34 @@ export class RestJiraService {
     } else{
       switch (campo) {
       case "testedeintegrado": {
-        componente.testeIntegrado = response.body.total
+        componente.testeIntegrado = response.total
         break;
       }
       case "testedeunidade":{
-        componente.testeUnidade = response.body.total
+        componente.testeUnidade = response.total
         break;
       }
       case "backlogAvencer":{
         if (tipo == 0) { 
-              componente.publico.avencer = response.body.total
+              componente.publico.avencer = response.total
             } else {
-              componente.privado.avencer = response.body.total
+              componente.privado.avencer = response.total
             }    
         break;
       }
       case "backlogPacemergenciais":{
        if (tipo == 0) { 
-              componente.publico.emergencialEnviado = response.body.total
+              componente.publico.emergencialEnviado = response.total
             } else {
-              componente.privado.emergencialEnviado = response.body.total
+              componente.privado.emergencialEnviado = response.total
             }
         break;
       }
       case "backlogVencidos":{
        if (tipo == 0) { 
-              componente.publico.vencido = response.body.total
+              componente.publico.vencido = response.total
             } else {
-              componente.privado.vencido = response.body.total
+              componente.privado.vencido = response.total
             }
         break;
       }
@@ -148,34 +154,34 @@ export class RestJiraService {
 
     switch (campo) {
     case "testedeintegrado": {
-      component.testeIntegrado = response.body.total;
+      component.testeIntegrado = response.total;
       break;
     }
     case "testedeunidade":{
-      component.testeUnidade = response.body.total;
+      component.testeUnidade = response.total;
       break;
     }
     case "backlogAvencer":{
       if (tipo == 0) { 
-            component.publico.avencer = response.body.total;
+            component.publico.avencer = response.total;
           } else {
-            component.privado.avencer = response.body.total;
+            component.privado.avencer = response.total;
           }    
       break;
     }
     case "backlogPacemergenciais":{
      if (tipo == 0) { 
-            component.publico.emergencialEnviado = response.body.total;
+            component.publico.emergencialEnviado = response.total;
           } else {
-            component.privado.emergencialEnviado = response.body.total;
+            component.privado.emergencialEnviado = response.total;
           }
       break;
     }
     case "backlogVencidos":{
      if (tipo == 0) { 
-            component.publico.vencido = response.body.total;
+            component.publico.vencido = response.total;
           } else {
-            component.privado.vencido = response.body.total;
+            component.privado.vencido = response.total;
           }
       break;
     }
@@ -185,20 +191,20 @@ export class RestJiraService {
     
     return false
   }
-    
+  
   atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
     var _x = 0;
     var user;
     this.execReq.push(campo);
-    for (var _i = 0; response.body.total > _i;) {
+    for (var _i = 0; response.total > _i;) {
       if (_x < usuarios.length) {
         
-        if (response.body.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
-          user = response.body.issues[_i].fields.customfield_10046.name;
+        if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
+          user = response.issues[_i].fields.customfield_10046.name;
         }else if (campo == "codificadas" || campo == "rejeitadas") {
-          user = response.body.issues[_i].fields.customfield_10048.name;
-        }else if (response.body.issues[_i].fields.assignee != undefined) {
-          user = response.body.issues[_i].fields.assignee.name;
+          user = response.issues[_i].fields.customfield_10048.name;
+        }else if (response.issues[_i].fields.assignee != undefined) {
+          user = response.issues[_i].fields.assignee.name;
         }
 
         if (usuarios[_x].user != user) {
@@ -266,70 +272,70 @@ export class RestJiraService {
     this.execReq.push(chart);
     switch (chart) {
       case "CriadasPrivAms": {
-          dadosChart[0].criaXResolv.criadasPrivAms = response.body.total;
+          dadosChart[0].criaXResolv.criadasPrivAms = response.total;
         break;
       }
       case "CriadasPublic": {
-        dadosChart[0].criaXResolv.criadasPublic = response.body.total;
+        dadosChart[0].criaXResolv.criadasPublic = response.total;
         break;
       }
       case "ResolvPrivAms": {
-        dadosChart[0].criaXResolv.resolvPrivAms = response.body.total;
+        dadosChart[0].criaXResolv.resolvPrivAms = response.total;
         break;
       }
       case "ResolvPublic": {
-        dadosChart[0].criaXResolv.resolvPublic = response.body.total;
+        dadosChart[0].criaXResolv.resolvPublic = response.total;
         break;
       }
       case "CriadasDataPrev": {
-        dadosChart[2].criaXResolvDataPrev.criadasDataPrev = response.body.total;
+        dadosChart[2].criaXResolvDataPrev.criadasDataPrev = response.total;
         break;
       }
       case "ResolvDataPrev": {
-        dadosChart[2].criaXResolvDataPrev.resolvDataPrev = response.body.total;
+        dadosChart[2].criaXResolvDataPrev.resolvDataPrev = response.total;
         break;
       }      
       case "CodPrivAms": {
-        dadosChart[3].entDetalhada.codPrivAms = response.body.total;
+        dadosChart[3].entDetalhada.codPrivAms = response.total;
         break;
       }
       case "RetPrivAms": {
-        dadosChart[3].entDetalhada.retPrivAms = response.body.total;
+        dadosChart[3].entDetalhada.retPrivAms = response.total;
         break;
       }
       case "RejPrivAms": {
-        dadosChart[3].entDetalhada.rejPrivAms = response.body.total;
+        dadosChart[3].entDetalhada.rejPrivAms = response.total;
         break;
       }
       case "CancPrivAms": {
-        dadosChart[3].entDetalhada.cancPrivAms = response.body.total;
+        dadosChart[3].entDetalhada.cancPrivAms = response.total;
         break;
       }   
       case "CodPublic": {
-        dadosChart[3].entDetalhada.codPublic = response.body.total;
+        dadosChart[3].entDetalhada.codPublic = response.total;
         break;
       }
       case "RetPublic": {
-        dadosChart[3].entDetalhada.retPublic = response.body.total;
+        dadosChart[3].entDetalhada.retPublic = response.total;
         break;
       }
       case "RejPublic": {
-        dadosChart[3].entDetalhada.rejPublic = response.body.total;
+        dadosChart[3].entDetalhada.rejPublic = response.total;
         break;
       }
       case "CancPublic": {
-        dadosChart[3].entDetalhada.cancPublic = response.body.total;
+        dadosChart[3].entDetalhada.cancPublic = response.total;
         break;
       }               
       case "abertasVersao": {
         var posVersao = 0;
-        for (var _i = 0; response.body.total > _i; _i++) {
+        for (var _i = 0; response.total > _i; _i++) {
           
-          if (response.body.issues[_i].fields.versions.length > 0) {
-            if (dadosChart[1].abertasVersao[posVersao].versao != response.body.issues[_i].fields.versions[0].name) {
-              if (dadosChart[1].abertasVersao.find(x => x.versao == response.body.issues[_i].fields.versions[0].name) != undefined) {
+          if (response.issues[_i].fields.versions.length > 0) {
+            if (dadosChart[1].abertasVersao[posVersao].versao != response.issues[_i].fields.versions[0].name) {
+              if (dadosChart[1].abertasVersao.find(x => x.versao == response.issues[_i].fields.versions[0].name) != undefined) {
                 for (var _x = 0; dadosChart[1].abertasVersao.length > _x; _x++){
-                  if (dadosChart[1].abertasVersao[_x].versao == response.body.issues[_i].fields.versions[0].name) {
+                  if (dadosChart[1].abertasVersao[_x].versao == response.issues[_i].fields.versions[0].name) {
                     posVersao = _x;
                     dadosChart[1].abertasVersao[posVersao].quant++;
                     break;
@@ -388,11 +394,5 @@ export class RestJiraService {
     }
 
     return diasUteis
-  }
-
-  Refresh(idElement) {
-
-    idElement.click();
-
   }
 }

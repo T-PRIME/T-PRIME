@@ -70,10 +70,10 @@ export class IndperfprimeComponent implements OnInit {
     var dataAte = new Date(this.endDate.substring(0,10));
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
-    this.restJiraService.getFilter("59157").end(response => this.getPerf(response.body.jql, "retrabalho"));
-    this.restJiraService.getFilter("59150").end(response => this.getPerf(response.body.jql, "codificadas"));
-    this.restJiraService.getFilter("59154").end(response => this.getPerf(response.body.jql, "rejeitadas"));
-    this.restJiraService.getFilter("59155").end(response => this.getPerf(response.body.jql, "canceladas"));   
+    this.restJiraService.getFilter("59157").subscribe(response => this.getPerf(response.jql, "retrabalho"));
+    this.restJiraService.getFilter("59150").subscribe(response => this.getPerf(response.jql, "codificadas"));
+    this.restJiraService.getFilter("59154").subscribe(response => this.getPerf(response.jql, "rejeitadas"));
+    this.restJiraService.getFilter("59155").subscribe(response => this.getPerf(response.jql, "canceladas"));   
     
   }
 
@@ -83,7 +83,7 @@ export class IndperfprimeComponent implements OnInit {
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
 
-      this.restJiraService.getIssues(filtroEdit).end( response => { 
+      this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
         if (fimExecucao) {
           this.atualizaGrafico();

@@ -58,24 +58,24 @@ export class BacklogmanutprimeComponent implements OnInit {
     this.loading = true;
     this.textButton = "Gerando indicadores..." 
     // Request dos totais de Indicadores Backlog público
-    this.restJiraService.getFilter("59680").end(response => this.getTest(response.body.jql, "backlogAvencer",0));
-    this.restJiraService.getFilter("59665").end(response => this.getTest(response.body.jql, "backlogPacemergenciais",0));
-    this.restJiraService.getFilter("59666").end(response => this.getTest(response.body.jql, "backlogVencidos",0));
+    this.restJiraService.getFilter("59680").subscribe(response => this.getTest(response.jql, "backlogAvencer",0));
+    this.restJiraService.getFilter("59665").subscribe(response => this.getTest(response.jql, "backlogPacemergenciais",0));
+    this.restJiraService.getFilter("59666").subscribe(response => this.getTest(response.jql, "backlogVencidos",0));
 
     // Request dos totais de Indicadores Backlog privado
-    this.restJiraService.getFilter("59679").end(response => this.getTest(response.body.jql, "backlogAvencer",1));
-    this.restJiraService.getFilter("59668").end(response => this.getTest(response.body.jql, "backlogPacemergenciais",1));
-    this.restJiraService.getFilter("59667").end(response => this.getTest(response.body.jql, "backlogVencidos",1));
+    this.restJiraService.getFilter("59679").subscribe(response => this.getTest(response.jql, "backlogAvencer",1));
+    this.restJiraService.getFilter("59668").subscribe(response => this.getTest(response.jql, "backlogPacemergenciais",1));
+    this.restJiraService.getFilter("59667").subscribe(response => this.getTest(response.jql, "backlogVencidos",1));
 
     // Request dos totais de Issues em aprovação 
-    this.restJiraService.getFilter("59375").end(response => this.getTest(response.body.jql, "testedeintegrado",2));
-    this.restJiraService.getFilter("59376").end(response => this.getTest(response.body.jql, "testedeunidade",2));
+    this.restJiraService.getFilter("59375").subscribe(response => this.getTest(response.jql, "testedeintegrado",2));
+    this.restJiraService.getFilter("59376").subscribe(response => this.getTest(response.jql, "testedeunidade",2));
 
     // Request de usuários
-    this.restJiraService.getFilter("59121").end(response => this.getTest(response.body.jql, "avencer",3));
-    this.restJiraService.getFilter("59123").end(response => this.getTest(response.body.jql, "pacemergenciais",3));
-    this.restJiraService.getFilter("59124").end(response => this.getTest(response.body.jql, "vencidos",3));
-    this.restJiraService.getFilter("59129").end(response => this.getTest(response.body.jql, "abertasmais30dias",3));
+    this.restJiraService.getFilter("59121").subscribe(response => this.getTest(response.jql, "avencer",3));
+    this.restJiraService.getFilter("59123").subscribe(response => this.getTest(response.jql, "pacemergenciais",3));
+    this.restJiraService.getFilter("59124").subscribe(response => this.getTest(response.jql, "vencidos",3));
+    this.restJiraService.getFilter("59129").subscribe(response => this.getTest(response.jql, "abertasmais30dias",3));
   }
   //
   // Require dos jql dos filtros.
@@ -83,7 +83,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   getTest(filtro, campo, tipo) {
     switch (tipo) {
       case 0:
-        this.restJiraService.getIssues(filtro).end( response => {
+        this.restJiraService.getIssues(filtro).subscribe( response => {
           var fim = this.restJiraService.atualizaBacklog(response, this.issuesPendentes,[], campo, tipo) 
           if (fim == 15) {
               this.refresChart(tipo)
@@ -91,7 +91,7 @@ export class BacklogmanutprimeComponent implements OnInit {
            }
          );
       case 1:
-        this.restJiraService.getIssues(filtro).end( response => {
+        this.restJiraService.getIssues(filtro).subscribe( response => {
           var fim = this.restJiraService.atualizaBacklog(response, this.issuesPendentes,[], campo, tipo) 
           if (fim == 15) {
               this.refresChart(tipo)
@@ -100,7 +100,7 @@ export class BacklogmanutprimeComponent implements OnInit {
          );
         break;
       case 2:
-        this.restJiraService.getIssues(filtro).end( response => {
+        this.restJiraService.getIssues(filtro).subscribe( response => {
           var fim = this.restJiraService.atualizaBacklog(response, this.issuesEmAprovacao,[], campo, tipo) 
           if (fim == 15) {
               this.refresChart(tipo)
@@ -109,7 +109,7 @@ export class BacklogmanutprimeComponent implements OnInit {
          );
         break;
       case 3:
-         this.restJiraService.getIssues(filtro).end( response => {
+         this.restJiraService.getIssues(filtro).subscribe( response => {
           var fim = this.restJiraService.atualizaBacklog(response, this.itens, this.usuarios, campo,tipo) 
             if (fim == 15) {
               this.refresChart(tipo)

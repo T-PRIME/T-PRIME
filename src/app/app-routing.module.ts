@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HelloWorldComponent } from './hello-world/hello-world.component';
 import { IndmanutprimeComponent } from './indmanutprime/indmanutprime.component';
 import { IndperfprimeComponent } from './indperfprime/indperfprime.component';
 import { BacklogmanutprimeComponent } from './backlogmanutprime/backlogmanutprime.component';

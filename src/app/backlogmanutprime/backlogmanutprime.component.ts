@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ThfSelectOption } from '@totvs/thf-ui/components/thf-field';
 import { ThfTableColumn } from '@totvs/thf-ui/components/thf-table';
-import { text } from '@angular/core/src/render3/instructions';
-import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
+import { ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 
 @Component({
@@ -150,16 +148,16 @@ export class BacklogmanutprimeComponent implements OnInit {
   //
   getUsers(){
      return [
-      { analista: 'Diogo Francisco Vieira Saravando', user: 'diogo.vieira',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Eduardo Karpischek Martinez',      user: 'eduardo.martinez',   avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Evandro Luis Barbosa Pattaro',     user: 'evandro.pattaro',    avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'João Paulo de Souza Balbino',      user: 'joao.balbino',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Julio Fernando da Silva Santos',   user: 'julio.silva',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Leonardo Magalhães Barbosa',       user: 'leonardo.magalhaes', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
+      { analista: 'Diogo Saravando', user: 'diogo.vieira',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Eduardo Martinez',      user: 'eduardo.martinez',   avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Evandro Pattaro',     user: 'evandro.pattaro',    avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'João Balbino',      user: 'joao.balbino',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Julio Santos',   user: 'julio.silva',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
+      { analista: 'Leonardo Barbosa',       user: 'leonardo.magalhaes', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
       { analista: 'Tiago Bertolo',                    user: 'tiago.bertolo',      avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
       { analista: 'Vitor Pires',                      user: 'vitor.pires',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
       { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Yuri Milan Porto',                 user: 'yuri.porto',         avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
+      { analista: 'Yuri Porto',                 user: 'yuri.porto',         avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
       
     ];
   }

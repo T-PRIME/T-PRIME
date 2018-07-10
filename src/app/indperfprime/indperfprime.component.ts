@@ -143,7 +143,6 @@ export class IndperfprimeComponent implements OnInit {
     this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
     this.loadButton = false;
     this.labelButton = "Gerar Indicadores";
-    this.restJiraService.Refresh(document.getElementById("wid"));
   }
 
   private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {

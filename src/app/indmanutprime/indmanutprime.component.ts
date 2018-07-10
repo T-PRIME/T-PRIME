@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
-import { ThfSelectOption, ThfCheckboxGroupOption } from '@totvs/thf-ui/components/thf-field';
+import { ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
 
@@ -104,13 +103,13 @@ export class IndmanutprimeComponent implements OnInit {
   }
 
   geraIndicadores() {
-    
-    if (this.startDate == undefined || this.endDate == undefined) {
+    console.log(this.startDate);
+    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate == "" || this.endDate == "") ){
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
     this.loadButton = true;
-    this.labelButton = "Carregando resultados..."
+    this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));

@@ -27,14 +27,23 @@ export class IndmanutprimeComponent implements OnInit {
   categchart7: Array<string>;
   serieschart7: Array<ThfColumnChartSeries>;  
 
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   diasUteis: number;
   dadosChart: Array<any>;
+  now: Date;
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
   ngOnInit() {
+    this.now = new Date();
+    var diaIni = 1
+    var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
+    var mes = this.now.getMonth();
+    var ano = this.now.getFullYear();
+
+    this.startDate = new Date(ano,mes,diaIni);
+    this.endDate = new Date(ano,mes,diaFim);
 
     this.limpaTabela();  
 
@@ -104,7 +113,7 @@ export class IndmanutprimeComponent implements OnInit {
 
   geraIndicadores() {
     console.log(this.startDate);
-    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate == "" || this.endDate == "") ){
+    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate.toString() == "" || this.endDate.toString() == "") ){
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
@@ -112,8 +121,8 @@ export class IndmanutprimeComponent implements OnInit {
     this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
-    var dataDe = new Date(this.startDate.substring(0,10));
-    var dataAte = new Date(this.endDate.substring(0,10));
+    var dataDe = new Date(this.startDate.toString().substring(0,10));
+    var dataAte = new Date(this.endDate.toString().substring(0,10));
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
     this.restJiraService.getFilter("59608").subscribe(response => this.getManut(response.jql, "CriadasPrivAms"));    
@@ -136,8 +145,8 @@ export class IndmanutprimeComponent implements OnInit {
   getManut(filtro, chart) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.toString().substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.toString().substring(0,10));
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);

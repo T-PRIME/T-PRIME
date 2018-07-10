@@ -5,6 +5,7 @@ import { text } from '@angular/core/src/render3/instructions';
 import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
+import { isEmpty } from 'rxjs/operator/isEmpty';
 
 
 
@@ -28,14 +29,26 @@ export class IndperfprimeComponent implements OnInit {
   serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   usuarios: Array<any>;
   jqlFiltro: Array<any>
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   diasUteis: number;
+  now: Date;
+
+
 
   constructor(public restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { }
  
   ngOnInit() {
+    this.now = new Date();
 
+    var diaIni = 1
+    var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
+    var mes = this.now.getMonth();
+    var ano = this.now.getFullYear();
+
+    this.startDate = new Date(ano,mes,diaIni);
+    this.endDate = new Date(ano,mes,diaFim);
+    console.log(this.startDate);
     this.limpaTabela();      
 
     this.usuarios = [
@@ -58,7 +71,8 @@ export class IndperfprimeComponent implements OnInit {
 
   gerarIndicadores() {
 
-    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate == "" || this.endDate == "") ){
+
+    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate.toString() == "" || this.endDate.toString() == "") ){
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
@@ -66,8 +80,9 @@ export class IndperfprimeComponent implements OnInit {
     this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
-    var dataDe = new Date(this.startDate.substring(0,10));
-    var dataAte = new Date(this.endDate.substring(0,10));
+    
+    var dataDe = new Date(this.startDate.toString().substring(0,10));
+    var dataAte = new Date(this.endDate.toString().substring(0,10));
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
     this.restJiraService.getFilter("59157").subscribe(response => this.getPerf(response.jql, "retrabalho"));
@@ -80,8 +95,8 @@ export class IndperfprimeComponent implements OnInit {
    getPerf(filtro, campo) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.substring(0,10));
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.toString().substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.toString().substring(0,10));
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);

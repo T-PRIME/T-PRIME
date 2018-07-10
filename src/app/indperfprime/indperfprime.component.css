@@ -4,17 +4,22 @@
     padding: 10px 20px;
     font-size: 20px;       
 }
-
 #btn{
     margin-top: 10px;
     margin-bottom: 20px;	
 }
 #btngerar{
     margin-top: 30px;	
+    margin-bottom: 30px;
 }
 
-#hr {
-	border:#0c9abe solid ;
+#chart1{
+    margin-top: 30px;	
+    margin-bottom: 30px;
+    margin-right: 30px;
+}
+#wid{
+    margin-bottom: 10px;
 }
 #f{
     margin-top: 30px;	
@@ -22,15 +27,16 @@
     position: relative;
 }
 
+#hr {
+	border:#0c9abe solid ;
+	
+}
+
 #titlebacklog{
     border-left: 5px solid #0c9abe;
-
     margin: 0px 0 20px;
     padding: 10px 20px;
     font-size: 8px;
-}
-#wid{    
-    margin-top: 15px;
 }
 #widgeral{    
     margin-top: 30px;

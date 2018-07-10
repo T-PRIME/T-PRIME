@@ -14,6 +14,19 @@
   <hr id="hr">
 
   <thf-widget class="thf-md-12" id="widgeral">
+    <div class="thf-row">  
+      <thf-widget class="thf-md-12" id="wid">
+        <thf-chart class="thf-md-12" 
+          [t-categories]="categchart1"
+          t-height="450px;"
+          t-label-visible="true"
+          [t-series]="serieschart1"
+          t-title="Produtividade - Entrega"
+          t-type="column">
+        </thf-chart>
+      </thf-widget>
+    </div>
+
       <div class="thf-row" id="titlebacklog">
         <h1>Performance Analistas</h1>    
       </div>
@@ -127,18 +140,7 @@
         </thf-chart>
     </thf-widget>                  
         
-      <div class="thf-row">  
-      <thf-widget class="thf-md-12" id="wid">
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="450px;"
-          t-label-visible="true"
-          [t-series]="serieschart1"
-          t-title="Produtividade - Entrega"
-          t-type="column">
-        </thf-chart>
-      </thf-widget>
-      </div>
+      
 
   </thf-widget>
 

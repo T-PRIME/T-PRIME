@@ -1,0 +1,8 @@
+{
+  "/rest/*": {
+    "target": "http://jiraproducao.totvs.com.br/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

@@ -184,7 +184,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   getSeriesChart(item,limpa){
     if (limpa) { 
       return [
-              { name: 'À vencer', data: [0]},
+              { name: 'À Vencer', data: [0]},
               { name: 'Pacotes Emergenciais', data: [0] },
               { name: 'Vencidos', data: [0] },  
               { name: 'Total ', data: [0] },  
@@ -192,7 +192,7 @@ export class BacklogmanutprimeComponent implements OnInit {
              ];
     } else {
       return[
-              { name: 'À vencer', data: [item.avencer]},
+              { name: 'À Vencer', data: [item.avencer]},
               { name: 'Pacotes Emergenciais', data: [item.pacemergenciais] },
               { name: 'Vencidos', data: [item.vencidos] },  
               { name: 'Total ', data: [item.totalbacklog] },  

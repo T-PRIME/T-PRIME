@@ -3,12 +3,14 @@
   <form #f="ngForm" id="f">
     <div class="thf-row">
       <thf-widget class="thf-md-12">
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" [t-loading]="loading" [t-label]="textButton" t-primary="true"></thf-button>
+        <thf-button id="btngerar" class="thf-md-12" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-logo-totvs" [t-loading]="loading" [t-label]="textButton" t-primary="true"></thf-button>
       </thf-widget>
     </div>
   </form>
       
   <hr id="hr">
+
+<thf-widget class="thf-md-12" id= "widgeral">
 
   <div class="thf-row" id="titlebacklog">
     <h1>Backlog</h1>    
@@ -185,5 +187,22 @@
         </thf-chart>
       </div>
      </thf-widget>
+
+     <thf-widget class="thf-md-4" id="wid">
+      <div class="thf-row">  
+        <thf-chart class="thf-md-12" 
+          [t-categories]="categchart1"
+          t-height="350px;"
+          t-label-visible="true"
+          [t-series]="serieschart[9]"
+          [t-title]="analist[9]"
+          t-type="column"
+          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-hover)="changeEvent('t-series-hover')">
+        </thf-chart>
+      </div>
+     </thf-widget>
+    </thf-widget>
+
 </thf-page-default>    
 

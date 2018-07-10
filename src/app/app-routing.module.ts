@@ -4,12 +4,14 @@ import { IndmanutprimeComponent } from './indmanutprime/indmanutprime.component'
 import { IndperfprimeComponent } from './indperfprime/indperfprime.component';
 import { BacklogmanutprimeComponent } from './backlogmanutprime/backlogmanutprime.component';
 import { IndclienteComponent } from './indcliente/indcliente.component';
+import { PrincipalComponent } from './principal/principal.component';
 
 const routes: Routes = [
   { path: 'backlogmanutprime', component: BacklogmanutprimeComponent },
   { path: 'indmanutprime', component: IndmanutprimeComponent },
   { path: 'indperfprime', component: IndperfprimeComponent },
-  { path: 'indcliente', component: IndclienteComponent }
+  { path: 'indcliente', component: IndclienteComponent },
+  { path: '', component: PrincipalComponent },
 ];
 
 @NgModule({

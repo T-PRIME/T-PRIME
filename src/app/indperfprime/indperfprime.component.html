@@ -6,18 +6,18 @@
       <thf-widget class="thf-md-12"  >
         <thf-datepicker class="thf-md-3" name="startDate" [(ngModel)]="startDate" t-clean t-format="dd/mm/yyyy" t-label="Início do Período" t-required></thf-datepicker>
         <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required></thf-datepicker>
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-bar-code" [t-label]="labelButton" t-primary="true"></thf-button>
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" [t-label]="labelButton" t-primary="true"></thf-button>
       </thf-widget>
     </div>
   </form>
       
   <hr id="hr">
 
-  <thf-widget class="thf-md-12" id="wid">
+  <thf-widget class="thf-md-12" id="widgeral">
       <div class="thf-row" id="titlebacklog">
         <h1>Performance Analistas</h1>    
       </div>
-      <thf-widget class="thf-md-3"  >
+      <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           t-categories=""
           t-height="390px;"
@@ -28,7 +28,7 @@
         </thf-chart>
     </thf-widget>   
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -39,7 +39,7 @@
         </thf-chart>
     </thf-widget> 
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -50,7 +50,7 @@
         </thf-chart>
     </thf-widget>         
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -61,7 +61,7 @@
         </thf-chart>
     </thf-widget>   
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -72,7 +72,7 @@
         </thf-chart>
     </thf-widget>     
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid"  >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -83,7 +83,7 @@
         </thf-chart>
     </thf-widget>            
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -94,7 +94,7 @@
         </thf-chart>
     </thf-widget>     
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -105,7 +105,7 @@
         </thf-chart>
     </thf-widget>     
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -116,7 +116,7 @@
         </thf-chart>
     </thf-widget>     
 
-     <thf-widget class="thf-md-3"  >
+     <thf-widget class="thf-md-4" id="wid" >
         <thf-chart class="thf-md-12" 
           [t-categories]=""
           t-height="390px;"
@@ -128,7 +128,7 @@
     </thf-widget>                  
         
       <div class="thf-row">  
-      <thf-widget class="thf-md-12">
+      <thf-widget class="thf-md-12" id="wid">
         <thf-chart class="thf-md-12" 
           [t-categories]="categchart1"
           t-height="450px;"

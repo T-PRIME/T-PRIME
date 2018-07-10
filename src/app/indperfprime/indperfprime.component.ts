@@ -58,12 +58,12 @@ export class IndperfprimeComponent implements OnInit {
 
   gerarIndicadores() {
 
-    if (this.startDate == undefined || this.endDate == undefined) {
+    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate == "" || this.endDate == "") ){
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
     this.loadButton = true;
-    this.labelButton = "Carregando resultados..."
+    this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
     var dataDe = new Date(this.startDate.substring(0,10));
@@ -143,6 +143,7 @@ export class IndperfprimeComponent implements OnInit {
     this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
     this.loadButton = false;
     this.labelButton = "Gerar Indicadores";
+    
   }
 
   private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {

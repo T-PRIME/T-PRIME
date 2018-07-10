@@ -39,16 +39,16 @@ export class IndperfprimeComponent implements OnInit {
     this.limpaTabela();      
 
     this.usuarios = [
-      { user: 'diogo.vieira', total: 0 },
-      { user: 'eduardo.martinez', total: 0 },
-      { user: 'evandro.pattaro', total: 0 },
-      { user: 'joao.balbino', total: 0 },
-      { user: 'julio.silva', total: 0 },
-      { user: 'leonardo.magalhaes', total: 0 },
-      { user: 'tiago.bertolo', total: 0 },
-      { user: 'vitor.pires', total: 0 },      
-      { user: 'wesley.lossani', total: 0 },
-      { user: 'yuri.porto', total: 0 } 
+      { user: 'diogo.vieira', total: 0, label:"Diogo Vieira" },
+      { user: 'eduardo.martinez', total: 0, label:"Eduardo Martinez"  },
+      { user: 'evandro.pattaro', total: 0 , label:"Evandro Pattaro" },
+      { user: 'joao.balbino', total: 0 , label:"João Balbino" },
+      { user: 'julio.silva', total: 0, label:"Julio Silva"  },
+      { user: 'leonardo.magalhaes', total: 0 , label:"Leonardo Barbosa" },
+      { user: 'tiago.bertolo', total: 0 , label:"Tiago Bertolo" },
+      { user: 'vitor.pires', total: 0 , label:"Vitor Pires" },      
+      { user: 'wesley.lossani', total: 0 , label:"Wesley Lossani" },
+      { user: 'yuri.porto', total: 0 , label:"Yuri Porto" } 
       
     ];      
     
@@ -155,11 +155,11 @@ export class IndperfprimeComponent implements OnInit {
   }
   private getSeriesChart2(dadosCod, dadosRej, dadosCanc, dadosRet, dadosPercRet): Array<ThfColumnChartSeries> {
     return [
-      { name: 'codificadas', data: [dadosCod]},
-      { name: 'rejeitadas', data: [dadosRej] },
-      { name: 'canceladas', data: [dadosCanc] },
-      { name: 'retrabalho', data: [dadosRet] },
-      { name: 'perc. ret', data: [dadosPercRet] },
+      { name: 'Codificadas', data: [dadosCod]},
+      { name: 'Rejeitadas', data: [dadosRej] },
+      { name: 'Canceladas', data: [dadosCanc] },
+      { name: 'Retrabalho', data: [dadosRet] },
+      { name: '% Retrabalho', data: [dadosPercRet] },
       
     ];
   }  

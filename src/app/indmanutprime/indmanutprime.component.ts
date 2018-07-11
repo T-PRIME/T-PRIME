@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
-
-
 
 @Component({
   selector: 'app-indmanutprime',
@@ -29,9 +27,14 @@ export class IndmanutprimeComponent implements OnInit {
 
   startDate: Date;
   endDate: Date;
+  timeini = " 00:00"
+  timeFim = " 23:59"
   diasUteis: number;
   dadosChart: Array<any>;
   now: Date;
+
+  @ViewChild("chart1") cahrt1: ElementRef;
+  @ViewChild("mycanvas") mycanvas: HTMLCanvasElement;
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
@@ -45,6 +48,7 @@ export class IndmanutprimeComponent implements OnInit {
     this.startDate = new Date(ano,mes,diaIni);
     this.endDate = new Date(ano,mes,diaFim);
 
+    console.log(this.endDate)
     this.limpaTabela();  
 
     //Chart2
@@ -145,8 +149,8 @@ export class IndmanutprimeComponent implements OnInit {
   getManut(filtro, chart) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.toString().substring(0,10));
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.toString().substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini)+"'";
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);
@@ -167,4 +171,10 @@ export class IndmanutprimeComponent implements OnInit {
   onbotao1() {
     
   }
+  public pdf(){
+
+    
+  }
+
+
 }

@@ -31,6 +31,8 @@ export class IndperfprimeComponent implements OnInit {
   jqlFiltro: Array<any>
   startDate: Date;
   endDate: Date;
+  timeini = " 00:00"
+  timeFim = " 23:59"
   diasUteis: number;
   now: Date;
 
@@ -96,8 +98,8 @@ export class IndperfprimeComponent implements OnInit {
    getPerf(filtro, campo) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", this.startDate.toString().substring(0,10));
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", this.endDate.toString().substring(0,10));
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'");
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
@@ -128,7 +130,6 @@ export class IndperfprimeComponent implements OnInit {
     { column: 'rejeitadas', label: 'Rejeitadas', type: 'number'},
     { column: 'canceladas', label: 'Canceladas', type: 'number'},
     { column: 'retrabalho', label: 'Retrabalho', type: 'number' },
-    { column: 'percretrabalho', label: '% Retrabalho'}
     ];  
 
   this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
@@ -175,7 +176,6 @@ export class IndperfprimeComponent implements OnInit {
       { name: 'Canceladas', data: [dadosCanc] },
       { name: 'Rejeitadas', data: [dadosRej] },
       { name: 'Retrabalho', data: [dadosRet] },
-      { name: '% Retrabalho', data: [dadosPercRet] },
       
     ];
   }  

@@ -47,15 +47,14 @@ export class RestJiraService {
       for (var _i = 0; response.total > _i;) {
         if (_x < usuarios.length) {
           
-          if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
-            user = response.issues[_i].fields.customfield_10046.name;
-          }else if (campo == "pacemergenciais") {
+          if (campo == "pacemergenciais") {
             user = response.issues[_i].fields.customfield_10048.name;
           }else if (response.issues[_i].fields.assignee == undefined) {
             user = "unassigned";
           }else {
             user = response.issues[_i].fields.assignee.name;
           }
+          
 
           if (usuarios[_x].user != user) {
             if (usuarios.find(x => x.user == user) != undefined) {
@@ -69,127 +68,32 @@ export class RestJiraService {
               _i++;
             } 
           }
-
           if (user === usuarios[_x].user) {
             _i++;
-            switch (campo) {
-            case "avencer": {
-              componente[_x].avencer++;
-              componente[_x].totalbacklog++;
-              break;
-            }
-            case "pacemergenciais": {
-              componente[_x].pacemergenciais++; 
-              componente[_x].totalbacklog++;
-              break;
-            }
-            case "vencidos": {
-              componente[_x].vencidos++;
-              componente[_x].totalbacklog++;                  
-              break;
-            }
-            case "abertasmais30dias": {
-              componente[_x].abertasmais30dias++;         
-              break;
-            }
-           default:
-              break;
+            eval("componente[_x]." + campo + "++");
+            if (campo != "abertasmais30dias") {
+                componente[_x].totalbacklog++;
             }
           }
         }
       }
-    } else{
-      switch (campo) {
-      case "testedeintegrado": {
-        componente.testeIntegrado = response.total
-        break;
+    }else{
+      if (tipo != 2) {
+        if (tipo == 0) {
+          eval("componente.publico." + campo + " = response.total");
+        }else{
+          eval("componente.privado." + campo + " = response.total");
+        }
+      }else{
+        eval("componente." + campo + " = response.total");
       }
-      case "testedeunidade":{
-        componente.testeUnidade = response.total
-        break;
-      }
-      case "backlogAvencer":{
-        if (tipo == 0) { 
-              componente.publico.avencer = response.total
-            } else {
-              componente.privado.avencer = response.total
-            }    
-        break;
-      }
-      case "backlogPacemergenciais":{
-       if (tipo == 0) { 
-              componente.publico.emergencialEnviado = response.total
-            } else {
-              componente.privado.emergencialEnviado = response.total
-            }
-        break;
-      }
-      case "backlogVencidos":{
-       if (tipo == 0) { 
-              componente.publico.vencido = response.total
-            } else {
-              componente.privado.vencido = response.total
-            }
-        break;
-      }
-      default:
-        break;
-      }
-    }
+   }
    
    if(this.processos > 15){
    		this.processos = 1
    }
-   console.log(this.processos)  
-   
 
 		return this.processos
-  }
-  //
-  // Atualiza os dados dos gráficos totalizados na pagina de backlog . 
-  //
-  atualizaTotalBackolog(response, component,campo: string, tipo){
-    
-    var libera: boolean = true;  
-
-    switch (campo) {
-    case "testedeintegrado": {
-      component.testeIntegrado = response.total;
-      break;
-    }
-    case "testedeunidade":{
-      component.testeUnidade = response.total;
-      break;
-    }
-    case "backlogAvencer":{
-      if (tipo == 0) { 
-            component.publico.avencer = response.total;
-          } else {
-            component.privado.avencer = response.total;
-          }    
-      break;
-    }
-    case "backlogPacemergenciais":{
-     if (tipo == 0) { 
-            component.publico.emergencialEnviado = response.total;
-          } else {
-            component.privado.emergencialEnviado = response.total;
-          }
-      break;
-    }
-    case "backlogVencidos":{
-     if (tipo == 0) { 
-            component.publico.vencido = response.total;
-          } else {
-            component.privado.vencido = response.total;
-          }
-      break;
-    }
-    default:
-      break;
-    }
-    
-    return false
   }
   
   atualizaPerf(response, componente: Array<any>, usuarios: Array<any>, campo, diasUteis) {
@@ -222,43 +126,16 @@ export class RestJiraService {
 
         if (user === usuarios[_x].user) {
           _i++;
-          switch (campo) {
-          case "codificadas": {
-            componente[_x].codificadas++;        
-            break;
-          }
-          case "rejeitadas": {
-            componente[_x].rejeitadas++;        
-            break;
-          }
-          case "canceladas": {
-            componente[_x].canceladas++;         
-            break;
-          }
-          case "retrabalho": {
-            componente[_x].retrabalho++;         
-            break;
-          }
-          case "testedeintegrado": {
-            componente[_x].integrado++;         
-            break;
-          }
-          case "testedeunidade": {
-            componente[_x].unidade++;         
-            break;
-          }            
-          default:
-            break;
-          }
+          eval("componente[_x]."+campo+"++");
         }
       }
     }
-    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("canceladas") >= 0 && this.execReq.indexOf("rejeitadas") >= 0) {
+    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("rejeitadas") >= 0) {
       for (var _y = 0; usuarios.length > _y; _y++) {
         if (componente[_y].codificadas > 0) {
           componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas);
         }
-        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].canceladas - componente[_y].retrabalho) / diasUteis * 100);
+        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].rejeitadas - componente[_y].retrabalho) / diasUteis * 100);
       }
       this.execReq = [];
       return true;

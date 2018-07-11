@@ -13,8 +13,8 @@ export class BacklogmanutprimeComponent implements OnInit {
 
   
   itens: Array<any>; // Dados do backlog por analista
-  issuesEmAprovacao = {testeIntegrado:0, testeUnidade:0}; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
-  issuesPendentes = {isPublico: false, privado:{avencer:0, emergencialEnviado:0 , vencido:0},publico:{avencer:0, emergencialEnviado:0 , vencido:0}} ; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
+  issuesEmAprovacao = {testedeintegrado:0, testedeunidade:0}; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
+  issuesPendentes = {privado:{backlogAvencer:0, backlogPacemergenciais:0 , backlogVencidos:0},publico:{backlogAvencer:0, backlogPacemergenciais:0 , backlogVencidos:0}} ; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
   analist: Array<any> = ["","","","","","","","","",];
   usuarios: Array<any>; // Nome dos analistas dos itens
   tipo: number = 0; // (0 - Issues em aprovação ) (1 - Issues Pendentes) (2 - Issues por usuários) 
@@ -173,8 +173,6 @@ export class BacklogmanutprimeComponent implements OnInit {
     }
     this.loading = false;
     this.textButton = "Gerar indicadores"
-    document.getElementById("chartTest").click();
-    this.refres();
   }
   //
   // Atualiza SeriesChart dos componentes. 
@@ -204,8 +202,8 @@ export class BacklogmanutprimeComponent implements OnInit {
       return [ {data: [{category: 'Teste de Unidade', value: 0},
       {category: 'Teste integrado', value: 0}] }]; 
     } else {
-      return [ {data: [{category: 'Teste de Unidade', value: this.issuesEmAprovacao.testeUnidade},
-      {category: 'Teste integrado', value: this.issuesEmAprovacao.testeIntegrado}] }];
+      return [ {data: [{category: 'Teste de Unidade', value: this.issuesEmAprovacao.testedeunidade},
+      {category: 'Teste integrado', value: this.issuesEmAprovacao.testedeintegrado}] }];
     }
   }
 
@@ -218,22 +216,14 @@ export class BacklogmanutprimeComponent implements OnInit {
             ]
     } else {
       return[
-              { name: 'À Vencer', data: [this.issuesPendentes.privado.avencer,this.issuesPendentes.publico.avencer]},
-              { name: 'Pacotes Emergenciais', data: [this.issuesPendentes.privado.emergencialEnviado,this.issuesPendentes.publico.emergencialEnviado] },
-              { name: 'Vencidos', data: [this.issuesPendentes.privado.vencido,this.issuesPendentes.publico.vencido] } 
+              { name: 'À Vencer', data: [this.issuesPendentes.privado.backlogAvencer,this.issuesPendentes.publico.backlogAvencer]},
+              { name: 'Pacotes Emergenciais', data: [this.issuesPendentes.privado.backlogPacemergenciais,this.issuesPendentes.publico.backlogPacemergenciais] },
+              { name: 'Vencidos', data: [this.issuesPendentes.privado.backlogVencidos,this.issuesPendentes.publico.backlogVencidos] } 
             ]
     }
   }
   changeEvent(component){
-    console.log(component)
+    console.log(component);
   }
-  
- refres(){
-   
-   this.loading = false;
-   this.textButton = "Gerar indicadores"
-   document.getElementById("hr").nodeValue = "";
-   console.log("MeuDeus");
- }
 
 }

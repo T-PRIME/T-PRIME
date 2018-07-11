@@ -163,16 +163,16 @@ export class IndperfprimeComponent implements OnInit {
 
   private getSeriesChart1(dadosRet, dadosTrab, dadosProd): Array<ThfColumnChartSeries> {
     return [
-      { name: '% Retrabalho', data: dadosRet},
       { name: 'Issues Trabalhadas', data: dadosTrab },
-      { name: '% Produtividade', data: dadosProd }  
+      { name: '% Produtividade', data: dadosProd },
+      { name: '% Retrabalho', data: dadosRet},
       ];
   }
   private getSeriesChart2(dadosCod, dadosRej, dadosCanc, dadosRet, dadosPercRet): Array<ThfColumnChartSeries> {
     return [
       { name: 'Codificadas', data: [dadosCod]},
-      { name: 'Rejeitadas', data: [dadosRej] },
       { name: 'Canceladas', data: [dadosCanc] },
+      { name: 'Rejeitadas', data: [dadosRej] },
       { name: 'Retrabalho', data: [dadosRet] },
       { name: '% Retrabalho', data: [dadosPercRet] },
       

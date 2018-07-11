@@ -42,7 +42,8 @@ export class IndperfprimeComponent implements OnInit {
     this.now = new Date();
 
     var diaIni = 1
-    var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
+    //var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
+    var diaFim = this.now.getDate();
     var mes = this.now.getMonth();
     var ano = this.now.getFullYear();
 

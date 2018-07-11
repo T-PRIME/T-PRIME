@@ -174,9 +174,7 @@ export class IndperfprimeComponent implements OnInit {
       { name: 'Codificadas', data: [dadosCod]},
       { name: 'Canceladas', data: [dadosCanc] },
       { name: 'Rejeitadas', data: [dadosRej] },
-      { name: 'Retrabalho', data: [dadosRet] },
-      { name: '% Retrabalho', data: [dadosPercRet] },
-      
+      { name: 'Retrabalho', data: [dadosRet] }      
     ];
   }  
   private getCategchart1(): Array<string> {

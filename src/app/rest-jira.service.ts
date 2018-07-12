@@ -23,7 +23,7 @@ export class RestJiraService {
     this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
 
-    return this.http.get("http://localhost:4200/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
+    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
   }
 
   getIssues(filtro) {
@@ -34,7 +34,7 @@ export class RestJiraService {
     this.params.set("jql", filtro);
     this.opts.params = this.params;
 
-    return this.http.get("http://localhost:4200/rest/api/latest/search", this.opts).map(res => res.json());
+    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/search", this.opts).map(res => res.json());
 
   }
 
@@ -262,7 +262,7 @@ export class RestJiraService {
 
   calcDias(dataDe, dataAte) {
     
-    var diasUteis = 0;
+    var diasUteis = 1;
     while (dataDe.toString() != dataAte.toString()) {
       if (dataDe.getDay() != 0 && dataDe.getDay() != 6) {
         diasUteis++

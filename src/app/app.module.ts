@@ -14,6 +14,7 @@ import { IndperfprimeComponent } from './indperfprime/indperfprime.component';
 import { BacklogmanutprimeComponent } from './backlogmanutprime/backlogmanutprime.component';
 import { IndclienteComponent } from './indcliente/indcliente.component';
 import { PrincipalComponent } from './principal/principal.component';
+import { EquipeComponent } from './equipe/equipe.component';
 
 
 
@@ -24,7 +25,8 @@ import { PrincipalComponent } from './principal/principal.component';
     IndperfprimeComponent,
     BacklogmanutprimeComponent,
     IndclienteComponent,
-    PrincipalComponent
+    PrincipalComponent,
+    EquipeComponent
   ],
   imports: [
     BrowserModule,

@@ -4,13 +4,14 @@
     padding: 10px 20px;
     font-size: 20px;       
 }
-#div {    
-    margin: 15px 15px 15px 15px;
-}
+
 #hr {
 	border:#0c9abe solid ;
 	
 }
 #ul{
+    margin-top: 10px;	
+}
+#wid{
     margin-top: 10px;	
 }

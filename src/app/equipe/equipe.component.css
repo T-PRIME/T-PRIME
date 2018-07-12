@@ -1,0 +1,38 @@
+#blockquote{
+    border-left: 5px solid #0c9abe;
+    margin: 0px 0 20px;
+    padding: 10px 20px;
+    font-size: 20px;       
+}
+#btngerar{
+    margin-bottom: 20px;
+}
+#hr {
+	border:#0c9abe solid ;
+    
+}
+#f{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+#titlebacklog{
+    border-left: 5px solid #0c9abe;
+    margin: 10px 0 10px;
+    padding: 10px 20px;
+    font-size: 8px;
+}
+#wid{    
+    margin-top: 15px;
+}
+#widgeral{    
+    margin-top: 30px;
+}
+#avatar{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 45px;
+    height: 45px;
+}

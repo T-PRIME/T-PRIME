@@ -1,7 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
+import { ChartComponent } from '@progress/kendo-angular-charts';
+import { saveAs } from '@progress/kendo-file-saver';
+import { exportPDF,exportImage, Group,Text } from '@progress/kendo-drawing';
 
 @Component({
   selector: 'app-indmanutprime',
@@ -32,9 +35,13 @@ export class IndmanutprimeComponent implements OnInit {
   diasUteis: number;
   dadosChart: Array<any>;
   now: Date;
+ 
+  @ViewChild("IssuesCriadas") IssuesCriadas: ChartComponent;
+  @ViewChild("IssuesAbertas") IssuesAbertas: ChartComponent;
+  @ViewChild("DataPrevCriados") DataPrevCriados: ChartComponent;
+  @ViewChild("EnrtregaDetalhada") EnrtregaDetalhada: ChartComponent;
 
-  @ViewChild("chart1") cahrt1: ElementRef;
-  @ViewChild("mycanvas") mycanvas: HTMLCanvasElement;
+  
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
@@ -149,7 +156,7 @@ export class IndmanutprimeComponent implements OnInit {
   getManut(filtro, chart) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini)+"'";
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini+"'");
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
@@ -171,8 +178,31 @@ export class IndmanutprimeComponent implements OnInit {
   onbotao1() {
     
   }
+  
   public pdf(){
+    
+    const content = new Group();
 
+    var visualIssuesCriadas = this.IssuesCriadas.exportVisual({width:520,heigth:400});
+    var visualIssuesAbertas = this.IssuesAbertas.exportVisual({width:520,heigth:400});
+    var visualDataPrevCriados = this.DataPrevCriados.exportVisual({width:520,heigth:400});
+    var visualEnrtregaDetalhada = this.EnrtregaDetalhada.exportVisual({width:520,heigth:400});
+    var URIPDF;
+
+    content.append(visualIssuesCriadas);
+    content.append(visualIssuesAbertas);
+    content.append(visualDataPrevCriados);
+    content.append(visualEnrtregaDetalhada);
+
+    exportPDF(content, {
+      paperSize: "A4",
+      title: "Indicadores Manutenção Prime - Backlog",
+      landscape:false,
+      multiPage: true,
+      margin: { left: "1cm", top: "6cm", right: "0cm", bottom: "1cm" }
+     }).then((dataURI) => {
+       saveAs(dataURI, 'chart.pdf');
+     });
     
   }
 

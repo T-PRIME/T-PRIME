@@ -16,62 +16,86 @@
 
 <hr id="hr">
 
-<div class="thf-row" id="chart1">
+<div class="thf-row">
   <thf-widget class="thf-md-12" >
       <div class="thf-row" id="titlebacklog">
           <h1>Backlog</h1>    
       </div>
     
     <div class="thf-row">
-      <thf-widget class="thf-md-6"  >
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart2"
-          t-height="390px;"
-          t-label-visible="true"
-          [t-series]="serieschart2"
-          t-title="Issues Criadas x Resolvidas"
-          t-type="column">
-        </thf-chart>
+      <thf-widget class="thf-md-6">
+        <kendo-chart class="thf-md-12" id="IssuesCriadas" #IssuesCriadas
+          [categoryAxis]="{'categories' : categchart2}"
+          style.height="390px;"
+          type="column">
+          <kendo-chart-title text="Issues Criados x Resolvidos"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart2" [name]="serie.name" [type]="number" [data]="serie.data">
+          <kendo-chart-series-item-labels [visible]="labelVisible" color="#fff" background="#0c9abe" border= "{color: '#0c9abe'}"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+        </kendo-chart>
+
       </thf-widget>   
 
       <thf-widget class="thf-md-6">
-        <thf-chart class="thf-md-12"       
-         t-height="390px;"
-         t-label-visible="true"
-         [t-series]="serieschart4"
-         t-title="Issues Abertas - Versões"
-         t-type="column">
-       </thf-chart>
+        <kendo-chart class="thf-md-12" id="IssuesAbertas" #IssuesAbertas
+         [categoryAxis]="{'categories' : categchart4}"
+         style.height="390px;"
+         type="column">
+        <kendo-chart-title text="Issues Abertas - Versões"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart4" [name]="serie.name" [type]="number" [data]="serie.data">
+        <kendo-chart-series-item-labels [visible]="labelVisible" color="#fff" background="#0c9abe" border= "{color: '#0c9abe'}"> 
+        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+       </kendo-chart>
       </thf-widget>
     </div>
 
     <div class="thf-row">
-      
       <thf-widget class="thf-md-6"  >
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart6"
-          t-height="390px;"
-          t-label-visible="true"
-          [t-series]="serieschart6"
-          t-title="DataPrev - Criados x Resolvidos"
-          t-type="donut">
-        </thf-chart>
+        <kendo-chart class="thf-md-12" id="DataPrevCriados" #DataPrevCriados    
+         [categoryAxis]="{'categories' : categchart6}"
+         style.height="390px;"
+         type="donut">
+          <kendo-chart-title text="DataPrev - Criados x Resolvidos"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let series of serieschart6; let outermost = last;"
+                                   type="donut" [startAngle]="150"
+                                   [name]="series.category" [data]="series.data"
+                                   field="value" categoryField="category" colorField="color">
+            <kendo-chart-series-item-labels *ngIf="outermost"
+                                            position="outsideEnd" background="none"
+                                            [content]="labelContent">
+            </kendo-chart-series-item-labels>
+          </kendo-chart-series-item>
+          </kendo-chart-series>
+       </kendo-chart>
       </thf-widget>
-
-        <thf-widget class="thf-md-6">
-          <thf-chart class="thf-md-12" 
-            [t-categories]="categchart7"
-            t-height="390px;"
-            t-label-visible="true"
-            [t-series]="serieschart7"
-            t-title="Entrega Detalhada"
-            t-type="column">
-          </thf-chart>
-
+      <thf-widget class="thf-md-6">
+          <kendo-chart class="thf-md-12" id="EnrtregaDetalhada" #EnrtregaDetalhada  
+         [categoryAxis]="{'categories' : categchart7}"
+         style.height="390px;"
+         type="column">
+          <kendo-chart-title text="Entrega Detalhada"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart7" [name]="serie.name" [type]="number" [data]="serie.data">
+          <kendo-chart-series-item-labels [visible]="labelVisible" color="#fff" background="#0c9abe" border= "{color: '#0c9abe'}"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+       </kendo-chart>
         </thf-widget>
     </div>
   
   </thf-widget>    
 </div>
 
+<div>
+  <thf-button id="btngerar" class="thf-md-6" (t-click)= "pdf()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" t-label="Exportar para PDF" t-primary="true"></thf-button>
+</div>
 </thf-page-default>
+
+

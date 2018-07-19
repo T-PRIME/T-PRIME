@@ -21,7 +21,6 @@ export class RestJiraService {
 
   getFilter(codFiltro) {
 
-    this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
 
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
@@ -29,7 +28,6 @@ export class RestJiraService {
 
   getIssues(filtro) {
 
-    this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
     this.params.set("maxResults", "500");
     this.params.set("jql", filtro);

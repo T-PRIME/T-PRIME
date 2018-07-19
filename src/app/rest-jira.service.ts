@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class RestJiraService {
 
+  public loginOk = false;
   public request: any;
   private execReq = [];
   private processos: number = 0;
@@ -272,4 +273,17 @@ export class RestJiraService {
 
     return diasUteis
   }
+
+  autenticar(login, password) {
+
+    this.headers.set("Authorization", "Basic "+window.btoa(login+":"+password));    
+    this.opts.headers = this.headers;
+
+    return this.http.get("http://10.171.66.178:80/api/rest/auth/latest/session", this.opts)
+    .map(res => res.json());
+  }
+
+  userAuth() {
+    return this.loginOk;
+  }    
 }

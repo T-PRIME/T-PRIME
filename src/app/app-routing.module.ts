@@ -6,14 +6,17 @@ import { BacklogmanutprimeComponent } from './backlogmanutprime/backlogmanutprim
 import { IndclienteComponent } from './indcliente/indcliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { EquipeComponent } from './equipe/equipe.component';
+import { AppComponent } from './app.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'backlogmanutprime', component: BacklogmanutprimeComponent },
-  { path: 'indmanutprime', component: IndmanutprimeComponent },
-  { path: 'indperfprime', component: IndperfprimeComponent },
-  { path: 'indcliente', component: IndclienteComponent },
-  { path: 'equipe', component: EquipeComponent },
-  { path: '', component: PrincipalComponent },
+  { path: 'backlogmanutprime', component: BacklogmanutprimeComponent, canActivate: [AuthGuard] },
+  { path: 'indmanutprime', component: IndmanutprimeComponent, canActivate: [AuthGuard] },
+  { path: 'indperfprime', component: IndperfprimeComponent, canActivate: [AuthGuard] },
+  { path: 'indcliente', component: IndclienteComponent, canActivate: [AuthGuard] },
+  { path: 'equipe', component: EquipeComponent, canActivate: [AuthGuard] },
+  { path: '', component: PrincipalComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: AppComponent },
 ];
 
 @NgModule({

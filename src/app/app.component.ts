@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { RestJiraService } from './rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
 
-import * as Cookies from 'es-cookie';
 
 
 @Component({
@@ -62,7 +61,6 @@ export class AppComponent implements OnInit {
 
   isAuth(formData) {
     
-    console.log(Cookies.getAll());
     this.restJiraService.autenticar(formData.login, formData.password).subscribe(data => {
         this.restJiraService.loginOk = true;
         this.mostraMenu = true;

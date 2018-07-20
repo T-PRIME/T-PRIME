@@ -21,6 +21,7 @@ export class RestJiraService {
 
   getFilter(codFiltro) {
 
+    //this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
 
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
@@ -28,6 +29,7 @@ export class RestJiraService {
 
   getIssues(filtro) {
 
+    //this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
     this.params.set("maxResults", "500");
     this.params.set("jql", filtro);
@@ -68,23 +70,28 @@ export class RestJiraService {
             } 
           }
           if (user === usuarios[_x].user) {
-            _i++;
-            eval("componente[_x]." + campo + "++");
+            eval("componente[_x]." + campo + ".total++");
+            eval("componente[_x]." + campo + ".issues.push(response.issues[_i])");
             if (campo != "abertasmais30dias") {
-                componente[_x].totalbacklog++;
+                componente[_x].totalbacklog.total++;
+                componente[_x].totalbacklog.issues.push(response.issues[_i]);
             }
+            _i++;
           }
         }
       }
     }else{
       if (tipo != 2) {
         if (tipo == 0) {
-          eval("componente.publico." + campo + " = response.total");
+          eval("componente.publico." + campo + ".total = response.total");
+          eval("componente.publico." + campo + ".issues = response.issues");
         }else{
-          eval("componente.privado." + campo + " = response.total");
+          eval("componente.privado." + campo + ".total = response.total");
+          eval("componente.privado." + campo + ".issues = response.issues");
         }
       }else{
-        eval("componente." + campo + " = response.total");
+        eval("componente." + campo + ".total = response.total");
+        eval("componente." + campo + ".issues = response.issues");
       }
    }
    
@@ -104,7 +111,7 @@ export class RestJiraService {
         
         if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
           user = response.issues[_i].fields.customfield_10046.name;
-        }else if (campo == "codificadas" || campo == "rejeitadas") {
+        }else if (campo == "Codificadas" || campo == "Rejeitadas") {
           user = response.issues[_i].fields.customfield_10048.name;
         }else if (response.issues[_i].fields.assignee != undefined) {
           user = response.issues[_i].fields.assignee.name;
@@ -124,17 +131,18 @@ export class RestJiraService {
         }
 
         if (user === usuarios[_x].user) {
+          eval("componente[_x]."+campo+".total++");
+          eval("componente[_x]."+campo+".issues.push(response.issues[_i])");
           _i++;
-          eval("componente[_x]."+campo+"++");
         }
       }
     }
-    if (this.execReq.indexOf("codificadas") >= 0 && this.execReq.indexOf("retrabalho") >= 0 && this.execReq.indexOf("rejeitadas") >= 0) {
+    if (this.execReq.indexOf("Codificadas") >= 0 && this.execReq.indexOf("Retrabalho") >= 0 && this.execReq.indexOf("Rejeitadas") >= 0) {
       for (var _y = 0; usuarios.length > _y; _y++) {
-        if (componente[_y].codificadas > 0) {
-          componente[_y].percretrabalho = Math.round((componente[_y].retrabalho * 100) / componente[_y].codificadas);
+        if (componente[_y].Codificadas.total > 0) {
+          componente[_y].percretrabalho = Math.round((componente[_y].Retrabalho.total * 100) / componente[_y].Codificadas.total);
         }
-        componente[_y].produtividade = Math.round((componente[_y].codificadas + componente[_y].rejeitadas - componente[_y].retrabalho) / diasUteis * 100);
+        componente[_y].produtividade = Math.round((componente[_y].Codificadas.total + componente[_y].Rejeitadas.total - componente[_y].Retrabalho.total) / diasUteis * 100);
       }
       this.execReq = [];
       return true;
@@ -147,60 +155,74 @@ export class RestJiraService {
 
     this.execReq.push(chart);
     switch (chart) {
-      case "CriadasPrivAms": {
-          dadosChart[0].criaXResolv.criadasPrivAms = response.total;
+      case "CriPrivAms": {
+          dadosChart[0].criaXResolv.criPrivAms.total = response.total;
+          dadosChart[0].criaXResolv.criPrivAms.issues = response.issues;
         break;
       }
-      case "CriadasPublic": {
-        dadosChart[0].criaXResolv.criadasPublic = response.total;
+      case "CriPublic": {
+        dadosChart[0].criaXResolv.criPublic.total = response.total;
+        dadosChart[0].criaXResolv.criPublic.issues = response.issues;
         break;
       }
-      case "ResolvPrivAms": {
-        dadosChart[0].criaXResolv.resolvPrivAms = response.total;
+      case "ResPrivAms": {
+        dadosChart[0].criaXResolv.resPrivAms.total = response.total;
+        dadosChart[0].criaXResolv.resPrivAms.issues = response.issues;
         break;
       }
-      case "ResolvPublic": {
-        dadosChart[0].criaXResolv.resolvPublic = response.total;
+      case "ResPublic": {
+        dadosChart[0].criaXResolv.resPublic.total = response.total;
+        dadosChart[0].criaXResolv.resPublic.issues = response.issues;
         break;
       }
-      case "CriadasDataPrev": {
-        dadosChart[2].criaXResolvDataPrev.criadasDataPrev = response.total;
+      case "CriDataPrev": {
+        dadosChart[2].criaXResolvDataPrev.criDataPrev.total = response.total;
+        dadosChart[2].criaXResolvDataPrev.criDataPrev.issues = response.issues;
         break;
       }
-      case "ResolvDataPrev": {
-        dadosChart[2].criaXResolvDataPrev.resolvDataPrev = response.total;
+      case "ResDataPrev": {
+        dadosChart[2].criaXResolvDataPrev.resDataPrev.total = response.total;
+        dadosChart[2].criaXResolvDataPrev.resDataPrev.issues = response.issues;
         break;
       }      
       case "CodPrivAms": {
-        dadosChart[3].entDetalhada.codPrivAms = response.total;
+        dadosChart[3].entDetalhada.codPrivAms.total = response.total;
+        dadosChart[3].entDetalhada.codPrivAms.issues = response.issues;
         break;
       }
       case "RetPrivAms": {
-        dadosChart[3].entDetalhada.retPrivAms = response.total;
+        dadosChart[3].entDetalhada.retPrivAms.total = response.total;
+        dadosChart[3].entDetalhada.retPrivAms.issues = response.issues;
         break;
       }
       case "RejPrivAms": {
-        dadosChart[3].entDetalhada.rejPrivAms = response.total;
+        dadosChart[3].entDetalhada.rejPrivAms.total = response.total;
+        dadosChart[3].entDetalhada.rejPrivAms.issues = response.issues;
         break;
       }
-      case "CancPrivAms": {
-        dadosChart[3].entDetalhada.cancPrivAms = response.total;
+      case "CanPrivAms": {
+        dadosChart[3].entDetalhada.canPrivAms.total = response.total;
+        dadosChart[3].entDetalhada.canPrivAms.issues = response.issues;
         break;
       }   
       case "CodPublic": {
-        dadosChart[3].entDetalhada.codPublic = response.total;
+        dadosChart[3].entDetalhada.codPublic.total = response.total;
+        dadosChart[3].entDetalhada.codPublic.issues = response.issues;
         break;
       }
       case "RetPublic": {
-        dadosChart[3].entDetalhada.retPublic = response.total;
+        dadosChart[3].entDetalhada.retPublic.total = response.total;
+        dadosChart[3].entDetalhada.retPublic.issues = response.issues;
         break;
       }
       case "RejPublic": {
-        dadosChart[3].entDetalhada.rejPublic = response.total;
+        dadosChart[3].entDetalhada.rejPublic.total = response.total;
+        dadosChart[3].entDetalhada.rejPublic.issues = response.issues;
         break;
       }
-      case "CancPublic": {
-        dadosChart[3].entDetalhada.cancPublic = response.total;
+      case "CanPublic": {
+        dadosChart[3].entDetalhada.canPublic.total = response.total;
+        dadosChart[3].entDetalhada.canPublic.issues = response.issues;
         break;
       }               
       case "abertasVersao": {
@@ -214,12 +236,14 @@ export class RestJiraService {
                   if (dadosChart[1].abertasVersao[_x].versao == response.issues[_i].fields.versions[0].name) {
                     posVersao = _x;
                     dadosChart[1].abertasVersao[posVersao].quant++;
+                    dadosChart[1].abertasVersao[posVersao].issues.push(response.issues[_i]);
                     break;
                   }
                 }
               }
             }else{
               dadosChart[1].abertasVersao[posVersao].quant++;
+              dadosChart[1].abertasVersao[posVersao].issues.push(response.issues[_i]);
             }
           }
         }
@@ -272,6 +296,14 @@ export class RestJiraService {
     return diasUteis
   }
 
+  formatDate(data) {
+    if (data === null) {
+      return "";
+    }
+    data = new Date(data);
+    return data.toLocaleString().toString().substring(0,10);
+  }  
+
   autenticar(login, password) {
 
     this.headers.set("Authorization", "Basic "+window.btoa(login+":"+password));    
@@ -283,5 +315,5 @@ export class RestJiraService {
 
   userAuth() {
     return this.loginOk;
-  }    
+  }  
 }

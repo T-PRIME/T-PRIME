@@ -28,7 +28,7 @@
         [t-series]="serieschart0"
         t-title="Issues Pendentes"
         t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
+        (t-series-click)="openModal($event, '', 'issuesPendentes')"
         (t-series-hover)="changeEvent('t-series-hover')">     
       </thf-chart>
       
@@ -42,7 +42,7 @@
         [t-series]="serieschart00"
         t-title="Issues em Aprovação"
         t-type="pie"
-        (t-series-click)="changeEvent('t-series-click')"
+        (t-series-click)="openModal($event, '', 'issuesEmAprovacao')"
         (t-series-hover)="changeEvent('t-series-hover')">
       </thf-chart>
   </thf-widget>   
@@ -62,7 +62,7 @@
         [t-series]="serieschart[0]"
         [t-title]="analist[0]"
         t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
+        (t-series-click)="openModal($event, analist[0], 'itens')"
         (t-series-hover)="changeEvent('t-series-hover')">
       </thf-chart>
     </div>
@@ -77,7 +77,7 @@
           [t-series]="serieschart[1]"
           [t-title]="analist[1]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[1], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -92,7 +92,7 @@
           [t-series]="serieschart[2]"
           [t-title]="analist[2]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[2], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -107,7 +107,7 @@
           [t-series]="serieschart[3]"
           [t-title]="analist[3]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[3], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -122,7 +122,7 @@
           [t-series]="serieschart[4]"
           [t-title]="analist[4]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[4], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -137,7 +137,7 @@
           [t-series]="serieschart[5]"
           [t-title]="analist[5]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[5], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -152,7 +152,7 @@
           [t-series]="serieschart[6]"
           [t-title]="analist[6]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[6], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -167,7 +167,7 @@
           [t-series]="serieschart[7]"
           [t-title]="analist[7]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[7], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -182,7 +182,7 @@
           [t-series]="serieschart[8]"
           [t-title]="analist[8]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[8], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
@@ -197,12 +197,29 @@
           [t-series]="serieschart[9]"
           [t-title]="analist[9]"
           t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
+          (t-series-click)="openModal($event, analist[9], 'itens')"
           (t-series-hover)="changeEvent('t-series-hover')">
         </thf-chart>
       </div>
      </thf-widget>
     </thf-widget>
 
+  <thf-modal
+    t-title="Issues"
+    t-size="xx"
+    [t-primary-action]="primaryAction">
+
+    <div class="thf-row">
+      <thf-grid 
+      [t-data]="itemsGrid" 
+      [t-columns]="columnsGrid" 
+      [t-sortable]=false 
+      [t-show-export-buttons]=true 
+      [t-editable]=false 
+      t-selectable=false>
+      </thf-grid>      
+    </div>
+  </thf-modal>
+  
 </thf-page-default>    
 

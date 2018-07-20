@@ -27,7 +27,8 @@
         <kendo-chart class="thf-md-12" id="IssuesCriadas" #IssuesCriadas
           [categoryAxis]="{'categories' : categchart2}"
           style.height="390px;"
-          type="column">
+          type="column"
+          (seriesClick)="openModal($event, 'criaXResolv')">
           <kendo-chart-title text="Issues Criados x Resolvidos"> </kendo-chart-title>
           <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
           <kendo-chart-tooltip> </kendo-chart-tooltip>
@@ -42,7 +43,8 @@
         <kendo-chart class="thf-md-12" id="IssuesAbertas" #IssuesAbertas
          categoryAxis=""
          style.height="390px;"
-         type="column">
+         type="column"
+         (seriesClick)="openModal($event, 'abertasVersao')">
         <kendo-chart-title text="Issues Abertas - Versões"> </kendo-chart-title>
         <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
         <kendo-chart-tooltip> </kendo-chart-tooltip>
@@ -58,7 +60,8 @@
         <kendo-chart class="thf-md-12" id="DataPrevCriados" #DataPrevCriados    
          [categoryAxis]="{'categories' : categchart6}"
          style.height="390px;"
-         type="donut">
+         type="donut"
+         (seriesClick)="openModal($event, 'criaXResolvDataPrev')">
           <kendo-chart-title text="DataPrev - Criados x Resolvidos"> </kendo-chart-title>
           <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
           <kendo-chart-tooltip> </kendo-chart-tooltip>
@@ -79,7 +82,8 @@
           <kendo-chart class="thf-md-12" id="EnrtregaDetalhada" #EnrtregaDetalhada  
          [categoryAxis]="{'categories' : categchart7}"
          style.height="390px;"
-         type="column">
+         type="column"
+         (seriesClick)="openModal($event, 'entDetalhada')">
           <kendo-chart-title text="Entrega Detalhada"> </kendo-chart-title>
           <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
           <kendo-chart-tooltip> </kendo-chart-tooltip>
@@ -96,6 +100,24 @@
 <div>
   <thf-button id="btngerar" class="thf-md-6" (t-click)= "pdf()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" t-label="Exportar para PDF" t-primary="true"></thf-button>
 </div>
+
+  <thf-modal
+    t-title="Issues"
+    t-size="xx"
+    [t-primary-action]="primaryAction">
+
+    <div class="thf-row">
+      <thf-grid 
+      [t-data]="itemsGrid" 
+      [t-columns]="columnsGrid" 
+      [t-sortable]=false 
+      [t-show-export-buttons]=true 
+      [t-editable]=false 
+      t-selectable=false>
+      </thf-grid>      
+    </div>
+  </thf-modal>
+
 </thf-page-default>
 
 

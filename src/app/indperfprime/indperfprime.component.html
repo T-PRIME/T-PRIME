@@ -37,7 +37,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[0]"
           [t-title]="usuarios[0].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[0].label)">
         </thf-chart>
     </thf-widget>   
 
@@ -48,7 +49,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[1]"
           [t-title]="usuarios[1].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[1].label)">
         </thf-chart>
     </thf-widget> 
 
@@ -59,7 +61,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[2]"
           [t-title]="usuarios[2].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[2].label)">
         </thf-chart>
     </thf-widget>         
 
@@ -70,7 +73,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[3]"
           [t-title]="usuarios[3].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[3].label)">
         </thf-chart>
     </thf-widget>   
 
@@ -81,7 +85,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[4]"
           [t-title]="usuarios[4].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[4].label)">
         </thf-chart>
     </thf-widget>     
 
@@ -92,7 +97,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[5]"
           [t-title]="usuarios[5].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[5].label)">
         </thf-chart>
     </thf-widget>            
 
@@ -103,7 +109,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[6]"
           [t-title]="usuarios[6].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[6].label)">
         </thf-chart>
     </thf-widget>     
 
@@ -114,7 +121,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[7]"
           [t-title]="usuarios[7].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[7].label)">
         </thf-chart>
     </thf-widget>     
 
@@ -125,7 +133,8 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[8]"
           [t-title]="usuarios[8].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[8].label)">
         </thf-chart>
     </thf-widget>     
 
@@ -136,13 +145,31 @@
           t-label-visible="true"
           [t-series]="serieschartPerf[9]"
           [t-title]="usuarios[9].label"
-          t-type="column">
+          t-type="column"
+          (t-series-click)="openModal($event, usuarios[9].label)">
         </thf-chart>
     </thf-widget>                  
         
       
 
   </thf-widget>
+
+    <thf-modal
+    t-title="Issues"
+    t-size="xx"
+    [t-primary-action]="primaryAction">
+
+    <div class="thf-row">
+      <thf-grid 
+      [t-data]="itemsGrid" 
+      [t-columns]="columnsGrid" 
+      [t-sortable]=false 
+      [t-show-export-buttons]=true 
+      [t-editable]=false 
+      t-selectable=false>
+      </thf-grid>      
+    </div>
+  </thf-modal>
 
 </thf-page-default>    
 

@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ThfTableColumn } from '@totvs/thf-ui/components/thf-table';
 import { ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
+import { ThfGridColumn  } from '@totvs/thf-ui/components/thf-grid';
+import { ThfModalAction } from '@totvs/thf-ui/components/thf-modal';
+import { ThfModalComponent } from '@totvs/thf-ui/components/thf-modal/thf-modal.component';
 
 @Component({
   selector: 'app-backlogmanutprime',
@@ -11,10 +14,11 @@ import { RestJiraService } from '../rest-jira.service';
 })
 export class BacklogmanutprimeComponent implements OnInit {
 
+  @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
   
   itens: Array<any>; // Dados do backlog por analista
-  issuesEmAprovacao = {testedeintegrado:0, testedeunidade:0}; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
-  issuesPendentes = {privado:{backlogAvencer:0, backlogPacemergenciais:0 , backlogVencidos:0},publico:{backlogAvencer:0, backlogPacemergenciais:0 , backlogVencidos:0}} ; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
+  issuesEmAprovacao = {testedeintegrado:{total: 0, issues: [ ]}, testedeunidade:{total: 0, issues: [ ]}}; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
+  issuesPendentes = {privado:{backlogAvencer:{total: 0, issues: [ ]}, backlogPacemergenciais:{total: 0, issues: [ ]} , backlogVencidos:{total: 0, issues: [ ]}},publico:{backlogAvencer:{total: 0, issues: [ ]}, backlogPacemergenciais:{total: 0, issues: [ ]} , backlogVencidos:{total: 0, issues: [ ]}}} ; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
   analist: Array<any> = ["","","","","","","","","",];
   usuarios: Array<any>; // Nome dos analistas dos itens
   tipo: number = 0; // (0 - Issues em aprovação ) (1 - Issues Pendentes) (2 - Issues por usuários) 
@@ -34,6 +38,8 @@ export class BacklogmanutprimeComponent implements OnInit {
   categchart1: Array<string>;
   serieschart: Array<any> = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   columns: Array<ThfTableColumn>;
+  columnsGrid: Array<ThfGridColumn>;
+  itemsGrid: Array<any>;
 
   
   constructor(public restJiraService: RestJiraService ) {
@@ -44,7 +50,8 @@ export class BacklogmanutprimeComponent implements OnInit {
  
   ngOnInit() {
     
-    this.limpaTabela()
+    this.limpaTabela();
+    this.columnsGrid = this.getColumns();
 
   }
   //
@@ -148,16 +155,16 @@ export class BacklogmanutprimeComponent implements OnInit {
   //
   getUsers(){
      return [
-      { analista: 'Diogo Saravando', user: 'diogo.vieira',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Eduardo Martinez',      user: 'eduardo.martinez',   avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Evandro Pattaro',     user: 'evandro.pattaro',    avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'João Balbino',      user: 'joao.balbino',       avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Julio Santos',   user: 'julio.silva',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Leonardo Barbosa',       user: 'leonardo.magalhaes', avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
-      { analista: 'Tiago Bertolo',                    user: 'tiago.bertolo',      avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Vitor Pires',                      user: 'vitor.pires',        avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },      
-      { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 },
-      { analista: 'Yuri Porto',                 user: 'yuri.porto',         avencer: 0, pacemergenciais: 0, vencidos: 0, totalbacklog: 0, abertasmais30dias: 0 }, 
+      { analista: 'Diogo Saravando', user: 'diogo.vieira',       avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Eduardo Martinez',      user: 'eduardo.martinez',   avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Evandro Pattaro',     user: 'evandro.pattaro',    avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'João Balbino',      user: 'joao.balbino',       avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Julio Santos',   user: 'julio.silva',        avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Leonardo Barbosa',       user: 'leonardo.magalhaes', avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} }, 
+      { analista: 'Tiago Bertolo',                    user: 'tiago.bertolo',      avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Vitor Pires',                      user: 'vitor.pires',        avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },      
+      { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
+      { analista: 'Yuri Porto',                 user: 'yuri.porto',         avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} }, 
       
     ];
   }
@@ -183,16 +190,16 @@ export class BacklogmanutprimeComponent implements OnInit {
               { name: 'À Vencer', data: [0]},
               { name: 'Pacotes Emergenciais', data: [0] },
               { name: 'Vencidos', data: [0] },  
-              { name: 'Total ', data: [0] },  
-              { name: 'Abertas > 30 Dias ', data: [0] }  
+              { name: 'Total', data: [0] },  
+              { name: 'Abertas > 30 Dias', data: [0] }  
              ];
     } else {
       return[
-              { name: 'À Vencer', data: [item.avencer]},
-              { name: 'Pacotes Emergenciais', data: [item.pacemergenciais] },
-              { name: 'Vencidos', data: [item.vencidos] },  
-              { name: 'Total ', data: [item.totalbacklog] },  
-              { name: 'Abertas > 30 Dias ', data: [item.abertasmais30dias] }  
+              { name: 'À Vencer', data: [item.avencer.total]},
+              { name: 'Pacotes Emergenciais', data: [item.pacemergenciais.total] },
+              { name: 'Vencidos', data: [item.vencidos.total] },  
+              { name: 'Total', data: [item.totalbacklog.total] },  
+              { name: 'Abertas > 30 Dias', data: [item.abertasmais30dias.total] }  
             ]; 
     }
   }
@@ -202,8 +209,8 @@ export class BacklogmanutprimeComponent implements OnInit {
       return [ {data: [{category: 'Teste de Unidade', value: 0},
       {category: 'Teste integrado', value: 0}] }]; 
     } else {
-      return [ {data: [{category: 'Teste de Unidade', value: this.issuesEmAprovacao.testedeunidade},
-      {category: 'Teste integrado', value: this.issuesEmAprovacao.testedeintegrado}] }];
+      return [ {data: [{category: 'Teste de Unidade', value: this.issuesEmAprovacao.testedeunidade.total},
+      {category: 'Teste integrado', value: this.issuesEmAprovacao.testedeintegrado.total}] }];
     }
   }
 
@@ -216,12 +223,139 @@ export class BacklogmanutprimeComponent implements OnInit {
             ]
     } else {
       return[
-              { name: 'À Vencer', data: [this.issuesPendentes.privado.backlogAvencer,this.issuesPendentes.publico.backlogAvencer]},
-              { name: 'Pacotes Emergenciais', data: [this.issuesPendentes.privado.backlogPacemergenciais,this.issuesPendentes.publico.backlogPacemergenciais] },
-              { name: 'Vencidos', data: [this.issuesPendentes.privado.backlogVencidos,this.issuesPendentes.publico.backlogVencidos] } 
+              { name: 'À Vencer', data: [this.issuesPendentes.privado.backlogAvencer.total,this.issuesPendentes.publico.backlogAvencer.total]},
+              { name: 'Pacotes Emergenciais', data: [this.issuesPendentes.privado.backlogPacemergenciais.total,this.issuesPendentes.publico.backlogPacemergenciais.total] },
+              { name: 'Vencidos', data: [this.issuesPendentes.privado.backlogVencidos.total,this.issuesPendentes.publico.backlogVencidos.total] } 
             ]
     }
   }
+
+  getColumns(): Array<ThfGridColumn> {
+    return [
+      { column: 'issue', label: 'Issue', type: 'string', width: 18},
+      { column: 'nomeFant', label: 'Nome Fantasia', type: 'string', width: 27},
+      { column: 'summary', label: 'Summary' , type: 'string', width: 31},
+      { column: 'sla', label: 'SLA', type: 'date', width: 13},
+      { column: 'dtAcordo', label: 'Dt. Acordo', type: 'date', width: 13},
+      { column: 'dtPSLA', label: 'Pausa SLA', type: 'date', width: 13},
+      { column: 'reporter', label: 'Reporter', type: 'string', width: 15 }
+    ];
+  }
+
+  primaryAction: ThfModalAction = {
+    action: () => {
+      this.thfModal.close();
+    },
+    label: 'Close'
+  };  
+
+  openModal(formData, usuario, chart) {
+
+    var serie = "";
+    this.itemsGrid = [];
+
+    if (chart == "issuesEmAprovacao") {
+      if (formData.category == "Teste de Unidade") {
+        serie = "testedeunidade";
+      }else{
+        serie = "testedeintegrado";
+      }
+    }else if (chart == "issuesPendentes") {
+      if (formData.category == "Privado e A.M.S") {
+        switch (formData.series.name) {
+          case 'À Vencer': {
+            serie = "privado.backlogAvencer";
+            break;
+          }   
+          case 'Pacotes Emergenciais': {
+            serie = "privado.backlogPacemergenciais";
+            break;
+          }   
+          case 'Vencidos': {
+            serie = "privado.backlogVencidos";
+            break;
+          } 
+          default:
+            break;
+        }
+      }else if (formData.category == "Público") {
+        switch (formData.series.name) {
+          case 'À Vencer': {
+            serie = "publico.backlogAvencer";
+            break;
+          }   
+          case 'Pacotes Emergenciais': {
+            serie = "publico.backlogPacemergenciais";
+            break;
+          }   
+          case 'Vencidos': {
+            serie = "publico.backlogVencidos";
+            break;
+          } 
+          default:
+            break;
+        }
+      }
+    }else if (chart == "itens") {
+      switch (formData.series.name) {
+        case 'À Vencer': {
+          serie = "avencer";
+          break;
+        }   
+        case 'Pacotes Emergenciais': {
+          serie = "pacemergenciais";
+          break;
+        }   
+        case 'Vencidos': {
+          serie = "vencidos";
+          break;
+        } 
+        case 'Total': {
+          serie = "totalbacklog";
+          break;
+        }           
+        case 'Abertas > 30 Dias': {
+          serie = "abertasmais30dias";
+          break;
+        }                           
+        default:
+          break;
+      }
+    }
+    if (chart == "itens") {
+      for (var _i = 0; this.usuarios.length > _i; _i++) {
+        if (this.usuarios[_i].analista == usuario) {
+          for (var _x = 0; eval("this."+chart+"[_i]."+serie+".issues.length") > _x; _x++) {
+            this.itemsGrid.push({
+              issue:    eval("this."+chart+"[_i]."+serie+".issues[_x].key"),
+              nomeFant: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11071.value"),
+              summary: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.summary"),
+              sla:      this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11080")),
+              dtAcordo: this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11039")),
+              dtPSLA:   this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11040")),
+              reporter: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.reporter.displayName")
+            });
+          }
+        }
+      }
+    }else{
+      for (var _x = 0; eval("this."+chart+"."+serie+".issues.length") > _x; _x++) {
+        this.itemsGrid.push({
+          issue:    eval("this."+chart+"."+serie+".issues[_x].key"),
+          nomeFant: eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11071.value"),
+          summary: eval("this."+chart+"."+serie+".issues[_x].fields.summary"),
+          sla:      this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11080")),
+          dtAcordo: this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11039")),
+          dtPSLA:   this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11040")),
+          reporter: eval("this."+chart+"."+serie+".issues[_x].fields.reporter.displayName")
+        });    
+      }
+    
+    }    
+    this.thfModal.open();
+
+  }
+
   changeEvent(component){
     console.log(component);
   }

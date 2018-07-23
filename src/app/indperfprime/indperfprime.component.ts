@@ -122,7 +122,7 @@ export class IndperfprimeComponent implements OnInit {
       { analista: 'Evandro Pattaro', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'João Balbino', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Julio Silva', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Leonardo Barbosa ', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
+      { analista: 'Leonardo Barbosa', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Tiago Bertolo', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Vitor Pires', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Wesley Lossani', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
@@ -216,7 +216,7 @@ export class IndperfprimeComponent implements OnInit {
     action: () => {
       this.thfModal.close();
     },
-    label: 'Close'
+    label: 'Fechar'
   };
 
   getColumns(): Array<ThfGridColumn> {

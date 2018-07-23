@@ -129,7 +129,7 @@ export class IndmanutprimeComponent implements OnInit {
     action: () => {
       this.thfModal.close();
     },
-    label: 'Close'
+    label: 'Fechar'
   };
 
   limpaTabela(){

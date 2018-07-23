@@ -42,7 +42,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   itemsGrid: Array<any>;
 
   
-  constructor(public restJiraService: RestJiraService ) {
+  constructor(public restJiraService: RestJiraService ) { 
 
     this.usuarios = this.getUsers()
 
@@ -246,7 +246,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     action: () => {
       this.thfModal.close();
     },
-    label: 'Close'
+    label: 'Fechar'
   };  
 
   openModal(formData, usuario, chart) {

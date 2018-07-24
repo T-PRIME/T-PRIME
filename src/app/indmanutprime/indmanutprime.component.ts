@@ -44,7 +44,14 @@ export class IndmanutprimeComponent implements OnInit {
   timeFim = " 23:59"
   diasUteis: number;
   dadosChart: Array<any>;
-  now: Date;  
+  now: Date;
+ 
+  @ViewChild("IssuesCriadas") IssuesCriadas: ChartComponent;
+  @ViewChild("IssuesAbertas") IssuesAbertas: ChartComponent;
+  @ViewChild("DataPrevCriados") DataPrevCriados: ChartComponent;
+  @ViewChild("EnrtregaDetalhada") EnrtregaDetalhada: ChartComponent;
+
+  
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
@@ -212,6 +219,33 @@ export class IndmanutprimeComponent implements OnInit {
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
     this.loadButton = false;
     this.labelButton = "Gerar Indicadores";
+  }
+
+  public pdf(){
+    
+    const content = new Group();
+
+    var visualIssuesCriadas = this.IssuesCriadas.exportVisual({width:520,heigth:400});
+    var visualIssuesAbertas = this.IssuesAbertas.exportVisual({width:520,heigth:400});
+    var visualDataPrevCriados = this.DataPrevCriados.exportVisual({width:520,heigth:400});
+    var visualEnrtregaDetalhada = this.EnrtregaDetalhada.exportVisual({width:520,heigth:400});
+    var URIPDF;
+
+    content.append(visualIssuesCriadas);
+    content.append(visualIssuesAbertas);
+    content.append(visualDataPrevCriados);
+    content.append(visualEnrtregaDetalhada);
+
+    exportPDF(content, {
+      paperSize: "A4",
+      title: "Indicadores Manutenção Prime - Backlog",
+      landscape:false,
+      multiPage: true,
+      margin: { left: "1cm", top: "6cm", right: "0cm", bottom: "1cm" }
+     }).then((dataURI) => {
+       saveAs(dataURI, 'chart.pdf');
+     });
+    
   }
 
   openModal(formData, chart) {

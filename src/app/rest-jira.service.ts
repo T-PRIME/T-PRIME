@@ -27,12 +27,13 @@ export class RestJiraService {
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
   }
 
-  getIssues(filtro) {
+  getIssues(filtro, fields?: string) {
 
     //this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
-    this.params.set("maxResults", "500");
+    this.params.set("maxResults", "20000");
     this.params.set("jql", filtro);
+    this.params.set("fields", fields);
     this.opts.params = this.params;
 
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/search", this.opts).map(res => res.json());
@@ -111,7 +112,7 @@ export class RestJiraService {
         
         if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)") {
           user = response.issues[_i].fields.customfield_10046.name;
-        }else if (campo == "Codificadas" || campo == "Rejeitadas") {
+        }else if (campo == "Codificadas" || campo == "Rejeitadas" || campo == "Retrabalho") {
           user = response.issues[_i].fields.customfield_10048.name;
         }else if (response.issues[_i].fields.assignee != undefined) {
           user = response.issues[_i].fields.assignee.name;
@@ -247,13 +248,45 @@ export class RestJiraService {
             }
           }
         }
+        break;
+      }
+      case "entProjeto": {
+        var posProjeto = -1;
+        var posMprimesp = -1;
+        for (var _i = 0; response.issues.length > _i; _i++) {
+          for (var _x = 0; dadosChart[4].entProjeto.length > _x; _x++) {
+            if (dadosChart[4].entProjeto[_x][0] == response.issues[_i].key.split("-")[0]) {
+              posProjeto = _x;
+              if (response.issues[_i].key.split("-")[0] == "MPRIMESP") {
+                posMprimesp = _x;
+              }
+              break;
+            }else{
+              posProjeto = -1;
+            }
+          }
+
+          if (posProjeto < 0) {
+            if (response.issues[_i].key.split("-")[0] == "MPBS") {
+              if (posMprimesp < 0){
+                dadosChart[4].entProjeto.push(["MPRIMESP", 1]);    
+              }else{
+                dadosChart[4].entProjeto[posMprimesp][1]++;    
+              }
+            }else{
+              dadosChart[4].entProjeto.push([response.issues[_i].key.split("-")[0], 1]);
+            }
+          }else{
+            dadosChart[4].entProjeto[posProjeto][1]++;
+          }
+        }
       }
 
       default:
         break;
     }
 
-    if (this.execReq.length == 15) {
+    if (this.execReq.length == 16) {
       this.execReq = [];
       return true;
     }else{
@@ -286,7 +319,7 @@ export class RestJiraService {
   calcDias(dataDe, dataAte) {
     
     var diasUteis = 1;
-    while (dataDe.toString() != dataAte.toString()) {
+    while (dataDe.toString().substring(0,15) != dataAte.toString().substring(0,15)) {
       if (dataDe.getDay() != 0 && dataDe.getDay() != 6) {
         diasUteis++
       }

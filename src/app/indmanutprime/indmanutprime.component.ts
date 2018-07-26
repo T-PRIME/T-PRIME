@@ -22,18 +22,21 @@ export class IndmanutprimeComponent implements OnInit {
   @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
   
   loadButton = false;
+  isHideLoading = true;
   labelButton = "Gerar Indicadores";
   //Chart 2 Column
-  categchart2: Array<string>;
-  serieschart2: Array<ThfColumnChartSeries>;
+  categchart2: Array<any>;
+  serieschart2: Array<any>;
   //Chart 4 Column
-  serieschart4: Array<ThfColumnChartSeries>;  
+  serieschart4: Array<any>;  
+  //Chart 5 Column
+  serieschart5: Array<any>;   
   //Chart 6 Pie
-  categchart6: Array<string>;
-  serieschart6: Array<ThfPieChartSeries>;
+  categchart6: Array<any>;
+  serieschart6: Array<any>;
   //Chart 1 Column
-  categchart7: Array<string>;
-  serieschart7: Array<ThfColumnChartSeries>;  
+  categchart7: Array<any>;
+  serieschart7: Array<any>;  
 
   columnsGrid: Array<ThfGridColumn>;
   itemsGrid: Array<any>;
@@ -44,11 +47,17 @@ export class IndmanutprimeComponent implements OnInit {
   timeFim = " 23:59"
   diasUteis: number;
   dadosChart: Array<any>;
-  now: Date;  
+  now: Date;
+
+  @ViewChild("IssuesCriadas") IssuesCriadas: ChartComponent;
+  @ViewChild("IssuesAbertas") IssuesAbertas: ChartComponent;
+  @ViewChild("DataPrevCriados") DataPrevCriados: ChartComponent;
+  @ViewChild("EnrtregaDetalhada") EnrtregaDetalhada: ChartComponent;
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
   ngOnInit() {
+    
     this.now = new Date();
     var diaIni = 1
     var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
@@ -75,33 +84,44 @@ export class IndmanutprimeComponent implements OnInit {
   private getCategchart6(): Array<string> {
     return [ 'Criados', 'Resolvidos'];
   } 
-  private getSeriesChart2(dadosChart): Array<ThfColumnChartSeries> {
+  private getSeriesChart2(dadosChart): Array<any> {
     return [
-      { name: 'Criados', data: [dadosChart[0].criaXResolv.criPrivAms.total, dadosChart[0].criaXResolv.criPublic.total] },
-      { name: 'Resolvidos', data: [dadosChart[0].criaXResolv.resPrivAms.total, dadosChart[0].criaXResolv.resPublic.total] }  
+      { name: 'Criados', data: [dadosChart[0].criaXResolv.criPrivAms.total, dadosChart[0].criaXResolv.criPublic.total]},
+      { name: 'Resolvidos', data: [dadosChart[0].criaXResolv.resPrivAms.total, dadosChart[0].criaXResolv.resPublic.total]}  
     ];
   }
-  private getSeriesChart4(dadosChart): Array<ThfColumnChartSeries> {
+  private getSeriesChart4(dadosChart): Array<any> {
     return [
-      { name: '11', data: [dadosChart[1].abertasVersao[0].quant] },
-      { name: '12.1.6', data: [dadosChart[1].abertasVersao[1].quant] },  
-      { name: '12.1.7', data: [dadosChart[1].abertasVersao[2].quant] },
-      { name: '12.1.16', data: [dadosChart[1].abertasVersao[3].quant] },
-      { name: '12.1.17', data: [dadosChart[1].abertasVersao[4].quant] }
+      { name: '11', data: [dadosChart[1].abertasVersao[0].quant]},
+      { name: '12.1.6', data: [dadosChart[1].abertasVersao[1].quant]},  
+      { name: '12.1.7', data: [dadosChart[1].abertasVersao[2].quant]},
+      { name: '12.1.16', data: [dadosChart[1].abertasVersao[3].quant]},
+      { name: '12.1.17', data: [dadosChart[1].abertasVersao[4].quant]}
     ];
   }
-  private getSeriesChart6(dadosChart): Array<ThfPieChartSeries > {
+  private getSeriesChart5(dadosChart): Array<any> {
+    var dadosRet = [];
+    dadosChart[4].entProjeto.sort(function(a,b){
+      return (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0);
+    });
+    for (var _i = 0; dadosChart[4].entProjeto.length > _i && _i < 10; _i ++) {
+      dadosRet.push({name: dadosChart[4].entProjeto[_i][0], data: [dadosChart[4].entProjeto[_i][1]] });
+    }
+
+  return dadosRet;
+  }  
+  private getSeriesChart6(dadosChart): Array<any> {
     return [{
       data: [{category: 'Criados', value: dadosChart[2].criaXResolvDataPrev.criDataPrev.total},
-              {category: 'Resolvidos', value: dadosChart[2].criaXResolvDataPrev.resDataPrev.total,}]
+              {category: 'Resolvidos', value: dadosChart[2].criaXResolvDataPrev.resDataPrev.total}]
   }];
   }
-  private getSeriesChart7(dadosChart): Array<ThfColumnChartSeries> {
+  private getSeriesChart7(dadosChart): Array<any>{
     return [
-      { name: 'Codificadas', data: [dadosChart[3].entDetalhada.codPrivAms.total, dadosChart[3].entDetalhada.codPublic.total] },
-      { name: 'Retrabalho', data: [dadosChart[3].entDetalhada.retPrivAms.total, dadosChart[3].entDetalhada.retPublic.total] },
-      { name: 'Rejeitadas', data: [dadosChart[3].entDetalhada.rejPrivAms.total, dadosChart[3].entDetalhada.rejPublic.total] },
-      { name: 'Canceladas', data: [dadosChart[3].entDetalhada.canPrivAms.total, dadosChart[3].entDetalhada.canPublic.total] }
+      { name: 'Codificadas', data: [dadosChart[3].entDetalhada.codPrivAms.total, dadosChart[3].entDetalhada.codPublic.total]},
+      { name: 'Retrabalho', data: [dadosChart[3].entDetalhada.retPrivAms.total, dadosChart[3].entDetalhada.retPublic.total]},
+      { name: 'Rejeitadas', data: [dadosChart[3].entDetalhada.rejPrivAms.total, dadosChart[3].entDetalhada.rejPublic.total]},
+      { name: 'Canceladas', data: [dadosChart[3].entDetalhada.canPrivAms.total, dadosChart[3].entDetalhada.canPublic.total]}
       
     ];
   }
@@ -152,6 +172,8 @@ export class IndmanutprimeComponent implements OnInit {
         retPublic: {total: 0, issues: [ ]}, 
         rejPublic: {total: 0, issues: [ ]}, 
         canPublic: {total: 0, issues: [ ]} } 
+      },
+      {entProjeto: []
       }
     ];
     
@@ -168,11 +190,12 @@ export class IndmanutprimeComponent implements OnInit {
       return;
     }
     this.loadButton = true;
+    this.isHideLoading = false;
     this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
-    var dataDe = new Date(this.startDate.toString().substring(0,10));
-    var dataAte = new Date(this.endDate.toString().substring(0,10));
+    var dataDe = new Date(this.startDate);
+    var dataAte = new Date(this.endDate);
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
     this.restJiraService.getFilter("59608").subscribe(response => this.getManut(response.jql, "CriPrivAms"));    
@@ -190,15 +213,16 @@ export class IndmanutprimeComponent implements OnInit {
     this.restJiraService.getFilter("59634").subscribe(response => this.getManut(response.jql, "RetPublic"));  
     this.restJiraService.getFilter("59635").subscribe(response => this.getManut(response.jql, "RejPublic"));  
     this.restJiraService.getFilter("59633").subscribe(response => this.getManut(response.jql, "CanPublic"));
+    this.restJiraService.getFilter("60607").subscribe(response => this.getManut(response.jql, "entProjeto", "key"));
         
   }
-  getManut(filtro, chart) {
+  getManut(filtro, chart , fields?: string) {
 
       var filtroEdit = filtro
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini+"'");
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
 
-      this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
+      this.restJiraService.getIssues(filtroEdit, fields).subscribe( response => { 
         var fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);
         if (fimExecucao) {
           this.atualizaGrafico();
@@ -210,8 +234,36 @@ export class IndmanutprimeComponent implements OnInit {
     this.serieschart4 = this.getSeriesChart4(this.dadosChart);
     this.serieschart6 = this.getSeriesChart6(this.dadosChart);
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
+    this.serieschart5 = this.getSeriesChart5(this.dadosChart);
     this.loadButton = false;
+    this.isHideLoading = true;
     this.labelButton = "Gerar Indicadores";
+  }
+
+  public pdf(){
+    
+    const content = new Group();
+
+    var visualIssuesCriadas = this.IssuesCriadas.exportVisual({width:520,heigth:400});
+    var visualIssuesAbertas = this.IssuesAbertas.exportVisual({width:520,heigth:400});
+    var visualDataPrevCriados = this.DataPrevCriados.exportVisual({width:520,heigth:400});
+    var visualEnrtregaDetalhada = this.EnrtregaDetalhada.exportVisual({width:520,heigth:400});
+    var URIPDF;
+
+    content.append(visualIssuesCriadas);
+    content.append(visualIssuesAbertas);
+    content.append(visualDataPrevCriados);
+    content.append(visualEnrtregaDetalhada);
+
+    exportPDF(content, {
+      paperSize: "A4",
+      title: "Indicadores Manutenção Prime - Backlog",
+      landscape:false,
+      multiPage: true,
+      margin: { left: "1cm", top: "6cm", right: "0cm", bottom: "1cm" }
+     }).then((dataURI) => {
+       saveAs(dataURI, 'chart.pdf');
+     });  
   }
 
   openModal(formData, chart) {

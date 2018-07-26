@@ -47,16 +47,12 @@ export class IndmanutprimeComponent implements OnInit {
   timeFim = " 23:59"
   diasUteis: number;
   dadosChart: Array<any>;
-<<<<<<< HEAD
-  now: Date;  
-=======
   now: Date;
 
   @ViewChild("IssuesCriadas") IssuesCriadas: ChartComponent;
   @ViewChild("IssuesAbertas") IssuesAbertas: ChartComponent;
   @ViewChild("DataPrevCriados") DataPrevCriados: ChartComponent;
   @ViewChild("EnrtregaDetalhada") EnrtregaDetalhada: ChartComponent;
->>>>>>> t-prime-desenv
 
   constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
 
@@ -244,8 +240,6 @@ export class IndmanutprimeComponent implements OnInit {
     this.labelButton = "Gerar Indicadores";
   }
 
-<<<<<<< HEAD
-=======
   public pdf(){
     
     const content = new Group();
@@ -272,7 +266,6 @@ export class IndmanutprimeComponent implements OnInit {
      });  
   }
 
->>>>>>> t-prime-desenv
   openModal(formData, chart) {
     
     var itemChart = "";

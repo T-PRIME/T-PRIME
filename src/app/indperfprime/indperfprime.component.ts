@@ -23,6 +23,7 @@ export class IndperfprimeComponent implements OnInit {
   @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
 
   loadButton = false;
+  isHideLoading = true;
   labelButton = "Gerar Indicadores";
   colperf: Array<ThfTableColumn>;
   itemsperf: Array<any>;
@@ -86,12 +87,13 @@ export class IndperfprimeComponent implements OnInit {
       return;
     }
     this.loadButton = true;
+    this.isHideLoading = false;
     this.labelButton = "Gerando indicadores..." 
 
     this.limpaTabela();    
     
-    var dataDe = new Date(this.startDate.toString().substring(0,10));
-    var dataAte = new Date(this.endDate.toString().substring(0,10));
+    var dataDe = new Date(this.startDate);
+    var dataAte = new Date(this.endDate);
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
     this.restJiraService.getFilter("59157").subscribe(response => this.getPerf(response.jql, "Retrabalho"));
@@ -165,6 +167,7 @@ export class IndperfprimeComponent implements OnInit {
     }
     this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
     this.loadButton = false;
+    this.isHideLoading = true;
     this.labelButton = "Gerar Indicadores";
     
   }

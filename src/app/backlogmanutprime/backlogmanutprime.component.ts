@@ -25,6 +25,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   loading: boolean = false;
   qtdRequeste: number = 0;
   textButton: string = "Gerar indicadores";
+  isHideLoading = true;
   
   //Chart 1 Column
   categchart0: Array<string>;
@@ -62,6 +63,7 @@ export class BacklogmanutprimeComponent implements OnInit {
     this.limpaTabela();
     this.loading = true;
     this.textButton = "Gerando indicadores..." 
+    this.isHideLoading = false;
     // Request dos totais de Indicadores Backlog público
     this.restJiraService.getFilter("59680").subscribe(response => this.getTest(response.jql, "backlogAvencer",0));
     this.restJiraService.getFilter("59665").subscribe(response => this.getTest(response.jql, "backlogPacemergenciais",0));
@@ -179,6 +181,7 @@ export class BacklogmanutprimeComponent implements OnInit {
        this.serieschart[cont] = this.getSeriesChart(this.itens[cont],false);
     }
     this.loading = false;
+    this.isHideLoading = true;
     this.textButton = "Gerar indicadores"
   }
   //

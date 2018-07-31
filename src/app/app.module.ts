@@ -18,6 +18,7 @@ import { PrincipalComponent } from './principal/principal.component';
 import { EquipeComponent } from './equipe/equipe.component';
 import { RestJiraService } from './rest-jira.service';
 import { AuthGuard } from './guards/auth.guard';
+import { IndrejectprimeComponent } from './indrejectprime/indrejectprime.component';
 
 
 
@@ -30,7 +31,8 @@ import { AuthGuard } from './guards/auth.guard';
     BacklogmanutprimeComponent,
     IndclienteComponent,
     PrincipalComponent,
-    EquipeComponent
+    EquipeComponent,
+    IndrejectprimeComponent
   ],
   imports: [
     BrowserModule,

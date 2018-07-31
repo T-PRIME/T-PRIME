@@ -257,6 +257,10 @@ export class BacklogmanutprimeComponent implements OnInit {
     var serie = "";
     this.itemsGrid = [];
 
+    if (this.restJiraService.detectarMobile()) {
+      return;
+    }
+
     if (chart == "issuesEmAprovacao") {
       if (formData.category == "Teste de Unidade") {
         serie = "testedeunidade";

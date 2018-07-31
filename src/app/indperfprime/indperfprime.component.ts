@@ -173,6 +173,10 @@ export class IndperfprimeComponent implements OnInit {
   }
 
   openModal(formData, usuario) {
+
+    if (this.restJiraService.detectarMobile()) {
+      return;
+    }
     
     this.itemsGrid = [];
     for (var _i = 0; this.itemsperf.length > _i; _i++) {

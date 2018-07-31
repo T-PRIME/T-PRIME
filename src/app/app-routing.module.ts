@@ -6,6 +6,7 @@ import { BacklogmanutprimeComponent } from './backlogmanutprime/backlogmanutprim
 import { IndclienteComponent } from './indcliente/indcliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { EquipeComponent } from './equipe/equipe.component';
+import { IndrejectprimeComponent } from './indrejectprime/indrejectprime.component';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'indmanutprime', component: IndmanutprimeComponent, canActivate: [AuthGuard] },
   { path: 'indperfprime', component: IndperfprimeComponent, canActivate: [AuthGuard] },
   { path: 'indcliente', component: IndclienteComponent, canActivate: [AuthGuard] },
+  { path: 'indrejectprime', component: IndrejectprimeComponent, canActivate: [AuthGuard] },
   { path: 'equipe', component: EquipeComponent, canActivate: [AuthGuard] },
   { path: '', component: PrincipalComponent, canActivate: [AuthGuard] },
   { path: 'login', component: AppComponent },

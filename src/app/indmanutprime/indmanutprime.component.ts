@@ -104,7 +104,7 @@ export class IndmanutprimeComponent implements OnInit {
     dadosChart[4].entProjeto.sort(function(a,b){
       return (a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0);
     });
-    for (var _i = 0; dadosChart[4].entProjeto.length > _i && _i < 10; _i ++) {
+    for (var _i = 0; dadosChart[4].entProjeto.length > _i && _i < 20; _i ++) {
       dadosRet.push({name: dadosChart[4].entProjeto[_i][0], data: [dadosChart[4].entProjeto[_i][1]] });
     }
 
@@ -272,6 +272,10 @@ export class IndmanutprimeComponent implements OnInit {
     var posItemChart;
     this.itemsGrid = [];
 
+    if (this.restJiraService.detectarMobile()) {
+      return;
+    }
+
     if (chart == "criaXResolv") {
       posItemChart = 0;
       if (formData.category == "Privado e A.M.S") {
@@ -310,5 +314,4 @@ export class IndmanutprimeComponent implements OnInit {
     }
     this.thfModal.open();
   }
-
 }

@@ -30,12 +30,12 @@
           style.height="390px;"
           type="column"
           (seriesClick)="openModal($event, 'criaXResolv')" [seriesColors]="['#3498db', '#8CC375']">
-          <kendo-chart-title text="Issues Criados x Resolvidos"> </kendo-chart-title>
-          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
-          <kendo-chart-tooltip> </kendo-chart-tooltip>
-          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart2" [name]="serie.name" [type]="number" [data]="serie.data" >
-          <kendo-chart-series-item-labels visible="true"> 
-          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+          <kendo-chart-title text="Issues Criados x Resolvidos"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart2" [name]="serie.name" [type]="number" [data]="serie.data" >
+          <kendo-chart-series-item-labels visible="true"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
         </kendo-chart>
 
       </thf-widget>   
@@ -46,12 +46,12 @@
          style.height="390px;"
          type="column"
          (seriesClick)="openModal($event, 'abertasVersao')" [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C']" >
-        <kendo-chart-title text="Issues Abertas - Versões"> </kendo-chart-title>
-        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
-        <kendo-chart-tooltip> </kendo-chart-tooltip>
-        <kendo-chart-series > <kendo-chart-series-item *ngFor="let serie of serieschart4" [name]="serie.name" [type]="number" [data]="serie.data" >
-        <kendo-chart-series-item-labels visible="true" > 
-        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+        <kendo-chart-title text="Issues Abertas - Versões"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-series > <kendo-chart-series-item *ngFor="let serie of serieschart4" [name]="serie.name" [type]="number" [data]="serie.data" >
+        <kendo-chart-series-item-labels visible="true" > 
+        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
        </kendo-chart>
       </thf-widget>
     </div>
@@ -63,9 +63,9 @@
          style.height="390px;"
          type="donut"
          (seriesClick)="openModal($event, 'criaXResolvDataPrev')"  [seriesColors]="['#3498db', '#8CC375']">
-          <kendo-chart-title text="DataPrev - Criados x Resolvidos"> </kendo-chart-title>
-          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
-          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-title text="DataPrev - Criados x Resolvidos"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
           <kendo-chart-series>
           <kendo-chart-series-item *ngFor="let series of serieschart6; let outermost = last;" type="donut" [startAngle]="150" [name]="series.category" [data]="series.data"
                                    field="value" categoryField="category" colorField="color">
@@ -80,12 +80,12 @@
          style.height="390px;"
          type="column"
          (seriesClick)="openModal($event, 'entDetalhada')" [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900']" >
-          <kendo-chart-title text="Entrega Detalhada"> </kendo-chart-title>
-          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
-          <kendo-chart-tooltip> </kendo-chart-tooltip>
-          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart7" [name]="serie.name" [type]="number" [data]="serie.data">
-          <kendo-chart-series-item-labels visible="true"> 
-          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+          <kendo-chart-title text="Entrega Detalhada"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart7" [name]="serie.name" [type]="number" [data]="serie.data">
+          <kendo-chart-series-item-labels visible="true"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
        </kendo-chart>
         </thf-widget>
     </div>
@@ -97,12 +97,12 @@
          type="column"
          [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C', '#1ABC9C', '#9B59B6', '#34495E', '#7F8C8D', '#C0392B']"
          >
-          <kendo-chart-title text="Manutenções por Projeto"> </kendo-chart-title>
-          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
-          <kendo-chart-tooltip> </kendo-chart-tooltip>
-          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart5" [name]="serie.name" [type]="number" [data]="serie.data">
-          <kendo-chart-series-item-labels visible="true"> 
-          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+          <kendo-chart-title text="Manutenções por Projeto"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-tooltip> </kendo-chart-tooltip>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart5" [name]="serie.name" [type]="number" [data]="serie.data">
+          <kendo-chart-series-item-labels visible="true"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
         </kendo-chart>
       </thf-widget>    
     </div>
@@ -129,5 +129,3 @@
   </thf-modal>
 
 </thf-page-default>
-
-

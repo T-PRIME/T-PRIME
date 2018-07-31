@@ -39,6 +39,11 @@ export class RestJiraService {
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/search", this.opts).map(res => res.json());
 
   }
+  
+  getComments(issue) {
+
+    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/issue/"+issue+"/comment").map(res => res.json());
+  }
 
    atualizaBacklog(response, componente, usuarios: Array<any>, campo,tipo) {
     var _x = 0;
@@ -49,7 +54,7 @@ export class RestJiraService {
       for (var _i = 0; response.total > _i;) {
         if (_x < usuarios.length) {
           
-          if (campo == "pacemergenciais") {
+          if (campo == "pacemergenciais" && response.issues[_i].fields.customfield_10048 != undefined) {
             user = response.issues[_i].fields.customfield_10048.name;
           }else if (response.issues[_i].fields.assignee == undefined) {
             user = "unassigned";
@@ -113,6 +118,10 @@ export class RestJiraService {
         if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)" || campo == "Retrabalho") {
           user = response.issues[_i].fields.customfield_10046.name; //10046 - Desenvolvedor
         }else if (campo == "Codificadas" || campo == "Rejeitadas" ) {
+
+        if ((response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)" || campo == "Retrabalho") && response.issues[_i].fields.customfield_10046 != undefined) {
+          user = response.issues[_i].fields.customfield_10046.name; //10046 - Desenvolvedor
+        }else if ((campo == "Codificadas" || campo == "Rejeitadas" ) && response.issues[_i].fields.customfield_10048 != undefined) {
           user = response.issues[_i].fields.customfield_10048.name; //10048 - Analista
         }else if (response.issues[_i].fields.assignee != undefined) {
           user = response.issues[_i].fields.assignee.name;
@@ -335,7 +344,21 @@ export class RestJiraService {
     }
     data = new Date(data);
     return data.toLocaleString().toString().substring(0,10);
-  }  
+  }
+  
+  detectarMobile() { 
+    if ( navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)) 
+    {
+      return true;
+    }else{
+      return false;
+    }
+  }    
 
   autenticar(login, password) {
 

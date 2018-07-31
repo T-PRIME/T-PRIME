@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
       { label: 'Backlog Manutenção Prime', link: './backlogmanutprime' },
       { label: 'Indicadores Manutenção Prime', link: './indmanutprime' },
       { label: 'Indicadores Performance Manutenção Prime', link: './indperfprime' },
+      { label: 'Indicadores Rejeição Prime', link: './indrejectprime' },
       { label: 'Equipe Manutenção Prime', link: './equipe' }
     ]}
   ];
@@ -66,10 +67,17 @@ export class AppComponent implements OnInit {
         this.mostraMenu = true;
         this.router.navigate(['/']);
       }, error => {
-        this.thfDialogService.alert({
-        title: 'Acesso negado!',
-        message: 'login ou senha invalidos.'
-        });
+        if (error.status == "401") {
+          this.thfDialogService.alert({
+          title: 'Acesso negado!',
+          message: 'login ou senha invalidos.'
+          });
+        }else{
+          this.thfDialogService.alert({
+          title: 'Erro de sincronismo!',
+          message: 'Falha de conexão com JIRA! Codigo: ' + error.status + " - " + error.statusText
+          });
+        }
       }
     );
   }

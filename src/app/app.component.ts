@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
     
     this.restJiraService.autenticar("", "").subscribe(data => {
         this.restJiraService.loginOk = true;
+        this.restJiraService.userLogado = data.name;
         this.mostraMenu = true;
         this.router.navigate(['/']);
       }, error => { }
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
     
     this.restJiraService.autenticar(formData.login, formData.password).subscribe(data => {
         this.restJiraService.loginOk = true;
+        this.restJiraService.userLogado = formData.login;
         this.mostraMenu = true;
         this.router.navigate(['/']);
       }, error => {

@@ -110,7 +110,6 @@ export class IndrejectprimeComponent implements OnInit {
       //Atualiza Grid
       this.getMsgRejeicao(response.issues[_i]);
       criouSerie = false;
-      
       //Atualiza Rejeições por Analista
       if (this.serieschart1.length == 0) {
         this.serieschart1.push({name: response.issues[_i].fields.reporter.name, data: [1]});
@@ -172,7 +171,7 @@ export class IndrejectprimeComponent implements OnInit {
       var msgRejeicao = "";
       //Busca o comentario referente a rejeição
       for (var _x = 0; response.total > _x; _x++){
-        if (response.comments[_x].created.toString().substring(0,19) == issue.fields.resolutiondate.toString().substring(0,19)) {
+        if (response.comments[_x].created.toString().substring(0,10) == issue.fields.resolutiondate.toString().substring(0,10) && response.comments[_x].body.split("\n")[0].substring(0, 18) == "Motivo da Rejeição" ) {
           motRejeicao = response.comments[_x].body.split("\n")[0].substring(20);
           msgRejeicao = response.comments[_x].body.split(response.comments[_x].body.split("\n")[0])[1];
         }

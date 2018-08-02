@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Rx';
 export class RestJiraService {
 
   public loginOk = false;
+  public userLogado = "";
   public request: any;
   private execReq = [];
   private processos: number = 0;
@@ -21,7 +22,6 @@ export class RestJiraService {
 
   getFilter(codFiltro) {
 
-    //this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
 
     return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
@@ -29,7 +29,6 @@ export class RestJiraService {
 
   getIssues(filtro, fields?: string) {
 
-    //this.headers.set("Authorization", "Basic anVsaW8uc2lsdmE6SnVsITE5OTczOTgz");
     this.opts.headers = this.headers;
     this.params.set("maxResults", "20000");
     this.params.set("jql", filtro);
@@ -358,6 +357,7 @@ export class RestJiraService {
 
   autenticar(login, password) {
 
+    this.headers = new Headers();
     this.headers.set("Authorization", "Basic "+window.btoa(login+":"+password));    
     this.opts.headers = this.headers;
 

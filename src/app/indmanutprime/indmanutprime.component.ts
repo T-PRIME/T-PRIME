@@ -8,6 +8,7 @@ import { saveAs } from '@progress/kendo-file-saver';
 import { exportPDF,exportImage, Group,Text } from '@progress/kendo-drawing';
 import { ThfModalAction } from '@totvs/thf-ui/components/thf-modal';
 import { ThfModalComponent } from '@totvs/thf-ui/components/thf-modal/thf-modal.component';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/map';
 
@@ -54,7 +55,10 @@ export class IndmanutprimeComponent implements OnInit {
   @ViewChild("DataPrevCriados") DataPrevCriados: ChartComponent;
   @ViewChild("EnrtregaDetalhada") EnrtregaDetalhada: ChartComponent;
 
-  constructor(private restJiraService: RestJiraService, private thfAlert: ThfDialogService) {};
+  constructor(
+    private restJiraService: RestJiraService, 
+    private router: Router,
+    private thfAlert: ThfDialogService) {};
 
   ngOnInit() {
     
@@ -183,6 +187,19 @@ export class IndmanutprimeComponent implements OnInit {
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
 
   }
+
+  //
+  // Verifica se sessão do usuario está ativa
+  //
+  validaSessao() {
+
+    this.restJiraService.autenticar("", "").subscribe(data => { 
+      this.geraIndicadores();
+    }, error => { 
+      this.thfAlert.alert({title: "Sessão encerrada!", message: "Por favor, refaça o login.", ok: () => this.router.navigate(['/login']) });
+    });      
+
+  }  
 
   geraIndicadores() {
     if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate.toString() == "" || this.endDate.toString() == "") ){

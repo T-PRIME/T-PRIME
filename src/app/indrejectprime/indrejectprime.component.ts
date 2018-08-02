@@ -24,6 +24,7 @@ export class IndrejectprimeComponent implements OnInit {
   timeini = " 00:00"
   timeFim = " 23:59"
   now: Date;    
+  totalIssues = 0;
 
   constructor(
     public restJiraService: RestJiraService, 
@@ -124,6 +125,7 @@ export class IndrejectprimeComponent implements OnInit {
     var criouSerie = false;
     for (var _i = 0; response.total > _i; _i++) {
       
+      this.totalIssues++;
       //Atualiza Grid
       this.getMsgRejeicao(response.issues[_i]);
       criouSerie = false;

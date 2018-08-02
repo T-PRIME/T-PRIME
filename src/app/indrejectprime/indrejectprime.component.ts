@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfGridColumn  } from '@totvs/thf-ui/components/thf-grid';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-indretrabprime',
@@ -24,7 +25,10 @@ export class IndrejectprimeComponent implements OnInit {
   timeFim = " 23:59"
   now: Date;    
 
-  constructor(public restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { }
+  constructor(
+    public restJiraService: RestJiraService, 
+    private router: Router,
+    private thfAlert: ThfDialogService ) { }
 
   ngOnInit() {
     
@@ -54,6 +58,19 @@ export class IndrejectprimeComponent implements OnInit {
       { column: 'descrReject', label: 'Descrição Rejeição' , type: 'string', width: 34}
     ];
   }
+
+  //
+  // Verifica se sessão do usuario está ativa
+  //
+  validaSessao() {
+
+    this.restJiraService.autenticar("", "").subscribe(data => { 
+      this.geraIndicadores();
+    }, error => { 
+      this.thfAlert.alert({title: "Sessão encerrada!", message: "Por favor, refaça o login.", ok: () => this.router.navigate(['/login']) });
+    });      
+
+  }    
 
   //
   //Inicia a geração dos dados da tela

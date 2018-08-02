@@ -5,6 +5,8 @@ import { RestJiraService } from '../rest-jira.service';
 import { ThfGridColumn  } from '@totvs/thf-ui/components/thf-grid';
 import { ThfModalAction } from '@totvs/thf-ui/components/thf-modal';
 import { ThfModalComponent } from '@totvs/thf-ui/components/thf-modal/thf-modal.component';
+import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-backlogmanutprime',
@@ -43,7 +45,10 @@ export class BacklogmanutprimeComponent implements OnInit {
   itemsGrid: Array<any>;
 
   
-  constructor(public restJiraService: RestJiraService ) { 
+  constructor(
+    public restJiraService: RestJiraService, 
+    private router: Router,
+    private thfAlert: ThfDialogService ) { 
 
     this.usuarios = this.getUsers()
 
@@ -56,9 +61,21 @@ export class BacklogmanutprimeComponent implements OnInit {
 
   }
   //
+  // Verifica se sessão do usuario está ativa
+  //
+  validaSessao() {
+
+    this.restJiraService.autenticar("", "").subscribe(data => { 
+      this.gerarIndicadores();
+    }, error => { 
+      this.thfAlert.alert({title: "Sessão encerrada!", message: "Por favor, refaça o login.", ok: () => this.router.navigate(['/login']) });
+    });      
+
+  }
+  //
   // Require principal pelos filtros 
   //
-  gerarIndicadores() {
+  gerarIndicadores() { 
    
     this.limpaTabela();
     this.loading = true;

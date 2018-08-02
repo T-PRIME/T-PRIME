@@ -8,7 +8,7 @@
         </thf-datepicker>
         <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required>
         </thf-datepicker>
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "geraIndicadores()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" [t-label]="labelButton" t-primary="true">
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "validaSessao()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" [t-label]="labelButton" t-primary="true">
         </thf-button>
     </thf-widget>
     </div>

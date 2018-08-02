@@ -9,6 +9,7 @@ import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.s
 import { isEmpty } from 'rxjs/operator/isEmpty';
 import { ThfModalAction } from '@totvs/thf-ui/components/thf-modal';
 import { ThfModalComponent } from '@totvs/thf-ui/components/thf-modal/thf-modal.component';
+import { Router } from '@angular/router';
 
 
 
@@ -45,7 +46,10 @@ export class IndperfprimeComponent implements OnInit {
 
 
 
-  constructor(public restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { };
+  constructor(
+    public restJiraService: RestJiraService, 
+    private router: Router,
+    private thfAlert: ThfDialogService ) { };
  
   ngOnInit() {
 
@@ -79,6 +83,19 @@ export class IndperfprimeComponent implements OnInit {
     //Chart1
     this.categchart1 = this.getCategchart1();
   }
+
+  //
+  // Verifica se sessão do usuario está ativa
+  //
+  validaSessao() {
+
+    this.restJiraService.autenticar("", "").subscribe(data => { 
+      this.gerarIndicadores();
+    }, error => { 
+      this.thfAlert.alert({title: "Sessão encerrada!", message: "Por favor, refaça o login.", ok: () => this.router.navigate(['/login']) });
+    });      
+
+  }   
 
   gerarIndicadores() {
 

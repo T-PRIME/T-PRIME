@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     this.customLiterals = {
       title: 'Faça o login!',
       loginErrorPattern: 'Login obrigatório',
-      loginPlaceholder: 'Insira seu usuário de acesso',
+      loginPlaceholder: 'Insira seu usuário de acesso. Ex: jose.silva',
       passwordErrorPattern: 'Senha invalida!',
       passwordPlaceholder: 'Insira sua senha de acesso',
       rememberUser: 'Lembrar usuário',

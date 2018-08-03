@@ -93,6 +93,7 @@ export class IndrejectprimeComponent implements OnInit {
     this.itemsGrid = [];
     this.serieschart1 = [];
     this.serieschart2 = [];
+    this.totalIssues = 0;
     
     //Busca a quantidade de dias úteis no mês
     var dataDe = new Date(this.startDate);

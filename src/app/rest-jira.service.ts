@@ -113,11 +113,11 @@ export class RestJiraService {
     this.execReq.push(campo);
     for (var _i = 0; response.total > _i;) {
       if (_x < usuarios.length) {
-        
-        if (response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)" && response.issues[_i].fields.customfield_10046 != undefined) {
-          user = response.issues[_i].fields.customfield_10046.name;
-        }else if ((campo == "Codificadas" || campo == "Rejeitadas" || campo == "Retrabalho") && response.issues[_i].fields.customfield_10048 != undefined) {
-          user = response.issues[_i].fields.customfield_10048.name;
+
+        if ((response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)" || campo == "Retrabalho") && response.issues[_i].fields.customfield_10046 != undefined) {
+          user = response.issues[_i].fields.customfield_10046.name; //10046 - Desenvolvedor
+        }else if ((campo == "Codificadas" || campo == "Rejeitadas" ) && response.issues[_i].fields.customfield_10048 != undefined) {
+          user = response.issues[_i].fields.customfield_10048.name; //10048 - Analista
         }else if (response.issues[_i].fields.assignee != undefined) {
           user = response.issues[_i].fields.assignee.name;
         }

@@ -57,13 +57,14 @@ export class BacklogmanutprimeComponent implements OnInit {
   ngOnInit() {
     
     this.limpaTabela();
-    this.columnsGrid = this.getColumns();
 
   }
   //
   // Verifica se sessão do usuario está ativa
   //
   validaSessao() {
+
+    this.loading = true;
 
     this.restJiraService.autenticar("", "").subscribe(data => { 
       this.gerarIndicadores();
@@ -78,7 +79,6 @@ export class BacklogmanutprimeComponent implements OnInit {
   gerarIndicadores() { 
    
     this.limpaTabela();
-    this.loading = true;
     this.textButton = "Gerando indicadores..." 
     this.isHideLoading = false;
     // Request dos totais de Indicadores Backlog público
@@ -250,16 +250,23 @@ export class BacklogmanutprimeComponent implements OnInit {
     }
   }
 
-  getColumns(): Array<ThfGridColumn> {
-    return [
-      { column: 'issue', label: 'Issue', type: 'string', width: 18},
-      { column: 'nomeFant', label: 'Nome Fantasia', type: 'string', width: 27},
-      { column: 'summary', label: 'Summary' , type: 'string', width: 31},
-      { column: 'sla', label: 'SLA', type: 'date', width: 13},
-      { column: 'dtAcordo', label: 'Dt. Acordo', type: 'date', width: 13},
-      { column: 'dtPSLA', label: 'Pausa SLA', type: 'date', width: 13},
-      { column: 'reporter', label: 'Reporter', type: 'string', width: 15 }
-    ];
+  getColumns(chart): Array<ThfGridColumn> {
+
+    var colunas = [];
+      colunas.push({ column: 'issue', label: 'Issue', type: 'string', width: 18});
+      colunas.push({ column: 'nomeFant', label: 'Nome Fantasia', type: 'string', width: 27});
+      colunas.push({ column: 'summary', label: 'Summary' , type: 'string', width: 31});
+      if (chart == "issuesPendentes") {
+        colunas.push({ column: 'assignee', label: 'Assignee', type: 'string', width: 15 });
+      }else if (chart == "issuesEmAprovacao") {
+        colunas.push({ column: 'modulo', label: 'Módulo', type: 'string', width: 15 });
+      }
+      colunas.push({ column: 'sla', label: 'SLA', type: 'date', width: 13});
+      colunas.push({ column: 'dtAcordo', label: 'Dt. Acordo', type: 'date', width: 13});
+      colunas.push({ column: 'dtPSLA', label: 'Pausa SLA', type: 'date', width: 13});
+      colunas.push({ column: 'reporter', label: 'Reporter', type: 'string', width: 15 });
+
+    return colunas
   }
 
   primaryAction: ThfModalAction = {
@@ -272,6 +279,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   openModal(formData, usuario, chart) {
 
     var serie = "";
+    this.columnsGrid = this.getColumns(chart);    
     this.itemsGrid = [];
 
     if (this.restJiraService.detectarMobile()) {
@@ -347,32 +355,56 @@ export class BacklogmanutprimeComponent implements OnInit {
       }
     }
     if (chart == "itens") {
+
       for (var _i = 0; this.usuarios.length > _i; _i++) {
         if (this.usuarios[_i].analista == usuario) {
           for (var _x = 0; eval("this."+chart+"[_i]."+serie+".issues.length") > _x; _x++) {
             this.itemsGrid.push({
-              issue:    eval("this."+chart+"[_i]."+serie+".issues[_x].key"),
-              nomeFant: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11071.value"),
-              summary: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.summary"),
-              sla:      this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11080")),
-              dtAcordo: this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11039")),
-              dtPSLA:   this.restJiraService.formatDate(eval("this."+chart+"[_i]."+serie+".issues[_x].fields.customfield_11040")),
-              reporter: eval("this."+chart+"[_i]."+serie+".issues[_x].fields.reporter.displayName")
+              issue:    this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].key"),
+              nomeFant: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11071.value"),
+              summary: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.summary"),
+              sla:      this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11080")),
+              dtAcordo: this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11039")),
+              dtPSLA:   this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11040")),
+              reporter: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.reporter.displayName")
             });
           }
         }
       }
     }else{
+
+      var nameAssignee = "";
+
       for (var _x = 0; eval("this."+chart+"."+serie+".issues.length") > _x; _x++) {
-        this.itemsGrid.push({
-          issue:    eval("this."+chart+"."+serie+".issues[_x].key"),
-          nomeFant: eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11071.value"),
-          summary: eval("this."+chart+"."+serie+".issues[_x].fields.summary"),
-          sla:      this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11080")),
-          dtAcordo: this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11039")),
-          dtPSLA:   this.restJiraService.formatDate(eval("this."+chart+"."+serie+".issues[_x].fields.customfield_11040")),
-          reporter: eval("this."+chart+"."+serie+".issues[_x].fields.reporter.displayName")
-        });    
+        if (chart == "issuesPendentes") {
+          if (this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.assignee") != undefined) {
+            nameAssignee = this.restJiraService.ReplaceAll(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.assignee.name"), ".", " ", false);
+          }else{
+            nameAssignee = "Unassigned";
+          }
+
+          this.itemsGrid.push({
+          issue:    this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].key"),
+          nomeFant: this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11071.value"),
+          summary: this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.summary"),
+          assignee: nameAssignee,
+          sla:      this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11080")),
+          dtAcordo: this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11039")),
+          dtPSLA:   this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11040")),
+          reporter: this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.reporter.displayName")
+          });    
+        }else if (chart == "issuesEmAprovacao") {
+          this.itemsGrid.push({
+          issue:    this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].key"),
+          nomeFant: this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11071.value"),
+          summary:  this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.summary"),
+          modulo:   this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11069.value"),
+          sla:      this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11080")),
+          dtAcordo: this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11039")),
+          dtPSLA:   this.restJiraService.formatDate(this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.customfield_11040")),
+          reporter: this.validaCampo("this."+chart+"."+serie+".issues["+_x+"].fields.reporter.displayName")
+          });              
+        }
       }
     
     }    
@@ -382,6 +414,20 @@ export class BacklogmanutprimeComponent implements OnInit {
 
   changeEvent(component){
     console.log(component);
+  }
+
+  validaCampo(valor) {
+    
+    var retorno = "";
+
+    try {
+      retorno = eval(valor);
+      return retorno;
+    } catch (error) {
+      console.log(error);
+      return retorno;
+    }
+
   }
 
 }

@@ -193,6 +193,8 @@ export class IndmanutprimeComponent implements OnInit {
   //
   validaSessao() {
 
+    this.loadButton = true;
+
     this.restJiraService.autenticar("", "").subscribe(data => { 
       this.geraIndicadores();
     }, error => { 
@@ -206,7 +208,6 @@ export class IndmanutprimeComponent implements OnInit {
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
-    this.loadButton = true;
     this.isHideLoading = false;
     this.labelButton = "Gerando indicadores..." 
 
@@ -236,8 +237,8 @@ export class IndmanutprimeComponent implements OnInit {
   getManut(filtro, chart , fields?: string) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini+"'");
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+this.startDate.toString().substring(0,10)+this.timeini+"'", true);
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'", true);
 
       this.restJiraService.getIssues(filtroEdit, fields).subscribe( response => { 
         var fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);
@@ -330,5 +331,9 @@ export class IndmanutprimeComponent implements OnInit {
       });
     }
     this.thfModal.open();
+  }
+
+  teste(evento) {
+    console.log(evento);
   }
 }

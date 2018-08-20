@@ -65,6 +65,8 @@ export class IndrejectprimeComponent implements OnInit {
   //
   validaSessao() {
 
+    this.loadButton = true;
+    
     this.restJiraService.autenticar("", "").subscribe(data => { 
       this.geraIndicadores();
     }, error => { 
@@ -85,7 +87,6 @@ export class IndrejectprimeComponent implements OnInit {
     }
     
     //Altera status das variaves de loading
-    this.loadButton = true;
     this.isHideLoading = false;
     this.labelButton = "Gerando indicadores..." 
 
@@ -94,7 +95,7 @@ export class IndrejectprimeComponent implements OnInit {
     this.serieschart1 = [];
     this.serieschart2 = [];
     this.totalIssues = 0;
-    
+
     //Busca a quantidade de dias úteis no mês
     var dataDe = new Date(this.startDate);
     var dataAte = new Date(this.endDate);
@@ -111,8 +112,8 @@ export class IndrejectprimeComponent implements OnInit {
 
       //Adiciona as datas informadas ao filtro jql
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'");
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'", true);
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'", true);
 
       //
       //Requisição da API que retornará as issues rejeitadas

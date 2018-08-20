@@ -88,7 +88,9 @@ export class IndperfprimeComponent implements OnInit {
   // Verifica se sessão do usuario está ativa
   //
   validaSessao() {
-
+    
+    this.loadButton = true;
+    
     this.restJiraService.autenticar("", "").subscribe(data => { 
       this.gerarIndicadores();
     }, error => { 
@@ -103,7 +105,6 @@ export class IndperfprimeComponent implements OnInit {
       this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
       return;
     }
-    this.loadButton = true;
     this.isHideLoading = false;
     this.labelButton = "Gerando indicadores..." 
 
@@ -123,8 +124,8 @@ export class IndperfprimeComponent implements OnInit {
    getPerf(filtro, campo) {
 
       var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'");
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'");
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'", true);
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'", true);
 
       this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
         var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
@@ -198,7 +199,6 @@ export class IndperfprimeComponent implements OnInit {
     this.itemsGrid = [];
     for (var _i = 0; this.itemsperf.length > _i; _i++) {
       if (this.itemsperf[_i].analista == usuario) {
-        console.log(eval("this.itemsperf[_i]."+formData.series.name+".issues.length"));
         for (var _x = 0; eval("this.itemsperf[_i]."+formData.series.name+".issues.length") > _x; _x++) {
           this.itemsGrid.push({
             issue:    eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].key"),
@@ -212,7 +212,6 @@ export class IndperfprimeComponent implements OnInit {
         } 
       }
     }
-    console.log(formData);
     this.thfModal.open();
   }
 

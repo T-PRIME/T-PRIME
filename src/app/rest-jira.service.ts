@@ -20,7 +20,7 @@ export class RestJiraService {
   
   constructor(private http: Http) { } 
 
-  getFilter(codFiltro) {
+  getFilter(codFiltro) { 
 
     this.opts.headers = this.headers;
 
@@ -113,10 +113,10 @@ export class RestJiraService {
     this.execReq.push(campo);
     for (var _i = 0; response.total > _i;) {
       if (_x < usuarios.length) {
-
+        
         if ((response.issues[_i].fields.issuetype.name == "Merge (Sub-tarefa)" || campo == "Retrabalho") && response.issues[_i].fields.customfield_10046 != undefined) {
           user = response.issues[_i].fields.customfield_10046.name; //10046 - Desenvolvedor
-        }else if ((campo == "Codificadas" || campo == "Rejeitadas" ) && response.issues[_i].fields.customfield_10048 != undefined) {
+        }else if ((campo == "Codificadas" || campo == "Rejeitadas") && response.issues[_i].fields.customfield_10048 != undefined) {
           user = response.issues[_i].fields.customfield_10048.name; //10048 - Analista
         }else if (response.issues[_i].fields.assignee != undefined) {
           user = response.issues[_i].fields.assignee.name;
@@ -298,19 +298,20 @@ export class RestJiraService {
     }
   }
 
-  ReplaceAll(jql:string, oldvalue: string , newValue: string){
+  ReplaceAll(jql:string, oldvalue: string , newValue: string, upper: boolean){
 
     let continua: boolean = true
     let achou: number = 0
     let busca: string
-                
-    jql = jql.toString().toUpperCase()
-    oldvalue = oldvalue.toString().toUpperCase()
-    newValue = newValue.toString().toUpperCase()
-                
+    
+    if (upper) {
+      jql = jql.toString().toUpperCase()
+      oldvalue = oldvalue.toString().toUpperCase()
+      newValue = newValue.toString().toUpperCase()
+    }
     while (continua) {
-        achou = jql.toString().search(oldvalue)
-        if (achou > 0) {
+        achou = jql.toString().indexOf(oldvalue)
+        if (achou > -1) {
             jql = jql.toString().replace(oldvalue, newValue )
                         
         }else{continua = false}                
@@ -337,6 +338,9 @@ export class RestJiraService {
     if (data === null) {
       return "";
     }
+    if (data.indexOf("-") > 0 && data.length == 10) {
+      data = this.ReplaceAll(data, "-", "/", false);
+    }
     data = new Date(data);
     return data.toLocaleString().toString().substring(0,10);
   }
@@ -356,7 +360,7 @@ export class RestJiraService {
   }    
 
   autenticar(login, password) {
-
+    
     this.headers = new Headers();
     this.headers.set("Authorization", "Basic "+window.btoa(login+":"+password));    
     this.opts.headers = this.headers;

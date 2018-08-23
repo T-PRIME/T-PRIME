@@ -360,13 +360,13 @@ export class BacklogmanutprimeComponent implements OnInit {
         if (this.usuarios[_i].analista == usuario) {
           for (var _x = 0; eval("this."+chart+"[_i]."+serie+".issues.length") > _x; _x++) {
             this.itemsGrid.push({
-              issue:    this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].key"),
-              nomeFant: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11071.value"),
-              summary: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.summary"),
-              sla:      this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11080")),
-              dtAcordo: this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11039")),
-              dtPSLA:   this.restJiraService.formatDate(this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.customfield_11040")),
-              reporter: this.validaCampo("this."+chart+[_i]+"."+serie+".issues["+_x+"].fields.reporter.displayName")
+              issue:    this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].key"),
+              nomeFant: this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.customfield_11071.value"),
+              summary: this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.summary"),
+              sla:      this.restJiraService.formatDate(this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.customfield_11080")),
+              dtAcordo: this.restJiraService.formatDate(this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.customfield_11039")),
+              dtPSLA:   this.restJiraService.formatDate(this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.customfield_11040")),
+              reporter: this.validaCampo("this."+chart+"["+_i+"]"+"."+serie+".issues["+_x+"].fields.reporter.displayName")
             });
           }
         }

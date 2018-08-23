@@ -2,6 +2,7 @@
   <thf-page-login
     t-hide-remember-user
     [t-literals]="customLiterals"
+    [t-loading]="loadingButton"
     (t-login-submit)="isAuth($event)">
   </thf-page-login>
 </div>

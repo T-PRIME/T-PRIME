@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
 
   mostraMenu = false;
   customLiterals: ThfPageLoginLiterals;
+  loadingButton = false;
 
   menus: Array<ThfMenuItem> = [
     
@@ -62,7 +63,8 @@ export class AppComponent implements OnInit {
   }
 
   isAuth(formData) {
-    
+
+    this.loadingButton = true;
     this.restJiraService.autenticar(formData.login, formData.password).subscribe(data => {
         this.restJiraService.loginOk = true;
         this.restJiraService.userLogado = formData.login;
@@ -74,11 +76,13 @@ export class AppComponent implements OnInit {
           title: 'Acesso negado!',
           message: 'login ou senha invalidos.'
           });
+          this.loadingButton = false;
         }else{
           this.thfDialogService.alert({
           title: 'Erro de sincronismo!',
           message: 'Falha de conexão com JIRA! Codigo: ' + error.status + " - " + error.statusText
           });
+          this.loadingButton = false;
         }
       }
     );

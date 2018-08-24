@@ -1,0 +1,75 @@
+<thf-page-default >
+  <blockquote id="blockquote">Indicadores Rejeições PRIME</blockquote>
+
+  <form #f="ngForm" id="f">
+    <div class="thf-row">
+      <thf-widget class="thf-md-12"  >
+        <thf-datepicker class="thf-md-3" name="startDate" [(ngModel)]="startDate" t-clean t-format="dd/mm/yyyy" t-label="Início do Período" t-required>
+        </thf-datepicker>
+        <thf-datepicker class="thf-md-3" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período" t-required>
+        </thf-datepicker>
+        <thf-button id="btngerar" class="thf-md-6" (t-click)= "validaSessao()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs" [t-label]="labelButton" t-primary="true">
+        </thf-button>
+    </thf-widget>
+    </div>
+  </form>
+
+  <hr id="hr">
+
+  <thf-widget class="thf-md-12" id="widgeral">
+    <thf-loading-overlay [hidden]="isHideLoading"></thf-loading-overlay>
+    <div class="thf-row" id="titlebacklog">
+      <h1>Rejeições</h1>    
+    </div>  
+
+    <div class="thf-row" id="totalIssues">
+      <h1>Total Issues: {{totalIssues}}</h1>
+      <br>    
+    </div>
+
+    <div class="thf-row">
+      <thf-widget class="thf-md-12">
+        <kendo-chart class="thf-md-12"
+          style.height="390px;"
+          type="column"
+          [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C', '#1ABC9C', '#9B59B6', '#34495E', '#7F8C8D', '#C0392B']">
+          <kendo-chart-title text="Rejeições por Analista"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart1" [name]="serie.name" [type]="number" [data]="serie.data" >
+          <kendo-chart-series-item-labels visible="true"> 
+          </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+        </kendo-chart>
+
+      </thf-widget>   
+
+      <thf-widget class="thf-md-12">
+        <kendo-chart class="thf-md-12"
+         style.height="390px;"
+         type="column"
+         [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C', '#1ABC9C', '#9B59B6', '#34495E', '#7F8C8D', '#C0392B']">
+        <kendo-chart-title text="Rejeições por Módulo"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-series > <kendo-chart-series-item *ngFor="let serie of serieschart2" [name]="serie.name" [type]="number" [data]="serie.data" >
+        <kendo-chart-series-item-labels visible="true" > 
+        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+       </kendo-chart>
+      </thf-widget>
+    </div>    
+
+    <div class="thf-row">  
+      <thf-widget class="thf-md-12" 
+      t-height="700" >
+        <thf-grid 
+          [t-data]="itemsGrid" 
+          [t-columns]="columnsGrid" 
+          t-sortable=true 
+          [t-show-export-buttons]=true 
+          [t-editable]=false 
+          t-selectable=false>
+        </thf-grid> 
+      </thf-widget>     
+    </div>  
+  </thf-widget>
+
+</thf-page-default>

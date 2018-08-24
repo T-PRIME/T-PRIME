@@ -1,4 +1,12 @@
-<div class="thf-wrapper">
+<div class="thf-wrapper" *ngIf="!mostraMenu">
+  <thf-page-login
+    t-hide-remember-user
+    [t-literals]="customLiterals"
+    [t-loading]="loadingButton"
+    (t-login-submit)="isAuth($event)">
+  </thf-page-login>
+</div>
+<div class="thf-wrapper" id="menu" *ngIf="mostraMenu">
 
   <thf-menu
     t-filter

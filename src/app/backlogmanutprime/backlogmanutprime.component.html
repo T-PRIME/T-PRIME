@@ -2,184 +2,102 @@
   <blockquote id="blockquote">Backlog Manutenção PRIME</blockquote>
   <form #f="ngForm" id="f">
     <div class="thf-row">
-      <thf-widget class="thf-md-12"  >
-        <thf-button id="btngerar" class="thf-md-6" (t-click)= "gerarIndicadores()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
+      <thf-widget class="thf-md-12">
+        <thf-button id="btngerar" class="thf-md-12" (t-click)= "validaSessao()" t-icon="thf-icon thf-icon-logo-totvs" [t-loading]="loading" [t-label]="textButton" t-primary="true"></thf-button>
       </thf-widget>
     </div>
   </form>
       
   <hr id="hr">
+<div class="thf-row">
+  <thf-widget class="thf-md-12" id= "widgeral">
+  <thf-loading-overlay [hidden]="isHideLoading"></thf-loading-overlay>
 
   <div class="thf-row" id="titlebacklog">
-    <h1>Indicadores Backlog</h1>    
+    <h1>Backlog</h1>    
   </div>
-  
+  <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
   <div class="thf-row" id="chart1">
+    <div class="chart-loading"></div>
     <thf-widget class="thf-md-6" id="wid">
-      <thf-chart class="thf-md-12" 
-        [t-categories]="categchart0"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart0"
-        t-title="Issues Pendentes"
-        t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
-      </thf-chart>
+      <kendo-chart class="thf-md-12" id="chartTest"
+        [categoryAxis]="{'categories' : categchart0}"
+        style.height="390px;"
+        type="column"
+        (seriesClick)="openModal($event, '', 'issuesPendentes')"
+        [seriesColors]="['#3498db', '#8CC375', '#FF4343']">  
+        <kendo-chart-title text="Issues Pendentes"> </kendo-chart-title>   
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart0" [name]="serie.name" [type]="number" [data]="serie.data" >
+        <kendo-chart-series-item-labels visible="true"> 
+        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+      </kendo-chart>
+      
     </thf-widget>   
 
     <thf-widget class="thf-md-6" id="wid" >
-      <thf-chart class="thf-md-12" 
-        [t-categories]="categchart00"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart00"
-        t-title="Issues em Aprovação"
-        t-type="pie"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
-      </thf-chart>
+      <kendo-chart class="thf-md-12" 
+        [categoryAxis]="{'categories' : categchart00}"
+        style.height="390px;"
+        type="donut"
+        (seriesClick)="openModal($event, '', 'issuesEmAprovacao')"
+        [seriesColors]="['#3498db', '#8CC375']">
+        <kendo-chart-title text="Issues em Aprovação"> </kendo-chart-title>   
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+         <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let series of serieschart00; let outermost = last;" type="donut" [startAngle]="150" [name]="series.category" [data]="series.data"
+                                   field="value" categoryField="category" colorField="color">
+            <kendo-chart-series-item-labels visible="true" *ngIf="outermost" position="outsideEnd" background="none" [content]="labelContent"></kendo-chart-series-item-labels>
+          </kendo-chart-series-item>
+          </kendo-chart-series>
+      </kendo-chart>
   </thf-widget>   
   </div>
 
   <div class="thf-row" id="titlebacklog">
-    <h1>Performance Analistas</h1>    
+    <h1>Backlog Analistas</h1>    
   </div>
 
-
-   <thf-widget class="thf-md-4" id="wid">
-    <div class="thf-row">  
-      <thf-chart class="thf-md-12" 
-        [t-categories]="categchart1"
-        t-height="350px"
-        t-label-visible="true"
-        [t-series]="serieschart[0]"
-        [t-title]="analist[0]"
-        t-type="column"
-        (t-series-click)="changeEvent('t-series-click')"
-        (t-series-hover)="changeEvent('t-series-hover')">
-      </thf-chart>
-    </div>
+  <div class="thf-row">  
+   <thf-widget class="thf-md-4" id="wid" *ngFor="let users of analist; let i = index">
+      <kendo-chart class="thf-md-12" 
+         [categoryAxis]="{'categories' : categchart1}"
+        style.height="350px"
+        type="column"
+        (seriesClick)="openModal($event, users, 'itens')" 
+        [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C']">
+        <kendo-chart-title [text]="users"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-series> <kendo-chart-series-item *ngFor="let serie of serieschart[i]" [name]="serie.name" [type]="number" [data]="serie.data" >
+        <kendo-chart-series-item-labels visible="true"> 
+        </kendo-chart-series-item-labels></kendo-chart-series-item> </kendo-chart-series>
+      </kendo-chart>
    </thf-widget>
+  </div>       
+</thf-widget>
+</div>
+    
+  <thf-modal
+    t-title="Issues"
+    t-size="xx"
+    [t-primary-action]="primaryAction">
 
-   <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[1]"
-          [t-title]="analist[1]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-    </thf-widget>
-
-    <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[2]"
-          [t-title]="analist[2]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-    </thf-widget>
-
-    <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[3]"
-          [t-title]="analist[3]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
-
-     <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[4]"
-          [t-title]="analist[4]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
-
-     <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[5]"
-          [t-title]="analist[5]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
-
-     <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[6]"
-          [t-title]="analist[6]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
-
-     <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[7]"
-          [t-title]="analist[7]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
-
-     <thf-widget class="thf-md-4" id="wid">
-      <div class="thf-row">  
-        <thf-chart class="thf-md-12" 
-          [t-categories]="categchart1"
-          t-height="350px;"
-          t-label-visible="true"
-          [t-series]="serieschart[8]"
-          [t-title]="analist[8]"
-          t-type="column"
-          (t-series-click)="changeEvent('t-series-click')"
-          (t-series-hover)="changeEvent('t-series-hover')">
-        </thf-chart>
-      </div>
-     </thf-widget>
+    <div class="thf-row">
+      <thf-grid 
+      [t-data]="itemsGrid" 
+      [t-columns]="columnsGrid" 
+      t-sortable=true 
+      [t-show-export-buttons]=true 
+      [t-editable]=false 
+      t-selectable=false>
+      </thf-grid>      
+    </div>
+  </thf-modal>
+  
 </thf-page-default>    
 

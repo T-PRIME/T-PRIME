@@ -30,6 +30,7 @@ export class IndclienteComponent implements OnInit {
   columnsgrid: Array<ThfGridColumn> = this.getColumnsGrid();
 
   ngOnInit() {
+    alert("Página em construção")
     this.columns = [
       { column: 'ticket', label: 'Ticket', type: 'number'},
       { column: 'status', label: 'Status'},
@@ -135,5 +136,9 @@ export class IndclienteComponent implements OnInit {
       { ticket: '2569855', status: 'Aberto', pendencia: 'Totvs', dtabertura: new Date(), prazo: new Date(), Issue: 'MPRIMESP-15958',assunto: 'Cálculo da Folha', obs: 'cliente parado',prioridade: 'critico', modulo:'Gestão de Pessoal'  }];
   }
 
+
+  onbotao1() {
+    
+  }
 
 }

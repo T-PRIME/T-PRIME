@@ -9,6 +9,7 @@
 }
 #hr {
 	border:#0c9abe solid ;
+    
 }
 #f{
     margin-top: 30px;
@@ -18,11 +19,13 @@
 
 #titlebacklog{
     border-left: 5px solid #0c9abe;
-    margin: 0px 0 20px;
+    margin: 10px 0 10px;
     padding: 10px 20px;
     font-size: 8px;
 }
-#wid{
-    margin-bottom: 30px;
+#wid{    
+    margin-top: 15px;
+}
+#widgeral{    
     margin-top: 30px;
 }

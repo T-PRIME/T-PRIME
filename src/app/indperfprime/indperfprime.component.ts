@@ -41,13 +41,19 @@ export class IndperfprimeComponent implements OnInit {
   timeFim = " 23:59"
   diasUteis: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
   nomeanalista:Array<any> = [];
 =======
+=======
+>>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
   now: Date;
   columnsGrid: Array<ThfGridColumn>;
   itemsGrid: Array<any>;
 
 
+<<<<<<< HEAD
+>>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
+=======
 >>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
 
   constructor(

@@ -4,25 +4,91 @@
   <form #f="ngForm" id="f">
     <div class="thf-row">
       <thf-widget class="thf-md-12"  >
-        <div class="thf-row">
-          <thf-input name="input" t-label="Insira o Código da Organização" t-required=true t-icon='thf-icon-company' ></thf-input>
-          <thf-button id="btngerar" class="thf-md-4" (t-click)= "onbotao1()" t-icon="thf-icon thf-icon-bar-code" t-label="Gerar Indicadores" t-primary="true"></thf-button>
-        </div>          
+          <thf-combo
+            class="thf-md-12"
+            name="clientes"
+            t-label="Buscar cliente"
+            [t-options]="clientesTrello"
+            t-sort
+            (t-change)="onbotao1($event)">
+          </thf-combo>
+
+        <ng-container *ngIf="mostraDetalhes"> 
+          <button style="border: 2px solid black; background-color: white; color: dodgerblue; padding: 12px 24px; font-size: 12px; cursor: pointer;border-color: #2196F3;">Protheus 12.1.17</button>
+          <div class="thf-row" style="padding-left: 40px;">
+            <nav class="thf-md-3" style="padding-left: 6px">
+              <ul >
+                <ng-container *ngFor="let item of infoDetalCli">     
+                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
+                </ng-container>
+              </ul>    
+            </nav>
+            <nav class="thf-md-3">
+              <ul >
+                <ng-container *ngFor="let item of infoModulosCli">     
+                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
+                </ng-container>
+              </ul>    
+            </nav>          
+            <nav class="thf-md-3">
+              <ul >
+                <ng-container *ngFor="let item of tempoAtend">     
+                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
+                </ng-container>
+              </ul>    
+            </nav>     
+            <nav class="thf-md-3">
+              <ul >
+                <ng-container *ngFor="let item of serviceContr">     
+                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
+                </ng-container>
+              </ul>    
+            </nav>                    
+          </div>
+        </ng-container>          
       </thf-widget>
     </div>
   </form>
         
   <hr id="hr">
 
-  <thf-widget class="thf-md-12" id="wid">
-      <div class="thf-row" id="titlebacklog">   
-        <h1 id='idh1'>OAS</h1>    
-      </div>      
+  <thf-widget class="thf-md-12" id="wid">  
+      <thf-loading-overlay [hidden]="isHideLoading"></thf-loading-overlay>
+        <ng-container *ngIf="mostraDetalhes">
+          <div class="thf-row">
+            <thf-info
+              class="thf-md-4"
+              id="infoCliente"
+              [t-label]="infoDetalCli[0].campo"
+              [t-value]="infoDetalCli[0].valor">
+            </thf-info>
+
+            <thf-info
+              class="thf-md-4"
+              id="infoCliente"
+              [t-label]="infoDetalCli[2].campo"
+              [t-value]="infoDetalCli[2].valor">
+            </thf-info>              
+
+            <thf-info
+              class="thf-md-4"
+              id="infoCliente"
+              [t-label]="infoDetalCli[1].campo"
+              [t-value]="infoDetalCli[1].valor">
+            </thf-info>            
+          </div>
+
+          <hr>
+
+          <div class="thf-row">
+         
+          </div>
+        </ng-container>
       <thf-chart class="thf-md-12"       
         t-height="390px;"
         t-label-visible="true"
-        [t-categories]="categchart5"
-        [t-series]="serieschart5"
+        [t-categories]="categchart1"
+        [t-series]="serieschart1"
         t-title="Pendências do Cliente"
         t-type="column">
      </thf-chart>
@@ -45,8 +111,11 @@
         t-type="pie">
       </thf-chart>
     </div>
-     <div class="div" id="divid">
-      <thf-grid [t-data]="dataItems" [t-columns]="columnsgrid" [t-sortable]=true [t-show-export-buttons]=true [t-sortable]=true [t-editable]=true t-selectable=true></thf-grid>      
+     <div class="thf-row">
+      <thf-widget class="thf-md-12" 
+      t-height="550" >
+        <thf-grid [t-data]="dataItems" [t-columns]="columnsgrid" [t-sortable]=true [t-show-export-buttons]=true [t-sortable]=true [t-editable]=true t-selectable=true></thf-grid>      
+      </thf-widget>
     </div>
   </thf-widget>
   

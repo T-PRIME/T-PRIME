@@ -21,7 +21,7 @@ export class BacklogmanutprimeComponent implements OnInit {
   itens: Array<any>; // Dados do backlog por analista
   issuesEmAprovacao = {testedeintegrado:{total: 0, issues: [ ]}, testedeunidade:{total: 0, issues: [ ]}}; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
   issuesPendentes = {privado:{backlogAvencer:{total: 0, issues: [ ]}, backlogPacemergenciais:{total: 0, issues: [ ]} , backlogVencidos:{total: 0, issues: [ ]}},publico:{backlogAvencer:{total: 0, issues: [ ]}, backlogPacemergenciais:{total: 0, issues: [ ]} , backlogVencidos:{total: 0, issues: [ ]}}} ; // Guarda dados de issues em aprovação ( posição 0 = Teste de Unidade, posição 1 = Teste integrado )
-  analist: Array<any> = ["","","","","","","","","",];
+  analist: Array<any> = ["","","","","","","","",];
   usuarios: Array<any>; // Nome dos analistas dos itens
   tipo: number = 0; // (0 - Issues em aprovação ) (1 - Issues Pendentes) (2 - Issues por usuários) 
   loading: boolean = false;
@@ -39,7 +39,7 @@ export class BacklogmanutprimeComponent implements OnInit {
 
   // Gráficos por analista
   categchart1: Array<string>;
-  serieschart: Array<any> = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
+  serieschart: Array<any> = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   columns: Array<ThfTableColumn>;
   columnsGrid: Array<ThfGridColumn>;
   itemsGrid: Array<any>;
@@ -180,11 +180,8 @@ export class BacklogmanutprimeComponent implements OnInit {
       { analista: 'João Balbino',      user: 'joao.balbino',       avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
       { analista: 'Julio Santos',   user: 'julio.silva',        avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
       { analista: 'Leonardo Barbosa',       user: 'leonardo.magalhaes', avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} }, 
-      { analista: 'Tiago Bertolo',                    user: 'tiago.bertolo',      avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
       { analista: 'Vitor Pires',                      user: 'vitor.pires',        avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },      
-      { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} },
-      { analista: 'Yuri Porto',                 user: 'yuri.porto',         avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} }, 
-      
+      { analista: 'Wesley Lossani',                   user: 'wesley.lossani',     avencer: {total: 0, issues: [ ]}, pacemergenciais: {total: 0, issues: [ ]}, vencidos: {total: 0, issues: [ ]}, totalbacklog: {total: 0, issues: [ ]}, abertasmais30dias: {total: 0, issues: [ ]} }
     ];
   }
   //

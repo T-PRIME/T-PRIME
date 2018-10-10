@@ -40,21 +40,11 @@ export class IndperfprimeComponent implements OnInit {
   timeini = " 00:00"
   timeFim = " 23:59"
   diasUteis: number;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  nomeanalista:Array<any> = [];
-=======
-=======
->>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
   now: Date;
   columnsGrid: Array<ThfGridColumn>;
   itemsGrid: Array<any>;
 
 
-<<<<<<< HEAD
->>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
-=======
->>>>>>> b094cf68c757dd6ae409e22f614b3a4db40e8f87
 
   constructor(
     public restJiraService: RestJiraService, 
@@ -237,11 +227,8 @@ export class IndperfprimeComponent implements OnInit {
     ];
   }  
   private getCategchart1(): Array<string> {
-    for (var _i = 0; _i < this.usuarios.length ; _i++) {
-      console.log(this.usuarios[_i].user)
-      this.nomeanalista.push(this.usuarios[_i].user);     
-    }     
-  return this.nomeanalista;
+    return [ 'Diogo Saravando', 'Eduardo Martinez', 'Evandro Pattaro', 'João Balbino', 
+    'Julio Silva', 'Leonardo Barbosa', 'Vitor Pires', 'Wesley Lossani' ];
   }     
 
   primaryAction: ThfModalAction = {

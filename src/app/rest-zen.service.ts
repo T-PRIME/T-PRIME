@@ -4,13 +4,11 @@ import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { Observable } from 'rxjs/Rx';
 
 
 @Injectable()
 export class RestZenService {
 
-  private processos: number = 0;
   private headers = new Headers();
   private params = new URLSearchParams();
   private opts = new RequestOptions();    
@@ -21,11 +19,11 @@ export class RestZenService {
 
   getToken() {
 
-    var options = {
+    var options: any = {
       "method": "POST",
       "body": "grant_type=client_credentials",
       "hostname": [
-        "apimanager-homolog",
+        "apimanager",
         "totvs",
         "com"
       ],
@@ -40,7 +38,7 @@ export class RestZenService {
       }
     };    
 
-    this.http.get("http://localhost:4200/api/token", options).map(res => res.json()).subscribe(response => {
+    this.http.get("http://10.171.66.178:80/api/api/token", options).map(res => res.json()).subscribe(response => {
       this.token = response.access_token
     },
     error => { console.log("erro requisição do token");
@@ -54,10 +52,9 @@ export class RestZenService {
 
     this.headers.set("Authorization-zendesk", this.zCredenc);
     this.headers.set("Authorization", "Bearer " + token);
-    //this.params.set("Cookies", "")
     this.opts.headers = this.headers;    
 
-    return this.http.get("http://localhost:4200/api/zendesk/1.0/search?query="+idOrg+"%20type:organization", this.opts).map(res => res.json());
+    return this.http.get("https://apimanager.totvs.com/api/zendesk/1.0/search?query="+idOrg+"%20type:organization", this.opts).map(res => res.json());
   }
 
   getTickets(token, idCliente, page) {
@@ -66,29 +63,17 @@ export class RestZenService {
     this.headers.set("Authorization", "Bearer " + token);
     this.opts.headers = this.headers;
 
-    return this.http.get("http://localhost:4200/api/zendesk/1.0/tickets?organization_id="+idCliente+"&page="+page, this.opts).map(res => res.json());
+    return this.http.get("https://apimanager.totvs.com/api/zendesk/1.0/tickets?organization_id="+idCliente+"&page="+page, this.opts).map(res => res.json());
 
   }
 
-  getIssues(codOrg, codTickets) {
+  getIssues(jql) {
 
     this.opts.headers = this.headers;
     this.params.set("maxResults", "20000");
-    this.params.set("jql", ' "Código da Organização"  = "' + codOrg.trim() + '" AND "Ticket" in (' + codTickets + ')');
+    this.params.set("jql", jql);
     this.opts.params = this.params;
 
-    return this.http.get("http://localhost:4200/rest/api/latest/search", this.opts).map(res => res.json());    
+    return this.http.get("http://10.171.66.178:80/jira/rest/api/latest/search", this.opts).map(res => res.json());    
   }
-
-  /*getCookie() {
-
-    this.headers = new Headers();
-    this.params = new URLSearchParams();
-    this.headers.set("Access-Control-Expose-Headers", "x-content-type-options");
-    this.opts.headers = this.headers;
-    this.opts.params = this.params;
-
-    return this.http.get("http://localhost:4200/zen/agent/dashboard", this.opts);    
-
-  }*/
 }

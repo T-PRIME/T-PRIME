@@ -1,126 +1,162 @@
-<thf-page-default >
+<thf-page-default>
   <blockquote id="blockquote">Indicadores Por Cliente</blockquote>
 
   <form #f="ngForm" id="f">
     <div class="thf-row">
-      <thf-widget class="thf-md-12"  >
-          <thf-combo
-            class="thf-md-12"
-            name="clientes"
-            t-label="Buscar cliente"
-            [t-options]="clientesTrello"
-            t-sort
-            (t-change)="onbotao1($event)">
-          </thf-combo>
+      <thf-widget class="thf-md-12">
+        <thf-datepicker class="thf-md-2" name="startDate" [(ngModel)]="startDate" t-clean t-format="dd/mm/yyyy" t-label="Início do Período"
+          t-required>
+        </thf-datepicker>
+        <thf-datepicker class="thf-md-2" name="endDate" [(ngModel)]="endDate" t-clean t-format="dd/mm/yyyy" t-label="Fim do Período"
+          t-required>
+        </thf-datepicker>
+        <thf-combo class="thf-md-3" name="clientes" t-label="Cliente" [t-options]="clientesTrello" t-sort t-required="true" (t-change)="setCliente($event)">
+        </thf-combo>
+        <thf-switch name="switch" class="thf-md-2" [(ngModel)]="openTickets" t-label="Somente abertos?" t-label-off="Não" t-label-on="Sim"
+          t-required="true" [t-disabled]="disableSwitch">
+        </thf-switch>
+        <thf-button id="btngerar" class="thf-md-2" (t-click)="incProc()" [t-loading]="loadButton" t-icon="thf-icon thf-icon-logo-totvs"
+          [t-label]="labelButton" t-primary="true">
+        </thf-button>
 
-        <ng-container *ngIf="mostraDetalhes"> 
-          <button style="border: 2px solid black; background-color: white; color: dodgerblue; padding: 12px 24px; font-size: 12px; cursor: pointer;border-color: #2196F3;">Protheus 12.1.17</button>
-          <div class="thf-row" style="padding-left: 40px;">
-            <nav class="thf-md-3" style="padding-left: 6px">
-              <ul >
-                <ng-container *ngFor="let item of infoDetalCli">     
-                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
-                </ng-container>
-              </ul>    
-            </nav>
-            <nav class="thf-md-3">
-              <ul >
-                <ng-container *ngFor="let item of infoModulosCli">     
-                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
-                </ng-container>
-              </ul>    
-            </nav>          
-            <nav class="thf-md-3">
-              <ul >
-                <ng-container *ngFor="let item of tempoAtend">     
-                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
-                </ng-container>
-              </ul>    
-            </nav>     
-            <nav class="thf-md-3">
-              <ul >
-                <ng-container *ngFor="let item of serviceContr">     
-                  <li style="padding-left: 6px"><b>{{item.campo}}:</b> {{item.valor}}</li>   
-                </ng-container>
-              </ul>    
-            </nav>                    
+        <ng-container *ngIf="mostraDetalhes">
+          <div class="thf-row">
+            <thf-widget class="thf-md-12">
+              <div class="thf-row" style="padding-left: 40px;">
+                <nav class="thf-md-3" style="padding-left: 6px">
+                  <ul>
+                    <ng-container *ngFor="let item of infoDetalCli">
+                      <li style="padding-left: 6px">
+                        <b>{{item.campo}}:</b> {{item.valor}}</li>
+                    </ng-container>
+                  </ul>
+                </nav>
+                <nav class="thf-md-3">
+                  <ul>
+                    <ng-container *ngFor="let item of infoModulosCli">
+                      <li style="padding-left: 6px">
+                        <b>{{item.campo}}:</b> {{item.valor}}</li>
+                    </ng-container>
+                  </ul>
+                </nav>
+                <nav class="thf-md-3">
+                  <ul>
+                    <ng-container *ngFor="let item of tempoAtend">
+                      <li style="padding-left: 6px">
+                        <b>{{item.campo}}:</b> {{item.valor}}</li>
+                    </ng-container>
+                  </ul>
+                </nav>
+                <nav class="thf-md-3">
+                  <ul>
+                    <ng-container *ngFor="let item of serviceContr">
+                      <li style="padding-left: 6px">
+                        <b>{{item.campo}}:</b> {{item.valor}}</li>
+                    </ng-container>
+                  </ul>
+                </nav>
+              </div>
+            </thf-widget>
           </div>
-        </ng-container>          
+        </ng-container>
       </thf-widget>
     </div>
   </form>
-        
+
   <hr id="hr">
 
-  <thf-widget class="thf-md-12" id="wid">  
-      <thf-loading-overlay [hidden]="isHideLoading"></thf-loading-overlay>
-        <ng-container *ngIf="mostraDetalhes">
-          <div class="thf-row">
-            <thf-info
-              class="thf-md-4"
-              id="infoCliente"
-              [t-label]="infoDetalCli[0].campo"
-              [t-value]="infoDetalCli[0].valor">
-            </thf-info>
+  <thf-widget class="thf-md-12" id="wid">
+    <h2 style="text-align: center; margin-bottom: 30px;">
+      <strong>Extrato do Cliente</strong>
+    </h2>
+    <thf-loading-overlay [hidden]="isHideLoading"></thf-loading-overlay>
+    <ng-container *ngIf="mostraDetalhes">
+      <div class="thf-row">
+        <thf-info class="thf-md-4" id="infoCliente" [t-label]="infoDetalCli[0].campo" [t-value]="infoDetalCli[0].valor">
+        </thf-info>
 
-            <thf-info
-              class="thf-md-4"
-              id="infoCliente"
-              [t-label]="infoDetalCli[2].campo"
-              [t-value]="infoDetalCli[2].valor">
-            </thf-info>              
+        <thf-info class="thf-md-4" id="infoCliente" [t-label]="infoDetalCli[2].campo" [t-value]="infoDetalCli[2].valor">
+        </thf-info>
 
-            <thf-info
-              class="thf-md-4"
-              id="infoCliente"
-              [t-label]="infoDetalCli[1].campo"
-              [t-value]="infoDetalCli[1].valor">
-            </thf-info>            
-          </div>
+        <thf-info class="thf-md-4" id="infoCliente" [t-label]="infoDetalCli[1].campo" [t-value]="infoDetalCli[1].valor">
+        </thf-info>
+      </div>
 
-          <hr>
+      <hr id="hr2">
 
-          <div class="thf-row">
-         
-          </div>
-        </ng-container>
-      <thf-chart class="thf-md-12"       
-        t-height="390px;"
-        t-label-visible="true"
-        [t-categories]="categchart1"
-        [t-series]="serieschart1"
-        t-title="Pendências do Cliente"
-        t-type="column">
-     </thf-chart>
-     <div class="thf-row">
-      <thf-chart class="thf-md-6" 
-        [t-categories]="categchart3"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart3"
-        t-title="Tickets em Atraso"
-        t-type="pie">
-      </thf-chart>
+      <div class="thf-row">
 
-      <thf-chart class="thf-md-6" 
-        [t-categories]="categchart4"
-        t-height="390px;"
-        t-label-visible="true"
-        [t-series]="serieschart4"
-        t-title="SLA"
-        t-type="pie">
-      </thf-chart>
-    </div>
-     <div class="thf-row">
-      <thf-widget class="thf-md-12" 
-      t-height="550" >
-        <thf-grid [t-data]="dataItems" [t-columns]="columnsgrid" [t-sortable]=true [t-show-export-buttons]=true [t-sortable]=true [t-editable]=true t-selectable=true></thf-grid>      
+      </div>
+    </ng-container>
+    <thf-widget class="thf-md-12">
+      <kendo-chart class="thf-md-12" [categoryAxis]="{'labels': { font: '16px sans-serif'},'categories' : categchart1}" style.height="390px;"
+        type="column" [seriesColors]="['#3498db', '#FF4343', '#8CC375', '#FFB900']">
+        <kendo-chart-title text="Tickets" font="16px sans-serif"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom"  orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let serie of serieschart1"  [name]="serie.name"  [type]="number"  [data]="serie.data">
+            <kendo-chart-series-item-labels visible="true">
+            </kendo-chart-series-item-labels>
+          </kendo-chart-series-item> </kendo-chart-series>
+      </kendo-chart>
+    </thf-widget>
+    <thf-widget class="thf-md-12">
+      <kendo-chart class="thf-md-12" style.height="390px;" type="column" [seriesColors]="['#3498db', '#8CC375', '#FF4343', '#FFB900', '#F7630C']">
+        <kendo-chart-title text="Issues" font="16px sans-serif"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom"  orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let serie of serieschart2"  [name]="serie.name"  [type]="number"  [data]="serie.data">
+            <kendo-chart-series-item-labels visible="true">
+            </kendo-chart-series-item-labels>
+          </kendo-chart-series-item> </kendo-chart-series>
+      </kendo-chart>
+    </thf-widget>
+    <thf-widget class="thf-md-6">
+      <kendo-chart class="thf-md-12" [categoryAxis]="{'categories' : categchart5}" style.height="390px;" type="pie" [seriesColors]="['#3498db', '#8CC375']">
+        <kendo-chart-title text="% de Tickets com Issue" font="16px sans-serif"> </kendo-chart-title>
+        <kendo-chart-tooltip> </kendo-chart-tooltip>
+        <kendo-chart-legend position="bottom"  orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let series of serieschart5; let outermost = last;" type="pie" [startAngle]="300" [name]="series.category"
+            [data]="series.data" field="value" categoryField="category" colorField="color">
+            <kendo-chart-series-item-labels visible="true" *ngIf="outermost" position="outsideEnd" background="none" [content]="labelContent"></kendo-chart-series-item-labels>
+          </kendo-chart-series-item>
+        </kendo-chart-series>
+      </kendo-chart>
+    </thf-widget>
+    <thf-widget class="thf-md-6">
+      <kendo-chart class="thf-md-12" [valueAxis]="{'labels': { template: 'Year: #: value #' }}" [categoryAxis]="{'categories' : categchart4}" style.height="390px;" type="pie" [seriesColors]="['#3498db', '#8CC375']">
+        <kendo-chart-title text="% SLA" font="16px sans-serif"> </kendo-chart-title>
+        <kendo-chart-legend position="bottom"  orientation="horizontal"> </kendo-chart-legend>
+        <kendo-chart-series>
+          <kendo-chart-series-item *ngFor="let series of serieschart4; let outermost = last;" type="pie" [startAngle]="300" [name]="series.category"
+            [data]="series.data" field="value" categoryField="category" colorField="color">
+            <kendo-chart-series-item-labels visible="true" *ngIf="outermost" position="outsideEnd" background="none" [content]="labelContent"></kendo-chart-series-item-labels>
+          </kendo-chart-series-item>
+        </kendo-chart-series>
+      </kendo-chart>
+    </thf-widget>
+    <ng-container *ngIf="mostraChartMensal">
+      <thf-widget class="thf-md-12">
+        <kendo-chart class="thf-md-12" [categoryAxis]="{'labels': { font: '16px sans-serif'},'categories' : categchart3}" style.height="390px;"
+          type="column" [seriesColors]="['#3498db', '#8CC375']">
+          <kendo-chart-title text="Tickets/Issues por Mês" font="16px sans-serif"> </kendo-chart-title>
+          <kendo-chart-legend position="bottom"  orientation="horizontal"> </kendo-chart-legend>
+          <kendo-chart-series>
+            <kendo-chart-series-item *ngFor="let serie of serieschart3"  [name]="serie.name"  [type]="number"  [data]="serie.data">
+              <kendo-chart-series-item-labels visible="true">
+              </kendo-chart-series-item-labels>
+            </kendo-chart-series-item> </kendo-chart-series>
+        </kendo-chart>
       </thf-widget>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="mobile">
+      <div class="thf-row">
+        <thf-widget class="thf-md-12" t-height="750">
+          <thf-grid [t-data]="dataItems" [t-columns]="columnsgrid" [t-sortable]=true [t-show-export-buttons]=true [t-sortable]=true
+            [t-editable]=false t-selectable=true></thf-grid>
+        </thf-widget>
+      </div>
+    </ng-container>
   </thf-widget>
-  
-  
-  
-  
-  
-</thf-page-default>    
+</thf-page-default>

@@ -38,6 +38,12 @@ export class IndmanutprimeComponent implements OnInit {
   //Chart 1 Column
   categchart7: Array<any>;
   serieschart7: Array<any>;  
+  //Chart 8 Pie
+  categchart8: Array<any>;
+  serieschart8: Array<any>;  
+  //Chart 9 Pie
+  categchart9: Array<any>;
+  serieschart9: Array<any>;    
 
   columnsGrid: Array<ThfGridColumn>;
   itemsGrid: Array<any>;
@@ -80,20 +86,28 @@ export class IndmanutprimeComponent implements OnInit {
     this.categchart6 = this.getCategchart6();
     //Chart7
     this.categchart7 = this.getCategchart1();
+    //Chart8
+    this.categchart8 = this.getCategchart8();    
+    //Chart9
+    this.categchart9 = this.getCategchart8();        
   }
+
+  private getCategchart6(): Array<string> {
+    return [ 'Criados', 'Resolvidos'];
+  }
+  private getCategchart8(): Array<string> {
+    return [ 'No Prazo', 'Fora do Prazo'];
+  }  
 
   private getCategchart1(): Array<string> {
     return [ 'Privado e A.M.S', 'Público'];
   }
-  private getCategchart6(): Array<string> {
-    return [ 'Criados', 'Resolvidos'];
-  } 
   private getSeriesChart2(dadosChart): Array<any> {
     return [
       { name: 'Criados', data: [dadosChart[0].criaXResolv.criPrivAms.total, dadosChart[0].criaXResolv.criPublic.total]},
       { name: 'Resolvidos', data: [dadosChart[0].criaXResolv.resPrivAms.total, dadosChart[0].criaXResolv.resPublic.total]}  
     ];
-  }
+  }   
   private getSeriesChart4(dadosChart): Array<any> {
     return [
       { name: '11', data: [dadosChart[1].abertasVersao[0].quant]},
@@ -119,7 +133,7 @@ export class IndmanutprimeComponent implements OnInit {
       data: [{category: 'Criados', value: dadosChart[2].criaXResolvDataPrev.criDataPrev.total},
               {category: 'Resolvidos', value: dadosChart[2].criaXResolvDataPrev.resDataPrev.total}]
   }];
-  }
+  }  
   private getSeriesChart7(dadosChart): Array<any>{
     return [
       { name: 'Codificadas', data: [dadosChart[3].entDetalhada.codPrivAms.total, dadosChart[3].entDetalhada.codPublic.total]},
@@ -129,6 +143,12 @@ export class IndmanutprimeComponent implements OnInit {
       
     ];
   }
+  private getSeriesChart8(quantPrazo, quantFPrazo): Array<any> {
+    return [{
+      data: [{category: 'No Prazo', value: quantPrazo},
+              {category: 'Fora do Prazo', value: quantFPrazo}]
+  }];
+  }   
 
   getColumns(): Array<ThfGridColumn> {
     return [
@@ -152,22 +172,22 @@ export class IndmanutprimeComponent implements OnInit {
   limpaTabela(){
 
     this.dadosChart = [
-      {criaXResolv: {
+      {criaXResolv: {                                 //Grafico Issues Criados X Resolvidos
           criPrivAms: {total: 0, issues: [ ]}, 
           criPublic: {total: 0, issues: [ ]}, 
           resPrivAms: {total: 0, issues: [ ]}, 
           resPublic: {total: 0, issues: [ ]} } 
       },
-      {abertasVersao: [
+      {abertasVersao: [                               //Grafico Issues Abertas X Versões
         {versao: "11", quant: 0, issues: []},
         {versao: "12.1.6", quant: 0, issues: []},
         {versao: "12.1.7", quant: 0, issues: []},
         {versao: "12.1.16", quant: 0, issues: []},
         {versao: "12.1.17", quant: 0, issues: []},] },
-      {criaXResolvDataPrev: {
+      {criaXResolvDataPrev: {                         //Grafico DataPrev - Criados X Resolvidos    
         criDataPrev: {total: 0, issues: [ ]}, 
         resDataPrev: {total: 0, issues: [ ]} } },
-      {entDetalhada: {
+      {entDetalhada: {                                //Grafico Entrega Detalhada
         codPrivAms: {total: 0, issues: [ ]}, 
         retPrivAms: {total: 0, issues: [ ]}, 
         rejPrivAms: {total: 0, issues: [ ]}, 
@@ -177,7 +197,14 @@ export class IndmanutprimeComponent implements OnInit {
         rejPublic: {total: 0, issues: [ ]}, 
         canPublic: {total: 0, issues: [ ]} } 
       },
-      {entProjeto: []
+      {entProjeto: []                                 //Grafico Manutenções por Projeto
+      },
+      {entSla: {
+        qtdPrazoPrivAms: {total: 0, issues: [ ]},
+        qtdFPrazoPrivAms: {total: 0, issues: [ ]},
+        qtdPrazoPublic: {total: 0, issues: [ ]},
+        qtdFPrazoPublic: {total: 0, issues: [ ]}
+        }
       }
     ];
     
@@ -248,11 +275,17 @@ export class IndmanutprimeComponent implements OnInit {
   }
 
   atualizaGrafico() {
+    var totPrzPrivAms = this.dadosChart[5].entSla.qtdPrazoPrivAms.total * 100 / (this.dadosChart[5].entSla.qtdPrazoPrivAms.total + this.dadosChart[5].entSla.qtdFPrazoPrivAms.total);
+    var totFPrzPrivAms = this.dadosChart[5].entSla.qtdFPrazoPrivAms.total * 100 / (this.dadosChart[5].entSla.qtdPrazoPrivAms.total + this.dadosChart[5].entSla.qtdFPrazoPrivAms.total);
+    var totPrzPublic = this.dadosChart[5].entSla.qtdPrazoPublic.total * 100 / (this.dadosChart[5].entSla.qtdPrazoPublic.total + this.dadosChart[5].entSla.qtdFPrazoPublic.total);
+    var totFPrzPublic = this.dadosChart[5].entSla.qtdFPrazoPublic.total * 100 / (this.dadosChart[5].entSla.qtdPrazoPublic.total + this.dadosChart[5].entSla.qtdFPrazoPublic.total);    
     this.serieschart2 = this.getSeriesChart2(this.dadosChart);
     this.serieschart4 = this.getSeriesChart4(this.dadosChart);
+    this.serieschart5 = this.getSeriesChart5(this.dadosChart);    
     this.serieschart6 = this.getSeriesChart6(this.dadosChart);
     this.serieschart7 = this.getSeriesChart7(this.dadosChart);
-    this.serieschart5 = this.getSeriesChart5(this.dadosChart);
+    this.serieschart8 = this.getSeriesChart8(totPrzPrivAms.toFixed(2), totFPrzPrivAms.toFixed(2));
+    this.serieschart9 = this.getSeriesChart8(totPrzPublic.toFixed(2), totFPrzPublic.toFixed(2));
     this.loadButton = false;
     this.isHideLoading = true;
     this.labelButton = "Gerar Indicadores";
@@ -315,11 +348,25 @@ export class IndmanutprimeComponent implements OnInit {
       }else{
         itemChart = formData.series.name.toLowerCase().substring(0,3)+"Public.";
       }
-
+    }else if (chart == "entSlaPriv") {
+      chart = "entSla";
+      posItemChart = 5;
+      if (formData.category == "No Prazo") {
+        itemChart = "qtdPrazoPrivAms.";
+      }else{
+        itemChart = "qtdFPrazoPrivAms.";
+      }
+    }else if (chart == "entSlaPublic") {
+      chart = "entSla";
+      posItemChart = 5;
+      if (formData.category == "No Prazo") {
+        itemChart = "qtdPrazoPublic.";
+      }else{
+        itemChart = "qtdFPrazoPublic.";
+      }
     }
 
     for (var _x = 0; eval("this.dadosChart[posItemChart]."+chart+"."+itemChart+"issues.length") > _x; _x++) {
-
       this.itemsGrid.push({
             issue:    eval("this.dadosChart[posItemChart]."+chart+"."+itemChart+"issues[_x].key"),
             nomeFant: eval("this.dadosChart[posItemChart]."+chart+"."+itemChart+"issues[_x].fields.customfield_11071.value"),
@@ -331,9 +378,5 @@ export class IndmanutprimeComponent implements OnInit {
       });
     }
     this.thfModal.open();
-  }
-
-  teste(evento) {
-    console.log(evento);
   }
 }

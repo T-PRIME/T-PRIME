@@ -17,6 +17,8 @@ import { IndclienteComponent } from './indcliente/indcliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { EquipeComponent } from './equipe/equipe.component';
 import { RestJiraService } from './rest-jira.service';
+import { RestZenService } from './rest-zen.service';
+import { RestTrelloService } from './rest-trello.service';
 import { AuthGuard } from './guards/auth.guard';
 import { IndrejectprimeComponent } from './indrejectprime/indrejectprime.component';
 
@@ -43,7 +45,7 @@ import { IndrejectprimeComponent } from './indrejectprime/indrejectprime.compone
     HttpModule,
     ChartModule
   ],
-  providers: [RestJiraService, AuthGuard],
+  providers: [RestJiraService, AuthGuard, RestZenService, RestTrelloService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

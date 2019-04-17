@@ -24,7 +24,7 @@ export class RestJiraService {
 
     this.opts.headers = this.headers;
 
-    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
+    return this.http.get("hhttp://10.171.66.178:80/rest/rest/api/latest/filter/" + codFiltro, this.opts).map(res => res.json());
   }
 
   getIssues(filtro, fields?: string) {
@@ -35,13 +35,13 @@ export class RestJiraService {
     this.params.set("fields", fields);
     this.opts.params = this.params;
 
-    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/search", this.opts).map(res => res.json());
+    return this.http.get("http://10.171.66.178:80/rest/rest/api/latest/search", this.opts).map(res => res.json());
 
   }
   
   getComments(issue) {
 
-    return this.http.get("http://10.171.66.178:80/api/rest/api/latest/issue/"+issue+"/comment").map(res => res.json());
+    return this.http.get("http://10.171.66.178:80/rest/rest/api/latest/issue/"+issue+"/comment").map(res => res.json());
   }
 
    atualizaBacklog(response, componente, usuarios: Array<any>, campo,tipo) {
@@ -290,6 +290,28 @@ export class RestJiraService {
         break;
     }
 
+    if (chart == "CodPrivAms" ||  chart == "RejPrivAms") {
+      for (var _i = 0; response.issues.length > _i; _i++) {
+        if (chart == "RejPrivAms" || response.issues[_i].fields.customfield_11040 <= response.issues[_i].fields.customfield_11080) {
+          dadosChart[5].entSla.qtdPrazoPrivAms.total++;
+          dadosChart[5].entSla.qtdPrazoPrivAms.issues.push(response.issues[_i]);
+        }else{
+          dadosChart[5].entSla.qtdFPrazoPrivAms.total++;
+          dadosChart[5].entSla.qtdFPrazoPrivAms.issues.push(response.issues[_i]);
+        }
+      }
+    }else if(chart == "CodPublic" || chart == "RejPublic") {
+      for (var _i = 0; response.issues.length > _i; _i++) {
+        if (chart == "RejPublic" || response.issues[_i].fields.customfield_11040 <= response.issues[_i].fields.customfield_11080) {
+          dadosChart[5].entSla.qtdPrazoPublic.total++;
+          dadosChart[5].entSla.qtdPrazoPublic.issues.push(response.issues[_i]);
+        }else{
+          dadosChart[5].entSla.qtdFPrazoPublic.total++;
+          dadosChart[5].entSla.qtdFPrazoPublic.issues.push(response.issues[_i]);
+        }
+      }
+    }    
+
     if (this.execReq.length == 16) {
       this.execReq = [];
       return true;
@@ -335,7 +357,7 @@ export class RestJiraService {
   }
 
   formatDate(data) {
-    if (data === null) {
+    if (data === null || data === undefined) {
       return "";
     }
     if (data.indexOf("-") > 0 && data.length == 10) {
@@ -365,7 +387,7 @@ export class RestJiraService {
     this.headers.set("Authorization", "Basic "+window.btoa(login+":"+password));    
     this.opts.headers = this.headers;
 
-    return this.http.get("http://10.171.66.178:80/api/rest/auth/latest/session", this.opts)
+    return this.http.get("http://10.171.66.178:80/rest/rest/auth/latest/session", this.opts)
     .map(res => res.json());
   }
 

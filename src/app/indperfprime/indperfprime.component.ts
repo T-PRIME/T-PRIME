@@ -31,8 +31,8 @@ export class IndperfprimeComponent implements OnInit {
   //Chart 1 Column
   categchart1: Array<string>;
   serieschart1: Array<ThfColumnChartSeries>;  
-  categchartPerf = [[], [], [], [], [], [], [], [] ];
-  serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
+  categchartPerf = [[], [], [], [], [], [], [], [], [] ];
+  serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
   usuarios: Array<any>;
   jqlFiltro: Array<any>
   startDate: Date;
@@ -74,7 +74,8 @@ export class IndperfprimeComponent implements OnInit {
       { user: 'julio.silva', total: 0, label:"Julio Silva"  },
       { user: 'leonardo.magalhaes', total: 0 , label:"Leonardo Barbosa" },
       { user: 'vitor.pires', total: 0 , label:"Vitor Pires" },      
-      { user: 'wesley.lossani', total: 0 , label:"Wesley Lossani" }
+      { user: 'wesley.lossani', total: 0 , label:"Wesley Lossani" },
+      { user: 'oliveira.eder', total: 0 , label:"Eder Oliveira" }
       
     ];      
     
@@ -133,7 +134,7 @@ export class IndperfprimeComponent implements OnInit {
   }  
 
   limpaTabela(){
-    var zeraGrafico = [0,0,0,0,0,0,0,0];
+    var zeraGrafico = [0,0,0,0,0,0,0,0,0];
     this.itemsperf = [
       { analista: 'Diogo Vieira', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Eduardo Martinez', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
@@ -142,7 +143,8 @@ export class IndperfprimeComponent implements OnInit {
       { analista: 'Julio Silva', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Leonardo Barbosa', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
       { analista: 'Vitor Pires', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Wesley Lossani', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0}
+      { analista: 'Wesley Lossani', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
+      { analista: 'Eder Oliveira', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0}
      
       ];
     
@@ -228,7 +230,7 @@ export class IndperfprimeComponent implements OnInit {
   }  
   private getCategchart1(): Array<string> {
     return [ 'Diogo Saravando', 'Eduardo Martinez', 'Evandro Pattaro', 'João Balbino', 
-    'Julio Silva', 'Leonardo Barbosa', 'Vitor Pires', 'Wesley Lossani' ];
+    'Julio Silva', 'Leonardo Barbosa', 'Vitor Pires', 'Wesley Lossani', 'Eder Oliveira' ];
   }     
 
   primaryAction: ThfModalAction = {

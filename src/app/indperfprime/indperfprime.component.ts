@@ -3,7 +3,7 @@ import { ThfSelectOption } from '@totvs/thf-ui/components/thf-field';
 import { ThfTableColumn } from '@totvs/thf-ui/components/thf-table';
 import { ThfGridColumn  } from '@totvs/thf-ui/components/thf-grid';
 import { text } from '@angular/core/src/render3/instructions';
-import { ThfBulletChartSeries, ThfCandlestickChartSeries, ThfColumnChartSeries, ThfPieChartSeries } from '@totvs/thf-ui/components/thf-chart';
+import { ThfColumnChartSeries } from '@totvs/thf-ui/components/thf-chart';
 import { RestJiraService } from '../rest-jira.service';
 import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.service';
 import { isEmpty } from 'rxjs/operator/isEmpty';
@@ -11,6 +11,9 @@ import { ThfModalAction } from '@totvs/thf-ui/components/thf-modal';
 import { ThfModalComponent } from '@totvs/thf-ui/components/thf-modal/thf-modal.component';
 import { Router } from '@angular/router';
 
+// tslint:disable:member-ordering
+// tslint:disable:max-line-length
+// tslint:disable:no-eval
 
 
 @Component({
@@ -25,20 +28,20 @@ export class IndperfprimeComponent implements OnInit {
 
   loadButton = false;
   isHideLoading = true;
-  labelButton = "Gerar Indicadores";
+  labelButton = 'Gerar Indicadores';
   colperf: Array<ThfTableColumn>;
   itemsperf: Array<any>;
-  //Chart 1 Column
+  // Chart 1 Column
   categchart1: Array<string>;
-  serieschart1: Array<ThfColumnChartSeries>;  
+  serieschart1: Array<ThfColumnChartSeries>;
   categchartPerf = [[], [], [], [], [], [], [], [], [] ];
-  serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]]; 
+  serieschartPerf = [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]];
   usuarios: Array<any>;
-  jqlFiltro: Array<any>
+  jqlFiltro: Array<any>;
   startDate: Date;
   endDate: Date;
-  timeini = " 00:00"
-  timeFim = " 23:59"
+  timeini = ' 00:00';
+  timeFim = ' 23:59';
   diasUteis: number;
   now: Date;
   columnsGrid: Array<ThfGridColumn>;
@@ -47,39 +50,38 @@ export class IndperfprimeComponent implements OnInit {
 
 
   constructor(
-    public restJiraService: RestJiraService, 
+    public restJiraService: RestJiraService,
     private router: Router,
-    private thfAlert: ThfDialogService ) { };
- 
+    private thfAlert: ThfDialogService ) { }
+
   ngOnInit() {
 
     this.columnsGrid = this.getColumns();
     this.now = new Date();
 
-    var diaIni = 1
-    //var diaFim = ((new Date(this.now.getFullYear(), this.now.getMonth() + 1, 0 )).getDate());
-    var diaFim = this.now.getDate();
-    var mes = this.now.getMonth();
-    var ano = this.now.getFullYear();
+    const diaIni = 1;
+    const diaFim = this.now.getDate();
+    const mes = this.now.getMonth();
+    const ano = this.now.getFullYear();
 
-    this.startDate = new Date(ano,mes,diaIni);
-    this.endDate = new Date(ano,mes,diaFim);
-    this.limpaTabela();      
+    this.startDate = new Date(ano, mes, diaIni);
+    this.endDate = new Date(ano, mes, diaFim);
+    this.limpaTabela();
 
     this.usuarios = [
-      { user: 'diogo.vieira', total: 0, label:"Diogo Vieira" },
-      { user: 'eduardo.martinez', total: 0, label:"Eduardo Martinez"  },
-      { user: 'evandro.pattaro', total: 0 , label:"Evandro Pattaro" },
-      { user: 'joao.balbino', total: 0 , label:"João Balbino" },
-      { user: 'julio.silva', total: 0, label:"Julio Silva"  },
-      { user: 'leonardo.magalhaes', total: 0 , label:"Leonardo Barbosa" },
-      { user: 'vitor.pires', total: 0 , label:"Vitor Pires" },      
-      { user: 'wesley.lossani', total: 0 , label:"Wesley Lossani" },
-      { user: 'oliveira.eder', total: 0 , label:"Eder Oliveira" }
-      
-    ];      
-    
-    //Chart1
+      { user: 'eduardo.martinez', total: 0, label: 'Eduardo Martinez'  },
+      { user: 'evandro.pattaro', total: 0 , label: 'Evandro Pattaro' },
+      { user: 'guilherme.bigois', total: 0 , label: 'Guilherme Bigois' },
+      { user: 'guilherme.fernando', total: 0 , label: 'Fernando Luis' },
+      { user: 'julio.silva', total: 0, label: 'Julio Silva'  },
+      { user: 'luis.fernando', total: 0 , label: 'Luís Magalhães' },    
+      { user: 'vitor.pires', total: 0 , label: 'Vitor Pires' },
+      { user: 'wesley.lossani', total: 0 , label: 'Wesley Lossani' },
+      { user: 'oliveira.eder', total: 0 , label: 'Eder Oliveira' }
+
+    ];
+
+    // Chart1
     this.categchart1 = this.getCategchart1();
   }
 
@@ -87,77 +89,77 @@ export class IndperfprimeComponent implements OnInit {
   // Verifica se sessão do usuario está ativa
   //
   validaSessao() {
-    
-    this.loadButton = true;
-    
-    this.restJiraService.autenticar("", "").subscribe(data => { 
-      this.gerarIndicadores();
-    }, error => { 
-      this.thfAlert.alert({title: "Sessão encerrada!", message: "Por favor, refaça o login.", ok: () => this.router.navigate(['/login']) });
-    });      
 
-  }   
+    this.loadButton = true;
+
+    this.restJiraService.autenticar().subscribe(data => {
+      this.gerarIndicadores();
+    }, error => {
+      this.thfAlert.alert({title: 'Sessão encerrada!', message: 'Por favor, refaça o login.', ok: () => this.router.navigate(['/login']) });
+    });
+
+  }
 
   gerarIndicadores() {
 
-    if ( (this.startDate == undefined || this.endDate == undefined) || (this.startDate.toString() == "" || this.endDate.toString() == "") ){
-      this.thfAlert.alert({title: "Campos obrigatorios!", message: "Preencha os campos de período."});
+    if ( (this.startDate === undefined || this.endDate === undefined) || (this.startDate.toString() === '' || this.endDate.toString() === '') ) {
+      this.thfAlert.alert({title: 'Campos obrigatorios!', message: 'Preencha os campos de período.'});
       return;
     }
     this.isHideLoading = false;
-    this.labelButton = "Gerando indicadores..." 
+    this.labelButton = 'Gerando indicadores...';
 
-    this.limpaTabela();    
-    
-    var dataDe = new Date(this.startDate);
-    var dataAte = new Date(this.endDate);
+    this.limpaTabela();
+
+    const dataDe = new Date(this.startDate);
+    const dataAte = new Date(this.endDate);
     this.diasUteis = this.restJiraService.calcDias(dataDe, dataAte);
 
-    this.restJiraService.getFilter("59157").subscribe(response => this.getPerf(response.jql, "Retrabalho"));
-    this.restJiraService.getFilter("59150").subscribe(response => this.getPerf(response.jql, "Codificadas"));
-    this.restJiraService.getFilter("59154").subscribe(response => this.getPerf(response.jql, "Rejeitadas"));
-    this.restJiraService.getFilter("59155").subscribe(response => this.getPerf(response.jql, "Canceladas"));   
-    
+    this.restJiraService.getFilter('59157').subscribe(response => this.getPerf(response.jql, 'Retrabalho'));
+    this.restJiraService.getFilter('59150').subscribe(response => this.getPerf(response.jql, 'Codificadas'));
+    this.restJiraService.getFilter('59154').subscribe(response => this.getPerf(response.jql, 'Rejeitadas'));
+    this.restJiraService.getFilter('59155').subscribe(response => this.getPerf(response.jql, 'Canceladas'));
+
   }
 
    getPerf(filtro, campo) {
 
-      var filtroEdit = filtro
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "startOfMonth()", "'"+ this.startDate.toString().substring(0,10)+this.timeini+"'", true);
-      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, "endOfMonth()", "'"+this.endDate.toString().substring(0,10)+this.timeFim+"'", true);
+      let filtroEdit = filtro;
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, 'startOfMonth()', '\'' + this.startDate.toString().substring(0, 10) + this.timeini + '\'', true);
+      filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, 'endOfMonth()', '\'' + this.endDate.toString().substring(0, 10) + this.timeFim + '\'', true);
 
-      this.restJiraService.getIssues(filtroEdit).subscribe( response => { 
-        var fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
+      this.restJiraService.getIssues(filtroEdit).subscribe( response => {
+        const fimExecucao = this.restJiraService.atualizaPerf(response, this.itemsperf, this.usuarios, campo, this.diasUteis);
         if (fimExecucao) {
           this.atualizaGrafico();
        } } );
-  }  
+  }
 
-  limpaTabela(){
-    var zeraGrafico = [0,0,0,0,0,0,0,0,0];
+  limpaTabela() {
+    const zeraGrafico = [0, 0, 0, 0, 0, 0, 0, 0];
     this.itemsperf = [
-      { analista: 'Diogo Vieira', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Eduardo Martinez', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Evandro Pattaro', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'João Balbino', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Julio Silva', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Leonardo Barbosa', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Vitor Pires', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Wesley Lossani', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0},
-      { analista: 'Eder Oliveira', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho:0, produtividade: 0}
-     
+      { analista: 'Eduardo Martinez', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Evandro Pattaro', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Guilherme Bigois', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Fernando Luis', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Julio Silva', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Luís Magalhães', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Vitor Pires', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Wesley Lossani', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Eder Oliveira', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0}
+
       ];
-    
+
   this.colperf = [
     { column: 'analista', label: 'Analista'},
     { column: 'codificadas', label: 'Codificadas', type: 'number'},
     { column: 'rejeitadas', label: 'Rejeitadas', type: 'number'},
     { column: 'canceladas', label: 'Canceladas', type: 'number'},
     { column: 'retrabalho', label: 'Retrabalho', type: 'number' },
-    ];  
+    ];
 
   this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
-  for (var _i = 0; this.serieschartPerf.length > _i; _i++) {
+  for (let _i = 0; this.serieschartPerf.length > _i; _i++) {
     this.serieschartPerf[_i] = this.getSeriesChart2(0, 0, 0, 0, 0);
   }
 
@@ -165,27 +167,27 @@ export class IndperfprimeComponent implements OnInit {
 
   atualizaGrafico() {
 
-    var dadosRet = [0,0,0,0,0,0,0,0];
-    var dadosTrab = [0,0,0,0,0,0,0,0];
-    var dadosProd = [0,0,0,0,0,0,0,0];
-   
-    for (var _i = 0; this.serieschartPerf.length > _i; _i++) {
-        this.serieschartPerf[_i] = this.getSeriesChart2(this.itemsperf[_i].Codificadas.total, this.itemsperf[_i].Rejeitadas.total, this.itemsperf[_i].Canceladas.total, 
+    const dadosRet = [0, 0, 0, 0, 0, 0, 0, 0];
+    const dadosTrab = [0, 0, 0, 0, 0, 0, 0, 0];
+    const dadosProd = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    for (let _i = 0; this.serieschartPerf.length > _i; _i++) {
+        this.serieschartPerf[_i] = this.getSeriesChart2(this.itemsperf[_i].Codificadas.total, this.itemsperf[_i].Rejeitadas.total, this.itemsperf[_i].Canceladas.total,
         this.itemsperf[_i].Retrabalho.total, this.itemsperf[_i].percretrabalho.total);
     }
 
-    for (var _a = 0; this.itemsperf.length > _a; _a++) {
+    for (let _a = 0; this.itemsperf.length > _a; _a++) {
        dadosRet[_a] = this.itemsperf[_a].percretrabalho;
        dadosTrab[_a] = this.itemsperf[_a].Codificadas.total + this.itemsperf[_a].Rejeitadas.total;
        dadosProd[_a] = this.itemsperf[_a].produtividade;
-       this.itemsperf[_a].percretrabalho = this.itemsperf[_a].percretrabalho.toString() + "%";
-       this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + "%";
+       this.itemsperf[_a].percretrabalho = this.itemsperf[_a].percretrabalho.toString() + '%';
+       this.itemsperf[_a].produtividade = this.itemsperf[_a].produtividade.toString() + '%';
     }
     this.serieschart1 = this.getSeriesChart1(dadosRet, dadosTrab, dadosProd);
     this.loadButton = false;
     this.isHideLoading = true;
-    this.labelButton = "Gerar Indicadores";
-    
+    this.labelButton = 'Gerar Indicadores';
+
   }
 
   openModal(formData, usuario) {
@@ -193,21 +195,21 @@ export class IndperfprimeComponent implements OnInit {
     if (this.restJiraService.detectarMobile()) {
       return;
     }
-    
+
     this.itemsGrid = [];
-    for (var _i = 0; this.itemsperf.length > _i; _i++) {
-      if (this.itemsperf[_i].analista == usuario) {
-        for (var _x = 0; eval("this.itemsperf[_i]."+formData.series.name+".issues.length") > _x; _x++) {
+    for (let _i = 0; this.itemsperf.length > _i; _i++) {
+      if (this.itemsperf[_i].analista === usuario) {
+        for (let _x = 0; eval('this.itemsperf[_i].' + formData.series.name + '.issues.length') > _x; _x++) {
           this.itemsGrid.push({
-            issue:    eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].key"),
-            nomeFant: eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.customfield_11071.value"),
-            summary: eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.summary"),
-            sla:      this.restJiraService.formatDate(eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.customfield_11080")),
-            dtAcordo: this.restJiraService.formatDate(eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.customfield_11039")),
-            dtPSLA:   this.restJiraService.formatDate(eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.customfield_11040")),
-            reporter: eval("this.itemsperf[_i]."+formData.series.name+".issues[_x].fields.reporter.displayName")
+            issue:    eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].key'),
+            nomeFant: eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.customfield_11071.value'),
+            summary: eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.summary'),
+            sla:      this.restJiraService.formatDate(eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.customfield_11080')),
+            dtAcordo: this.restJiraService.formatDate(eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.customfield_11039')),
+            dtPSLA:   this.restJiraService.formatDate(eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.customfield_11040')),
+            reporter: eval('this.itemsperf[_i].' + formData.series.name + '.issues[_x].fields.reporter.displayName')
           });
-        } 
+        }
       }
     }
     this.thfModal.open();
@@ -227,11 +229,11 @@ export class IndperfprimeComponent implements OnInit {
       { name: 'Rejeitadas', data: [dadosRej] },
       { name: 'Retrabalho', data: [dadosRet] },
     ];
-  }  
+  }
   private getCategchart1(): Array<string> {
-    return [ 'Diogo Saravando', 'Eduardo Martinez', 'Evandro Pattaro', 'João Balbino', 
-    'Julio Silva', 'Leonardo Barbosa', 'Vitor Pires', 'Wesley Lossani', 'Eder Oliveira' ];
-  }     
+    return [ 'Eduardo Martinez', 'Evandro Pattaro', 'Guilherme Bigois', 'Fernando Luis',
+    'Julio Silva', 'Luís Magalhães', 'Vitor Pires', 'Wesley Lossani', 'Eder Oliveira' ];
+  }
 
   primaryAction: ThfModalAction = {
     action: () => {

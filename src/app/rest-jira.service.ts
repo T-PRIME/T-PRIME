@@ -37,7 +37,6 @@ export class RestJiraService {
 
   getIssues(filtro, fields?: string) {
 
-    console.log(this.loginUser);
     this.headers = new Headers();
     this.headers.set('Authorization', this.getSession());
     this.headers.set('User-Agent', 'Portal TPRIME - Desenvolvimento PRIME');
@@ -72,7 +71,6 @@ export class RestJiraService {
         if (_x < usuarios.length) {
 
           if (campo === 'pacemergenciais' && response.issues[_i].fields.customfield_10048 !== undefined && response.issues[_i].fields.customfield_10048 !== null) {
-			console.log(response.issues[_i].fields.customfield_10048);
             user = response.issues[_i].fields.customfield_10048.name;
           } else if (response.issues[_i].fields.assignee === undefined || response.issues[_i].fields.assignee === null) {
             user = 'unassigned';

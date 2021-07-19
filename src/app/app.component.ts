@@ -69,7 +69,6 @@ export class AppComponent implements OnInit {
     this.loadingButton = true;
     const dataCookie = new Date();
     dataCookie.setHours(dataCookie.getHours() + 2);
-    console.log(dataCookie);
     document.cookie = 'session=Basic ' + window.btoa(formData.login + ':' + formData.password) + ';expires=Thu; ' + dataCookie;
     this.restJiraService.autenticar().subscribe(data => {
         this.restJiraService.loginOk = true;

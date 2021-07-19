@@ -10,34 +10,27 @@ import { ThfDialogService } from '@totvs/thf-ui/services/thf-dialog/thf-dialog.s
 export class AuthGuard implements CanActivate {
 
   users = [
-    'diogo.vieira',
     'eduardo.martinez',
     'evandro.pattaro',
-    'joao.balbino',
     'julio.silva',
-    'tiago.bertolo',
     'vitor.pires',
     'wesley.lossani',
-    'yuri.porto',
     'caio.felipe',
-    'renato.campos',
     'carlos.pestana',
     'douglas.morato',
     'michelle.rolli',
     'rodrigo.sartorio',
-    'chrystian.souza',
     'daniella.perez',
-    'denis.braga',
     'viu',
-    'iolanda.cipriano',
     'patricia.nogueira',
     'renataka',
     'rosana.marques',
     'rosemeirem',
     'oliveira.eder',
-    'guilherme.bigois',
     'fernando.luis',
-    'luis.fernando'
+    'luis.fernando',
+    'm.helmers',
+    'elisangela.petry'
      ];
 
   constructor(private router: Router, private restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { }

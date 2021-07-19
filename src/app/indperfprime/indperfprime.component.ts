@@ -71,7 +71,7 @@ export class IndperfprimeComponent implements OnInit {
     this.usuarios = [
       { user: 'eduardo.martinez', total: 0, label: 'Eduardo Martinez'  },
       { user: 'evandro.pattaro', total: 0 , label: 'Evandro Pattaro' },
-      { user: 'igor.bigois', total: 0 , label: 'Guilherme Bigois' },
+      { user: 'm.helmers', total: 0 , label: 'Marcelo Helmers' },
       { user: 'guilherme.fernando', total: 0 , label: 'Fernando Luis' },
       { user: 'julio.silva', total: 0, label: 'Julio Silva'  },
       { user: 'luis.fernando', total: 0 , label: 'Luís Magalhães' },    
@@ -140,7 +140,7 @@ export class IndperfprimeComponent implements OnInit {
     this.itemsperf = [
       { analista: 'Eduardo Martinez', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
       { analista: 'Evandro Pattaro', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
-      { analista: 'Guilherme Bigois', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
+      { analista: 'Marcelo Helmers', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
       { analista: 'Fernando Luis', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
       { analista: 'Julio Silva', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
       { analista: 'Luís Magalhães', Codificadas: {total: 0, issues: [ ]}, Rejeitadas: {total: 0, issues: [ ]}, Canceladas: {total: 0, issues: [ ]}, Retrabalho: {total: 0, issues: [ ]}, percretrabalho: 0, produtividade: 0},
@@ -158,10 +158,10 @@ export class IndperfprimeComponent implements OnInit {
     { column: 'retrabalho', label: 'Retrabalho', type: 'number' },
     ];
 
-  this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
-  for (let _i = 0; this.serieschartPerf.length > _i; _i++) {
-    this.serieschartPerf[_i] = this.getSeriesChart2(0, 0, 0, 0, 0);
-  }
+    this.serieschart1 = this.getSeriesChart1(zeraGrafico, zeraGrafico, zeraGrafico);
+    for (let _i = 0; this.serieschartPerf.length > _i; _i++) {
+      this.serieschartPerf[_i] = this.getSeriesChart2(0, 0, 0, 0, 0);
+    }
 
   }
 
@@ -231,7 +231,7 @@ export class IndperfprimeComponent implements OnInit {
     ];
   }
   private getCategchart1(): Array<string> {
-    return [ 'Eduardo Martinez', 'Evandro Pattaro', 'Guilherme Bigois', 'Fernando Luis',
+    return [ 'Eduardo Martinez', 'Evandro Pattaro', 'Marcelo Helmers', 'Fernando Luis',
     'Julio Silva', 'Luís Magalhães', 'Vitor Pires', 'Wesley Lossani', 'Eder Oliveira' ];
   }
 

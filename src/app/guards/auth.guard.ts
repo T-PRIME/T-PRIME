@@ -11,10 +11,8 @@ export class AuthGuard implements CanActivate {
 
   users = [
     'eduardo.martinez',
-    'evandro.pattaro',
     'julio.silva',
     'vitor.pires',
-    'wesley.lossani',
     'caio.felipe',
     'carlos.pestana',
     'douglas.morato',
@@ -29,8 +27,10 @@ export class AuthGuard implements CanActivate {
     'oliveira.eder',
     'fernando.luis',
     'luis.fernando',
-    'm.helmers',
-    'elisangela.petry'
+    'elisangela.petry',
+    'marco.arcanjo',
+    'rodrigo.carvalheiro',
+    'tiagob.bertolo'
      ];
 
   constructor(private router: Router, private restJiraService: RestJiraService, private thfAlert: ThfDialogService ) { }

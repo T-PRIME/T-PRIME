@@ -66,8 +66,9 @@ export class RestJiraService {
     let _x = 0;
     let user;
     this.processos ++;
+
     if (tipo > 2) {
-      for (let _i = 0; response.total > _i;) {
+      for (let _i = 0; response.total > _i; _i++) {
         if (_x < usuarios.length) {
 
           if (campo === 'pacemergenciais' && response.issues[_i].fields.customfield_10048 !== undefined && response.issues[_i].fields.customfield_10048 !== null) {
@@ -161,7 +162,7 @@ export class RestJiraService {
     if (this.execReq.indexOf('Codificadas') >= 0 && this.execReq.indexOf('Retrabalho') >= 0 && this.execReq.indexOf('Rejeitadas') >= 0) {
       for (let _y = 0; usuarios.length > _y; _y++) {
         if (componente[_y].Codificadas.total > 0) {
-          componente[_y].percretrabalho = Math.round((componente[_y].Retrabalho.total * 100) / componente[_y].Codificadas.total);
+          componente[_y].percretrabalho = Math.round((componente[_y].Retrabalho.total * 100) / (componente[_y].Codificadas.total + componente[_y].Rejeitadas.total));
         }
         componente[_y].produtividade = Math.round((componente[_y].Codificadas.total + componente[_y].Rejeitadas.total - componente[_y].Retrabalho.total) / diasUteis * 100);
       }
@@ -328,6 +329,7 @@ export class RestJiraService {
       }
     }
 
+
     if (this.execReq.length === 16) {
       this.execReq = [];
       return true;
@@ -335,6 +337,7 @@ export class RestJiraService {
       return false;
     }
   }
+
 
   ReplaceAll(jql: string, oldvalue: string , newValue: string, upper: boolean) {
 

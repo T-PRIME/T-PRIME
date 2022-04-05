@@ -271,7 +271,6 @@ export class IndmanutprimeComponent implements OnInit {
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, 'startOfMonth()', '\'' + this.startDate.toString().substring(0, 10) + this.timeini + '\'', true);
       filtroEdit = this.restJiraService.ReplaceAll(filtroEdit, 'endOfMonth()', '\'' + this.endDate.toString().substring(0, 10) + this.timeFim + '\'', true);
 
-      console.log(document.cookie);
       this.restJiraService.getIssues(filtroEdit, fields).subscribe( response => {
         const fimExecucao = this.restJiraService.AtualizaManut(response, this.dadosChart, chart, this.diasUteis);
         if (fimExecucao) {
